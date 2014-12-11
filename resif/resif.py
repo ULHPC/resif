@@ -7,23 +7,33 @@
 import sys
 import click
 import os
+import subprocess
 
 sys.path.append('.')
 import configManager
 import bootstrapEB
 import buildSwSets
 
+import pkg_resources
+
 #######################################################################################################################
 # The resif group. Defines the name of the command. It is the "main" group.
-@click.group()
-def resif():
+@click.group(invoke_without_command=True)
+@click.pass_context
+@click.option('--version', flag_value=True, help='Return the version of this script.')
+def resif(ctx, version):
     """
     RESIF commandline interface.
 
     Choose the sub-command you want to execute.
     """
-    pass
-
+    if ctx.invoked_subcommand is None:
+        if version:
+            sys.stdout.write("This is RESIF version " + pkg_resources.require("resif")[0].version + "\n")
+        else:
+            subprocess.check_call(['resif', '--help'])
+        
+    
 #######################################################################################################################
 # The subcommands bootstrap, build and cleaninstall.
 
