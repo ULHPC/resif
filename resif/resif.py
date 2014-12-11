@@ -8,6 +8,7 @@ import sys
 import click
 import os
 import subprocess
+import shutil
 
 sys.path.append('.')
 import configManager
@@ -33,7 +34,40 @@ def resif(ctx, version):
         else:
             subprocess.check_call(['resif', '--help'])
         
-    
+#######################################################################################################################
+
+
+#######################################################################################################################
+# The init, update and wipe subcommands, to initialize, update and reset the environment concerning RESIF
+
+# Initialize the necessary directories
+@resif.command()
+@click.option('--git-architecture', 'git_architecture', envvar='RESIF_GIT_ARCHITECTURE', help='Defines an alternative git repository URL or path to get the architecture from.')
+@click.option('--srcpath', 'srcpath', envvar='RESIF_SRCPATH', help='Defines an alternative path to put the sources in.')
+def init(**kwargs):
+    config = configManager.generateInitConfig(kwargs)
+    subprocess.check_call(['git', 'clone', config['git_architecture'], config['srcpath']])
+
+@resif.command()
+@click.option('--srcpath', 'srcpath', envvar='RESIF_SRCPATH', help='Defines an alternative path to the repository.')
+def update(**kwargs):
+    config = configManager.generateUpdateConfig(kwargs)
+    os.chdir(config['srcpath'])
+    subprocess.check_call(['git', 'pull'])
+
+@resif.command()
+@click.option('--srcpath', 'srcpath', envvar='RESIF_SRCPATH', help='Defines an alternative path to the repository.')
+@click.confirmation_option(prompt='You are going to remove everything in <srcpath> (default=$HOME/.resif/src), are you sure you want to continue ?', help='Use to not prompt confirmation message. (Check what you are trying to do before !)')
+def wipe(**kwargs):
+    config = configManager.generateWipeConfig(kwargs)
+    try:
+        shutil.rmtree(config['srcpath'])
+    except OSError:
+        sys.stdout.write("Nothing to remove at " + config['srcpath'] + "\n")
+
+#######################################################################################################################
+
+
 #######################################################################################################################
 # The subcommands bootstrap, build and cleaninstall.
 

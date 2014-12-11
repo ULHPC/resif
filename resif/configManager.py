@@ -15,6 +15,37 @@ from git import Repo
 #######################################################################################################################
 # This functions are wrapper to make the code more readable.
 # They shouldn't do much more than calling the bellow functions.
+
+def generateInitConfig(hashTable):
+    if hashTable['git_architecture'] == None:
+        hashTable['git_architecture'] = 'https://github.com/ULHPC/modules'
+
+    if hashTable['srcpath'] == None:
+        hashTable['srcpath'] = os.path.join(os.path.join('$HOME', '.resif'), 'src')
+
+    encorer(hashTable, 'utf8')
+    configExpandVars(hashTable)
+
+    return hashTable
+
+def generateUpdateConfig(hashTable):
+    if hashTable['srcpath'] == None:
+        hashTable['srcpath'] = os.path.join(os.path.join('$HOME', '.resif'), 'src')
+
+    encoder(hashTable, 'utf8')
+    configExpandVars(hashTable)
+
+    return hashTable
+
+def generateWipeConfig(hashTable):
+    if not 'srcpath' in hashTable == None:
+        hashTable['srcpath'] = os.path.join(os.path.join('$HOME', '.resif'), 'src')
+
+    encoder(hashTable, 'utf8')
+    configExpandVars(hashTable)
+
+    return hashTable
+
 def generateBootstrapConfig(hashTable):
     config = generateCommonConfig(hashTable)
 
