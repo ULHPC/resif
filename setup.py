@@ -31,6 +31,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        resif=resif:resif
+        resif=resif.resif:resif
     ''',
 )
