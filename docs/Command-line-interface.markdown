@@ -142,6 +142,8 @@ Options:
 Default behavior:  
 The `resif init` command will clone the default git infrastructure repository (e.g https://github.com/ULHPC/modules) in the default srcpath (e.g $HOME/.resif/src).
 
+Note that this command must have been executed before using any of the other commands since the other commands rely on the files initialize by this command.
+
 ### Update
 
 Usage: `resif update [OPTIONS]`
