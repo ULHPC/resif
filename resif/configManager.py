@@ -23,7 +23,7 @@ def generateInitConfig(hashTable):
     if hashTable['srcpath'] == None:
         hashTable['srcpath'] = os.path.join(os.path.join('$HOME', '.resif'), 'src')
 
-    encorer(hashTable, 'utf8')
+    encoder(hashTable, 'utf8')
     configExpandVars(hashTable)
 
     return hashTable
