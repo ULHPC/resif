@@ -20,24 +20,48 @@ This page explains in a first part how to [install the resif script](#installati
 To install this script, you need to have some required packages installed on your computer:  
 - python 2.6 or above
 - git
-- a YAML parser for python (PyYaml works fine. On Ubuntu, simply install the `python-yaml` package.)
 - pip to install and uninstall the script (On Ubuntu, simply install the `python-pip` package.)
 
 That is enough to install and launch the script itself, but you still need to have the prerequisites for EasyBuild itself, in particular you will need a module tool (either environment-modules or Lmod).  
 See the other pages of this documentation for [more details about these tools](https://gitlab.uni.lu/modules/infrastructure/wikis/overview) and the [installation instructions for Lmod](https://gitlab.uni.lu/modules/infrastructure/wikis/Lmod-install).
 
-### Installation with root permissions
+### Install from PyPi (recommended)
 
-After having cloned the repository, go to the `bin` directory and type the following command to install the script:  
+#### With root permissions
+
+Simply use the following command:  
+`pip install resif`
+
+You can now start use the command, see below for more information.
+
+#### Without root permissions
+
+Use the following command to install the command:    
+`pip install --install-option="--prefix=$HOME/local" .`  
+Note that you can replace `$HOME/local` by anything you want as long as you have all the right for this location, just modify the following commands accordingly.
+
+Add then `$HOME/local/bin` to you path to make the command accessible:  
+`export PATH=$PATH:$HOME/local/bin`  
+and `$HOME/local/lib/python2.7/site-packages` to your pythonpath so that the command's dependencies are accessible:  
+`export PYTHONPATH=$PYTHONPATH:$HOME/local/lib/python2.7/site-packages`  
+Note that in this last path, the part `python2.7` may change depending on the python version you use on your computer. Just modify the previous path accordingly to what is actually present in your tree at this point.
+
+### Installation from git
+
+#### With root permissions
+
+Clone the git repository:  
+`git clone https://github.com/sylmarien/RESIF-PyPi.git resif`
+
+Then go to in this directory directory and type the following command to install the script:  
 `pip install .`
 
-Then, for more comfort, activate the bash auto-completion for the module:  
-`source resif-complete.sh`  
-(This step has to be done each time you create a new shell)
+#### Without root permissions
 
-### Installation without root permissions
+Clone the git repository:  
+`git clone https://github.com/sylmarien/RESIF-PyPi.git resif`
 
-After having cloned the repository, go to the `bin` directory and type the following command to install the script:  
+Then go to in this directory directory and type the following command to install the script:  
 `pip install --install-option="--prefix=$HOME/local" .`  
 Note that you can replace `$HOME/local` by anything you want as long as you have all the right for this location, just modify the following commands accordingly.
 
@@ -47,11 +71,18 @@ and `$HOME/local/lib/python2.7/site-packages` to your pythonpath:
 `export PYTHONPATH=$PYTHONPATH:$HOME/local/lib/python2.7/site-packages`  
 Note that in this last path, the part `python2.7` may change depending on the python version you use on your computer. Just modify the previous path accordingly to what is actually present in your tree at this point.
 
-Then, for more comfort, activate the bash auto-completion for the module:  
-`source resif-complete.sh`  
-(This step has to be done each time you create a new shell)
+### Bash completion
 
-### Full bootstrap
+Then, for more comfort, activate the bash auto-completion for the module:  
+`eval "$(_RESIF_COMPLETE=source resif)"`
+
+Since this has to be done each time you launch a new terminal, you may want to create an activation script:  
+`_RESIF_COMPLETE=source resif > resif-complete.sh`  
+Then you'll just source this file to activate the bash completion (still each time you launch a new terminal):  
+`source resif-complete.sh`  
+If you want to always have the bash completion, put this file in your `/etc/bash_completion.d` directory (requires root access).
+
+### Full bootstrap (Obsolete)
 
 If all you want is to replicate the architecture on the clusters but on your computer (requires root permissions), just execute the following command:  
 `bash <(curl https://raw.githubusercontent.com/ULHPC/modules/develop/binscripts/bootstrap.sh)`  
@@ -70,12 +101,17 @@ Usage: resif [OPTIONS] COMMAND [ARGS]...
   Choose the sub-command you want to execute.
 
 Options:
-  --help  Show this message and exit.
+  --version  Return the version of this script.
+  --help     Show this message and exit.
 
 Commands:
-  bootstrap
-  build         [SWSETS] TEXT...
-  cleaninstall  [SWSETS] TEXT...
+  bootstrap     Deploy a fresh EasyBuild install.
+  build         Deploy software sets on an existing installatation.
+  cleaninstall  Deploy a full environment: bootstrap EasyBuild and use it to
+                install the software sets.
+  init          Initialize the git repository in the srcpath.
+  update        Update the git repository in the srcpath.
+  wipe          Wipe all data in the srcpath.
 ```
 
 If you have that, then you're all set, continue to learn how to actually use this tool.  
@@ -83,9 +119,56 @@ If you have that, then you're all set, continue to learn how to actually use thi
 ## Usage of the CLI
 
 This documentation is divided in three parts, corresponding to the three main commands of the resif script:  
+- [init](#init)
+- [update](#update)
+- [wipe](#wipe)
 - [bootstrap](#bootstrap)
 - [build](#build)
 - [cleaninstall](#cleaninstall)
+
+### Init
+
+Usage: `resif init [OPTIONS]`
+
+```
+Options:
+  --git-architecture URL   Defines an alternative git repository URL or path
+                           to get the architecture from.
+  --srcpath path           Defines an alternative path to put the sources in.
+  --help                   Show this message and exit.
+
+```
+
+Default behavior:  
+The `resif init` command will clone the default git infrastructure repository (e.g https://github.com/ULHPC/modules) in the default srcpath (e.g $HOME/.resif/src).
+
+### Update
+
+Usage: `resif update [OPTIONS]`
+
+```
+Options:
+  --srcpath path  Defines an alternative path to the repository.
+  --help          Show this message and exit.
+```
+
+Default behavior:  
+The `resif update` command will update the repository at the default srcpath (e.g $HOME/.resif/src).
+
+### Wipe
+
+Usage: `resif wipe [OPTIONS]`
+
+```
+Options:
+  --srcpath path  Defines an alternative path to the repository.
+  --yes           Use to not prompt confirmation message. (Check what you are
+                  trying to do before !)
+  --help          Show this message and exit.
+```
+
+Default behavior:  
+The `resif wipe` command will remove all data from the default srcpath (e.g $HOME/.resif/src) after having prompt you to confirm it.
 
 ### Bootstrap
 
