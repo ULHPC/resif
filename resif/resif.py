@@ -41,21 +41,21 @@ def resif(ctx, version):
 # The init, update and wipe subcommands, to initialize, update and reset the environment concerning RESIF
 
 # Initialize the necessary directories
-@resif.command()
+@resif.command(short_help='Initialize the git repository in the srcpath.')
 @click.option('--git-architecture', 'git_architecture', envvar='RESIF_GIT_ARCHITECTURE', help='Defines an alternative git repository URL or path to get the architecture from.')
 @click.option('--srcpath', 'srcpath', envvar='RESIF_SRCPATH', help='Defines an alternative path to put the sources in.')
 def init(**kwargs):
     config = configManager.generateInitConfig(kwargs)
     subprocess.check_call(['git', 'clone', config['git_architecture'], config['srcpath']])
 
-@resif.command()
+@resif.command(short_help='Update the git repository in the srcpath.')
 @click.option('--srcpath', 'srcpath', envvar='RESIF_SRCPATH', help='Defines an alternative path to the repository.')
 def update(**kwargs):
     config = configManager.generateUpdateConfig(kwargs)
     os.chdir(config['srcpath'])
     subprocess.check_call(['git', 'pull'])
 
-@resif.command()
+@resif.command(short_help='Wipe all data in the srcpath.')
 @click.option('--srcpath', 'srcpath', envvar='RESIF_SRCPATH', help='Defines an alternative path to the repository.')
 @click.confirmation_option(prompt='You are going to remove everything in <srcpath> (default=$HOME/.resif/src), are you sure you want to continue ?', help='Use to not prompt confirmation message. (Check what you are trying to do before !)')
 def wipe(**kwargs):
@@ -72,7 +72,7 @@ def wipe(**kwargs):
 # The subcommands bootstrap, build and cleaninstall.
 
 # Make a new install of EasyBuild.
-@resif.command()
+@resif.command(short_help='Deploy a fresh EasyBuild install.')
 # Path to the source directory
 @click.option('--srcpath', envvar='RESIF_SRCPATH', help='Source path to the RESIF directory.')
 # Configuration files provisioning
@@ -105,7 +105,7 @@ def bootstrap(**kwargs):
 
 
 # Build a (or multiple) software set(s) (Adding new software to an existing EasyBuild install.)
-@resif.command()
+@resif.command(short_help='Deploy software sets on an existing installatation.')
 # Path to the source directory
 @click.option('--srcpath', envvar='RESIF_SRCPATH', help='Source path to the RESIF directory.')
 # Configuration files provisioning
@@ -138,7 +138,7 @@ def build(**kwargs):
 
 
 # Full install (Correspond to making a new release)
-@resif.command()
+@resif.command(short_help='Deploy a full environment: bootstrap EasyBuild and use it to install the software sets.')
 # Path to the source directory
 @click.option('--srcpath', envvar='RESIF_SRCPATH', help='Source path to the RESIF directory.')
 # Configuration files provisioning
