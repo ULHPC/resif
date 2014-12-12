@@ -14,40 +14,51 @@ Although it is interesting to take a look at them to personalize an installation
 
 Here are all the variables that can be set, followed by their descriptions.
 
-      | Variable                | Description                                        | Default (if any)             |
-      |-------------------------+----------------------------------------------------+------------------------------|
-      | `$ebuser`               | User operating the process                         | `whoami`                     |
-      | `$ebgroup`              | Group                                              |                              |
-      | `$gh_ebuser`            | (opt.) Github user ['hpcugent','ULHPC']            |                              |
-      | `$git_ebframework`      | (opt.) Git URL/path for EB framework repo          |                              |
-      | `$git_ebblocks`         | (opt.) Git URL/path for EB easyblocks repo         |                              |
-      | `$git_ebconfigs`        | (opt.) Git URL/path for EB easyconfigs repo        |                              |
-      | `$branch_ebframework`   | (opt.) Git branch for EB framework                 |                              |
-      | `$branch_ebblocks       | (opt.) Git branch for EB easyblocks                |                              |
-      | `$branch_ebconfigs      | (opt.) Git branch for EB easyconfigs               |                              |
-      | `$srcpath`              | Source path for the conf. repository               | $HOME/.resif/src             |
-      | `$configfile`           | Path to custom configuration file                  |                              |
-      | `$swsets_config`        | Path to file defining the software sets            | <srcpath>/config/swsets.yaml |
-      | `$swsets`               | Software set to deploy  ['core','ulhpc']           | core                         |
-      | `$mns`                  | Module Naming Scheme     ['EasyBuildMNS',          | ThematicMNS                  |
-      |                         |           'HierarchicalMNS', 'ThematicMNS']        |                              |
-      | `$buildmode`            | Local build ('local') vs. job  ('job')             | local                        |
-      | `$apps_root`            | Root directory for apps (modules & sw)             | /usr/local/apps              |
-      | `$branch`               | Branch of the RESIF repository to work with        |                              |
-      | `$release`              | Release tag or commit to deploy                    | HEAD                         |
-      | `$releasedir`           | Subdirectory in which to deploy the release        | <branch>/<release>-<date>    |
-      | `$rootinstall`          | Root Installation directory                        | <apps_root>/<releasedir>     |
-      | `$installdir`           | Path to an alternative directory in which to build |                              |
-      | `$eb_sourcepath`        | Directory to store software sources                | $HOME/.resif/sources         |
-      |                         | and install files                                  |                              |
-      | `$eb_buildpath`         | (temporary) directories to host builds             | $HOME./resif/build           |
-      | `$eb_repository`        | Type of repository to store the .eb files          | FileRepository               |
-      |                         | of the successfuly installed softwares             |                              |
-      | `$eb_repositorypath`    | Path to this repository                            | $HOME/.resif/eb_repo         |
-      | `$out_place`            | Modify the building behavior so EasyBuild files    | False                        |
-      |                         |   are all put inside the $HOME/.resif directory    |                              |
+      | Variable                | Description                                        | Default (if any)                   |
+      |-------------------------+----------------------------------------------------+------------------------------------|
+      | `$git_architecture`     | Git URL/path for your architecture repository      | `https://github.com/ULHPC/modules` |
+      | `$ebuser`               | User operating the process                         | `whoami`                           |
+      | `$ebgroup`              | Group                                              |                                    |
+      | `$gh_ebuser`            | (opt.) Github user ['hpcugent','ULHPC']            |                                    |
+      | `$git_ebframework`      | (opt.) Git URL/path for EB framework repo          |                                    |
+      | `$git_ebblocks`         | (opt.) Git URL/path for EB easyblocks repo         |                                    |
+      | `$git_ebconfigs`        | (opt.) Git URL/path for EB easyconfigs repo        |                                    |
+      | `$branch_ebframework`   | (opt.) Git branch for EB framework                 |                                    |
+      | `$branch_ebblocks       | (opt.) Git branch for EB easyblocks                |                                    |
+      | `$branch_ebconfigs      | (opt.) Git branch for EB easyconfigs               |                                    |
+      | `$srcpath`              | Source path for the conf. repository               | $HOME/.resif/src                   |
+      | `$configfile`           | Path to custom configuration file                  |                                    |
+      | `$swsets_config`        | Path to file defining the software sets            | <srcpath>/config/swsets.yaml       |
+      | `$swsets`               | Software set to deploy  ['core','ulhpc']           | core                               |
+      | `$mns`                  | Module Naming Scheme     ['EasyBuildMNS',          | ThematicMNS                        |
+      |                         |           'HierarchicalMNS', 'ThematicMNS']        |                                    |
+      | `$buildmode`            | Local build ('local') vs. job  ('job')             | local                              |
+      | `$apps_root`            | Root directory for apps (modules & sw)             | /usr/local/apps                    |
+      | `$branch`               | Branch of the RESIF repository to work with        |                                    |
+      | `$release`              | Release tag or commit to deploy                    | HEAD                               |
+      | `$releasedir`           | Subdirectory in which to deploy the release        | <branch>/<release>-<date>          |
+      | `$rootinstall`          | Root Installation directory                        | <apps_root>/<releasedir>           |
+      | `$installdir`           | Path to an alternative directory in which to build |                                    |
+      | `$eb_sourcepath`        | Directory to store software sources                | $HOME/.resif/sources               |
+      |                         | and install files                                  |                                    |
+      | `$eb_buildpath`         | (temporary) directories to host builds             | $HOME./resif/build                 |
+      | `$eb_repository`        | Type of repository to store the .eb files          | FileRepository                     |
+      |                         | of the successfuly installed softwares             |                                    |
+      | `$eb_repositorypath`    | Path to this repository                            | $HOME/.resif/eb_repo               |
+      | `$out_place`            | Modify the building behavior so EasyBuild files    | False                              |
+      |                         |   are all put inside the $HOME/.resif directory    |                                    |
  
 ## Specific Configuration variables
+
+### Git architecture repository `$git_architecture`
+
+Set this variable to a Git URL or path to use another infractructure repository than the default one.
+
+      | Variable          | value                            |
+      |-------------------+----------------------------------|
+      | $git_architecture | https://github.com/ULHPC/modules |
+
+To learn more about this architecture repository (and learn how to create your own, fitting your needs), go to the [layout and versioning page](https://gitlab.uni.lu/modules/infrastructure/wikis/layout-and-versioning).
 
 ### Local user/group deploying the infrastructure `$ebuser` `$ebgroup`
 
