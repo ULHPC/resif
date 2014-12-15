@@ -18,7 +18,7 @@ from git import Repo
 
 def generateInitConfig(hashTable):
     if hashTable['git_architecture'] == None:
-        hashTable['git_architecture'] = 'https://github.com/ULHPC/modules'
+        hashTable['git_architecture'] = 'https://gitlab.uni.lu/modules/infrastructure.git' # TODO: 'https://github.com/ULHPC/modules'
 
     if hashTable['srcpath'] == None:
         hashTable['srcpath'] = os.path.join(os.path.join('$HOME', '.resif'), 'src')

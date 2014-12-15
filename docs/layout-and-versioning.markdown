@@ -16,7 +16,7 @@ The layout of the source repository reflects the topology detailed in the [Varia
      <srcpath>.
 	    ├── ... 
 		├── VERSION          # current release of the repository
-		├── bin/             # hold the scripts piloting all operations
+		├── bin/             # hold some script files (Custom Module Naming scheme and bash completion script)
 		├── config/          # hold configurations
 		├── easybuild/       # Git subtrees for EB
 	    ├── ... 
