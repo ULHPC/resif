@@ -11,7 +11,7 @@ Wished features:
 * Minimal requirements (Python 2.x, Ruby >= 1.9.3, Environment modules (Tcl/C or Lmod) 
 * Management of _software / module sets_ for which different policies applies, for instance:
   * `core`: set of software present by default, who deserve a special attention (automatic software testing reported on Cdash, etc.)
-  * `all`: in addition to core, all **built** software availaible to the users
+  * `ulhpc`: in addition to core, all **built** software availaible to the users
 * Coherent workflow for both the UL HPC sysadmins and users to cover the following scenarios:
   * [admin] Deployment from scratch of a new software stack
   * [user]  Build a new software on top of the existing stable stack
