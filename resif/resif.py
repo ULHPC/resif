@@ -69,6 +69,33 @@ def wipe(**kwargs):
 
 
 #######################################################################################################################
+# The count and show subcommands which help getting informations such as
+# "how many and which software have been compiled using X toolchain?"
+# These functions need one of the "LOADME" files to be loaded.
+# (At the very least, they require the module path to be set correctly to use the EasyBuild install and the RESIF_ROOTINSTALL variable to be set to the root of the EasyBuild install.)
+
+@resif.command()
+@click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
+@click.argument('content')
+def show(**kwargs):
+    """
+    [CONTENT] TEXT                  Text to look for in the names of the installed softwares.
+    """
+    try:
+    if kwargs['mns'] == 'ThematicMNS' or kwargs['mns'] == 'T':
+        easybuild_module = "base/EasyBuild/install-" + getEasyBuildVersion(hashTable['rootinstall'])
+    else:
+        easybuild_module = 'EasyBuild/install-' + getEasyBuildVersion(hashTable['rootinstall'])
+    except:
+        sys.stdout("Please set the RESIF_ROOTINSTALL environment variable to the root of the EasyBuild installation.")
+        exit(1)
+    process = subprocess.Popen('/bin/bash', stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+
+#######################################################################################################################
+
+
+#######################################################################################################################
 # The subcommands bootstrap, build and cleaninstall.
 
 # Make a new install of EasyBuild.
