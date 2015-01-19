@@ -176,6 +176,9 @@ def configExpandVars(hashTable):
             if v != None and isinstance(v, basestring):
                 hashTable[k] = os.path.expandvars(v)
 
+def cmd_exists(cmd):
+    return subprocess.call("type " + cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0
+
 #######################################################################################################################
 
 
@@ -230,6 +233,14 @@ def generateCommonConfig(hashTable):
     # Adding the repo and the tree to the config
     config['git_repo'] = repo
     config['git_tree'] = tree
+
+    if cmd_exists("lmod"):
+        config['module_cmd'] = "lmod"
+    elif cmd_exists("modulecmd"):
+        config["module_cmd"] = "modulecmd"
+    else:
+        sys.stdout.write("Neither modulecmd nor lmod has been found in your path. Please install either one of them to continue. (Preferably choose lmod for more functionalities)")
+        exit(40)
 
     return config
 
