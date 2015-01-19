@@ -159,13 +159,18 @@ def count(**kwargs):
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files). Default: <apps-root>/<releasedir>')
 # Module Naming Scheme choice
 @click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
+@click.option('--overwrite', 'overwrite', flag_value=True, envvar='RESIF_OVERWRITE', help='Set this flag if you want to overwrite any existing previous installation at --apps-root.')
 def bootstrap(**kwargs):
     # Generate the configuration for the bootstrap.
     config = configManager.generateBootstrapConfig(kwargs)
     # Bootstrap EasyBuild.
-    click.echo("Bootstrapping EasyBuild.")
-    bootstrapEB.bootstrap(config)
-    click.echo("Bootstrapping ended successfully.")
+    if not os.path.isdir(config["apps_root"]) or config["overwrite"]:
+        click.echo("Bootstrapping EasyBuild.")
+        bootstrapEB.bootstrap(config)
+        click.echo("Bootstrapping ended successfully.")
+    else:
+        sys.stdout.write("An installation is already present at your apps-root: " + config["apps_root"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.")
+        exit(50)
 
 
 # Build a (or multiple) software set(s) (Adding new software to an existing EasyBuild install.)
@@ -228,6 +233,7 @@ def build(**kwargs):
 # Software building variables
 @click.option('--buildmode', envvar='RESIF_BUILDMODE', type=click.Choice(['local', 'job']), help='Mode to build the software: either building locally or in a job.')
 @click.option('--swsets-config', 'swsets_config', envvar='RESIF_SWSETS_CONFIG', help='Path to a file defining the software sets.')
+@click.option('--overwrite', 'overwrite', flag_value=True, envvar='RESIF_OVERWRITE', help='Set this flag if you want to overwrite any existing previous installation at --apps-root.')
 @click.argument('swsets', nargs=-1)
 def cleaninstall(**kwargs):
     """
@@ -238,7 +244,11 @@ def cleaninstall(**kwargs):
     click.echo("Starting full installation.")
     # Bootstrap EasyBuild.
     click.echo("Bootstrapping EasyBuild.")
-    modulePath = bootstrapEB.bootstrap(config)
+    if not os.path.isdir(config["apps_root"]) or config["overwrite"]:
+        modulePath = bootstrapEB.bootstrap(config)
+    else:
+        sys.stdout.write("An installation is already present at your apps-root: " + config["apps_root"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.")
+        exit(50)
     click.echo("Bootstrapping ended successfully.")
     # Build the software sets.
     click.echo("Building the software sets.")
