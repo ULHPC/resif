@@ -47,7 +47,7 @@ def resif(ctx, version):
 @click.option('--overwrite', 'overwrite', flag_value=True, envvar='RESIF_OVERWRITE', help='Set this flag if you want to overwrite any existing previous installation at --apps-root.')
 def init(**kwargs):
     config = configManager.generateInitConfig(kwargs)
-    if not os.path.isdir(config["apps_root"]) or config["overwrite"]:
+    if not os.path.isdir(config["srcpath"]) or config["overwrite"]:
         if config["overwrite"]:
             shutil.rmtree(config["srcpath"], True)
         subprocess.check_call(['git', 'clone', config['git_architecture'], config['srcpath']])
