@@ -69,6 +69,70 @@ def wipe(**kwargs):
 
 
 #######################################################################################################################
+# The count and show subcommands which help getting informations such as
+# "how many and which software have been compiled using X toolchain?"
+# These functions need one of the "LOADME" files to be loaded.
+# (At the very least, they require the module path to be set correctly to use the EasyBuild install and the RESIF_ROOTINSTALL variable to be set to the root of the EasyBuild install.)
+
+# Show the list of softwares which easyconfig file contains the "content" string
+@resif.command()
+@click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
+@click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
+@click.argument('content')
+def show(**kwargs):
+    """
+    [CONTENT] TEXT                  Text to look for in the names of the installed softwares.
+    """
+    try:
+        if kwargs['mns'] == 'ThematicMNS' or kwargs['mns'] == 'T':
+            easybuild_module = "base/EasyBuild/install-" + configManager.getEasyBuildVersion(os.path.expandvars(os.path.abspath(os.environ['RESIF_ROOTINSTALL'])))
+        else:
+            easybuild_module = 'EasyBuild/install-' + configManager.getEasyBuildVersion(os.path.expandvars(os.path.abspath(os.environ['RESIF_ROOTINSTALL'])))
+    except Exception:
+        sys.stdout.write("Please set the RESIF_ROOTINSTALL environment variable or the --rootinstall option to the root of the EasyBuild installation.\n")
+        exit(1)
+    process = subprocess.Popen('/bin/bash', stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    process.stdin.write('module load ' + easybuild_module + '\n')
+    process.stdin.write('eb -S ' + kwargs['content'] + '\n')
+    process.stdin.write('echo $?\n')
+    out = ""
+    while True:
+        out = process.stdout.readline()
+        try:
+            i = int(out)
+        except ValueError:
+            i = -1
+        if i < 0:
+            sys.stdout.write(out)
+        else:
+            break
+
+# Count the number of softwares which easyconfig file contains the "content" string
+@resif.command()
+@click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
+@click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
+@click.argument('content')
+def count(**kwargs):
+    """
+    [CONTENT] TEXT                  Text to look for in the names of the installed softwares.
+    """
+    try:
+        if kwargs['mns'] == 'ThematicMNS' or kwargs['mns'] == 'T':
+            easybuild_module = "base/EasyBuild/install-" + configManager.getEasyBuildVersion(os.path.expandvars(os.path.abspath(kwargs['rootinstall'])))
+        else:
+            easybuild_module = 'EasyBuild/install-' + configManager.getEasyBuildVersion(os.path.expandvars(os.path.abspath(kwargs['rootinstall'])))
+    except Exception:
+        sys.stdout.write("Please set the RESIF_ROOTINSTALL environment variable or the --rootinstall option to the root of the EasyBuild installation.\n")
+        exit(1)
+    process = subprocess.Popen('/bin/bash', stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    process.stdin.write('module load ' + easybuild_module + '\n')
+    process.stdin.write('eb -S ' + kwargs['content'] + ' | grep "^ \* " | wc -l' + '\n')
+    sys.stdout.write(process.stdout.readline())
+
+#######################################################################################################################
+
+
+#######################################################################################################################
 # The subcommands bootstrap, build and cleaninstall.
 
 # Make a new install of EasyBuild.
