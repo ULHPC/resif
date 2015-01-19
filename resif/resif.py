@@ -7,28 +7,136 @@
 import sys
 import click
 import os
+import subprocess
+import shutil
 
 sys.path.append('.')
 import configManager
 import bootstrapEB
 import buildSwSets
 
+import pkg_resources
+
 #######################################################################################################################
 # The resif group. Defines the name of the command. It is the "main" group.
-@click.group()
-def resif():
+@click.group(invoke_without_command=True)
+@click.pass_context
+@click.option('--version', flag_value=True, help='Return the version of this script.')
+def resif(ctx, version):
     """
     RESIF commandline interface.
 
     Choose the sub-command you want to execute.
     """
-    pass
+    if ctx.invoked_subcommand is None:
+        if version:
+            sys.stdout.write("This is RESIF version " + pkg_resources.require("resif")[0].version + "\n")
+        else:
+            subprocess.check_call(['resif', '--help'])
+        
+#######################################################################################################################
+
+
+#######################################################################################################################
+# The init, update and wipe subcommands, to initialize, update and reset the environment concerning RESIF
+
+# Initialize the necessary directories
+@resif.command(short_help='Initialize the git repository in the srcpath.')
+@click.option('--git-architecture', 'git_architecture', envvar='RESIF_GIT_ARCHITECTURE', help='Defines an alternative git repository URL or path to get the architecture from.')
+@click.option('--srcpath', 'srcpath', envvar='RESIF_SRCPATH', help='Defines an alternative path to put the sources in.')
+def init(**kwargs):
+    config = configManager.generateInitConfig(kwargs)
+    subprocess.check_call(['git', 'clone', config['git_architecture'], config['srcpath']])
+
+@resif.command(short_help='Update the git repository in the srcpath.')
+@click.option('--srcpath', 'srcpath', envvar='RESIF_SRCPATH', help='Defines an alternative path to the repository.')
+def update(**kwargs):
+    config = configManager.generateUpdateConfig(kwargs)
+    os.chdir(config['srcpath'])
+    subprocess.check_call(['git', 'pull'])
+
+@resif.command(short_help='Wipe all data in the srcpath.')
+@click.option('--srcpath', 'srcpath', envvar='RESIF_SRCPATH', help='Defines an alternative path to the repository.')
+@click.confirmation_option(prompt='You are going to remove everything in <srcpath> (default=$HOME/.resif/src), are you sure you want to continue ?', help='Use to not prompt confirmation message. (Check what you are trying to do before !)')
+def wipe(**kwargs):
+    config = configManager.generateWipeConfig(kwargs)
+    try:
+        shutil.rmtree(config['srcpath'])
+    except OSError:
+        sys.stdout.write("Nothing to remove at " + config['srcpath'] + "\n")
+
+#######################################################################################################################
+
+
+#######################################################################################################################
+# The count and show subcommands which help getting informations such as
+# "how many and which software have been compiled using X toolchain?"
+# These functions need one of the "LOADME" files to be loaded.
+# (At the very least, they require the module path to be set correctly to use the EasyBuild install and the RESIF_ROOTINSTALL variable to be set to the root of the EasyBuild install.)
+
+# Show the list of softwares which easyconfig file contains the "content" string
+@resif.command()
+@click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
+@click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
+@click.argument('content')
+def show(**kwargs):
+    """
+    [CONTENT] TEXT                  Text to look for in the names of the installed softwares.
+    """
+    try:
+        if kwargs['mns'] == 'ThematicMNS' or kwargs['mns'] == 'T':
+            easybuild_module = "base/EasyBuild/install-" + configManager.getEasyBuildVersion(os.path.expandvars(os.path.abspath(os.environ['RESIF_ROOTINSTALL'])))
+        else:
+            easybuild_module = 'EasyBuild/install-' + configManager.getEasyBuildVersion(os.path.expandvars(os.path.abspath(os.environ['RESIF_ROOTINSTALL'])))
+    except Exception:
+        sys.stdout.write("Please set the RESIF_ROOTINSTALL environment variable or the --rootinstall option to the root of the EasyBuild installation.\n")
+        exit(1)
+    process = subprocess.Popen('/bin/bash', stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    process.stdin.write('module load ' + easybuild_module + '\n')
+    process.stdin.write('eb -S ' + kwargs['content'] + '\n')
+    process.stdin.write('echo $?\n')
+    out = ""
+    while True:
+        out = process.stdout.readline()
+        try:
+            i = int(out)
+        except ValueError:
+            i = -1
+        if i < 0:
+            sys.stdout.write(out)
+        else:
+            break
+
+# Count the number of softwares which easyconfig file contains the "content" string
+@resif.command()
+@click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
+@click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
+@click.argument('content')
+def count(**kwargs):
+    """
+    [CONTENT] TEXT                  Text to look for in the names of the installed softwares.
+    """
+    try:
+        if kwargs['mns'] == 'ThematicMNS' or kwargs['mns'] == 'T':
+            easybuild_module = "base/EasyBuild/install-" + configManager.getEasyBuildVersion(os.path.expandvars(os.path.abspath(kwargs['rootinstall'])))
+        else:
+            easybuild_module = 'EasyBuild/install-' + configManager.getEasyBuildVersion(os.path.expandvars(os.path.abspath(kwargs['rootinstall'])))
+    except Exception:
+        sys.stdout.write("Please set the RESIF_ROOTINSTALL environment variable or the --rootinstall option to the root of the EasyBuild installation.\n")
+        exit(1)
+    process = subprocess.Popen('/bin/bash', stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    process.stdin.write('module load ' + easybuild_module + '\n')
+    process.stdin.write('eb -S ' + kwargs['content'] + ' | grep "^ \* " | wc -l' + '\n')
+    sys.stdout.write(process.stdout.readline())
+
+#######################################################################################################################
+
 
 #######################################################################################################################
 # The subcommands bootstrap, build and cleaninstall.
 
 # Make a new install of EasyBuild.
-@resif.command()
+@resif.command(short_help='Deploy a fresh EasyBuild install.')
 # Path to the source directory
 @click.option('--srcpath', envvar='RESIF_SRCPATH', help='Source path to the RESIF directory.')
 # Configuration files provisioning
@@ -61,7 +169,7 @@ def bootstrap(**kwargs):
 
 
 # Build a (or multiple) software set(s) (Adding new software to an existing EasyBuild install.)
-@resif.command()
+@resif.command(short_help='Deploy software sets on an existing installatation.')
 # Path to the source directory
 @click.option('--srcpath', envvar='RESIF_SRCPATH', help='Source path to the RESIF directory.')
 # Configuration files provisioning
@@ -94,7 +202,7 @@ def build(**kwargs):
 
 
 # Full install (Correspond to making a new release)
-@resif.command()
+@resif.command(short_help='Deploy a full environment: bootstrap EasyBuild and use it to install the software sets.')
 # Path to the source directory
 @click.option('--srcpath', envvar='RESIF_SRCPATH', help='Source path to the RESIF directory.')
 # Configuration files provisioning
@@ -137,6 +245,8 @@ def cleaninstall(**kwargs):
     # Setting the correct MODULEPATH and EasyBuild variables.
     # (Necessary for the behavior to not be modified by external environment variables)
     os.environ['MODULEPATH'] = modulePath
+    if config["module_cmd"] == "lmod":
+        os.environ["EASYBUILD_MODULES_TOOL"] = "Lmod"
     configManager.setEasyBuildVariables(config)
     config['easybuild_module'] = configManager.getEasyBuildModule(config)
     buildSwSets.build(config)

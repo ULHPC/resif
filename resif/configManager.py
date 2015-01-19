@@ -15,6 +15,37 @@ from git import Repo
 #######################################################################################################################
 # This functions are wrapper to make the code more readable.
 # They shouldn't do much more than calling the bellow functions.
+
+def generateInitConfig(hashTable):
+    if hashTable['git_architecture'] == None:
+        hashTable['git_architecture'] = 'https://gitlab.uni.lu/modules/infrastructure.git' # TODO: 'https://github.com/ULHPC/modules'
+
+    if hashTable['srcpath'] == None:
+        hashTable['srcpath'] = os.path.join(os.path.join('$HOME', '.resif'), 'src')
+
+    encoder(hashTable, 'utf8')
+    configExpandVars(hashTable)
+
+    return hashTable
+
+def generateUpdateConfig(hashTable):
+    if hashTable['srcpath'] == None:
+        hashTable['srcpath'] = os.path.join(os.path.join('$HOME', '.resif'), 'src')
+
+    encoder(hashTable, 'utf8')
+    configExpandVars(hashTable)
+
+    return hashTable
+
+def generateWipeConfig(hashTable):
+    if not 'srcpath' in hashTable == None:
+        hashTable['srcpath'] = os.path.join(os.path.join('$HOME', '.resif'), 'src')
+
+    encoder(hashTable, 'utf8')
+    configExpandVars(hashTable)
+
+    return hashTable
+
 def generateBootstrapConfig(hashTable):
     config = generateCommonConfig(hashTable)
 
@@ -145,6 +176,9 @@ def configExpandVars(hashTable):
             if v != None and isinstance(v, basestring):
                 hashTable[k] = os.path.expandvars(v)
 
+def cmd_exists(cmd):
+    return subprocess.call("type " + cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0
+
 #######################################################################################################################
 
 
@@ -199,6 +233,14 @@ def generateCommonConfig(hashTable):
     # Adding the repo and the tree to the config
     config['git_repo'] = repo
     config['git_tree'] = tree
+
+    if cmd_exists("lmod"):
+        config['module_cmd'] = "lmod"
+    elif cmd_exists("modulecmd"):
+        config["module_cmd"] = "modulecmd"
+    else:
+        sys.stdout.write("Neither modulecmd nor lmod has been found in your path. Please install either one of them to continue. (Preferably choose lmod for more functionalities)")
+        exit(40)
 
     return config
 

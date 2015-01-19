@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='resif',
-    version='0.1',
+    version='0.2',
     author='Maxime Schmitt',
     author_email='maxime.schmitt@ext.uni.lu',
     url='url/to/PyPi/page',
@@ -10,6 +10,10 @@ setup(
     long_description='This module has been developped by the University of Luxembourg in order to improve the management of its clusters. This application will help you easily deploy an EasyBuild installation and deploy software on it, in a heavily automated way.',
     classifiers=[
     'Programming Language :: Python',
+    'Programming Language :: Python :: 2',
+    'Programming Language :: Python :: 2.5',
+    'Programming Language :: Python :: 2.6',
+    'Programming Language :: Python :: 2.7',
     'Operating System :: Unix',
     'Operating System :: MacOS',
     'Operating System :: POSIX',
@@ -31,6 +35,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        resif=resif:resif
+        resif=resif.resif:resif
     ''',
 )
