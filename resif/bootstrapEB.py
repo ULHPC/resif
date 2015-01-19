@@ -93,7 +93,7 @@ def easybuildFilesInstaller(hashTable):
 			subprocess.check_call(['git', 'branch', '-D', k+'-'+v[1]])
 		# We remove the remotes when finished
 		os.chdir(os.path.join(tmp, k))
-		subprocess.check_call(['git', 'remote', 'remove', 'origin'])
+		subprocess.check_call(['git', 'remote', 'rm', 'origin'])
 		os.chdir(tmp)
 		subprocess.check_call(['git', 'commit', '-m', "'Adding "+k+"'"])
 
@@ -116,7 +116,7 @@ def easybuildFilesInstaller(hashTable):
 				subprocess.check_call(['git', 'branch', '-D', k])
 				# We remove the local remote
 				os.chdir(os.path.join(tmp, k))
-				subprocess.check_call(['git', 'remote', 'remove', 'origin'])
+				subprocess.check_call(['git', 'remote', 'rm', 'origin'])
 				os.chdir(tmp)
 				subprocess.check_call(['git', 'commit', '-m' , "'Adding "+k+"'"])
 
