@@ -44,9 +44,16 @@ def resif(ctx, version):
 @resif.command(short_help='Initialize the git repository in the srcpath.')
 @click.option('--git-architecture', 'git_architecture', envvar='RESIF_GIT_ARCHITECTURE', help='Defines an alternative git repository URL or path to get the architecture from.')
 @click.option('--srcpath', 'srcpath', envvar='RESIF_SRCPATH', help='Defines an alternative path to put the sources in.')
+@click.option('--overwrite', 'overwrite', flag_value=True, envvar='RESIF_OVERWRITE', help='Set this flag if you want to overwrite any existing previous installation at --apps-root.')
 def init(**kwargs):
     config = configManager.generateInitConfig(kwargs)
-    subprocess.check_call(['git', 'clone', config['git_architecture'], config['srcpath']])
+    if not os.path.isdir(config["apps_root"]) or config["overwrite"]:
+        if config["overwrite"]:
+            shutil.rmtree(config["srcpath"], True)
+        subprocess.check_call(['git', 'clone', config['git_architecture'], config['srcpath']])
+    else:
+        sys.stdout.write("A repository already exist at your srcpath: " + config["srcpath"] +"\nPlease use the --overwrite flag if you want to overwrite this repository.")
+        exit(50)
 
 @resif.command(short_help='Update the git repository in the srcpath.')
 @click.option('--srcpath', 'srcpath', envvar='RESIF_SRCPATH', help='Defines an alternative path to the repository.')
@@ -165,6 +172,8 @@ def bootstrap(**kwargs):
     config = configManager.generateBootstrapConfig(kwargs)
     # Bootstrap EasyBuild.
     if not os.path.isdir(config["apps_root"]) or config["overwrite"]:
+        if config["overwrite"]:
+            shutil.rmtree(config["apps_root"], True)
         click.echo("Bootstrapping EasyBuild.")
         bootstrapEB.bootstrap(config)
         click.echo("Bootstrapping ended successfully.")
@@ -245,6 +254,8 @@ def cleaninstall(**kwargs):
     # Bootstrap EasyBuild.
     click.echo("Bootstrapping EasyBuild.")
     if not os.path.isdir(config["apps_root"]) or config["overwrite"]:
+        if config["overwrite"]:
+            shutil.rmtree(config["apps_root"], True)
         modulePath = bootstrapEB.bootstrap(config)
     else:
         sys.stdout.write("An installation is already present at your apps-root: " + config["apps_root"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.")
