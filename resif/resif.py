@@ -52,7 +52,7 @@ def init(**kwargs):
             shutil.rmtree(config["srcpath"], True)
         subprocess.check_call(['git', 'clone', config['git_architecture'], config['srcpath']])
     else:
-        sys.stdout.write("A repository already exist at your srcpath: " + config["srcpath"] +"\nPlease use the --overwrite flag if you want to overwrite this repository.")
+        sys.stdout.write("A repository already exist at your srcpath: " + config["srcpath"] +"\nPlease use the --overwrite flag if you want to overwrite this repository.\n")
         exit(50)
 
 @resif.command(short_help='Update the git repository in the srcpath.')
@@ -178,7 +178,7 @@ def bootstrap(**kwargs):
         bootstrapEB.bootstrap(config)
         click.echo("Bootstrapping ended successfully.")
     else:
-        sys.stdout.write("An installation is already present at your apps-root: " + config["apps_root"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.")
+        sys.stdout.write("An installation is already present at your apps-root: " + config["apps_root"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n")
         exit(50)
 
 
@@ -258,7 +258,7 @@ def cleaninstall(**kwargs):
             shutil.rmtree(config["apps_root"], True)
         modulePath = bootstrapEB.bootstrap(config)
     else:
-        sys.stdout.write("An installation is already present at your apps-root: " + config["apps_root"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.")
+        sys.stdout.write("An installation is already present at your apps-root: " + config["apps_root"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n")
         exit(50)
     click.echo("Bootstrapping ended successfully.")
     # Build the software sets.
