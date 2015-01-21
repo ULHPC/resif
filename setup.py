@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='resif',
-    version='0.2',
+    version='0.3',
     author='Maxime Schmitt',
     author_email='maxime.schmitt@ext.uni.lu',
     url='url/to/PyPi/page',
