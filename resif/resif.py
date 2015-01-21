@@ -44,9 +44,16 @@ def resif(ctx, version):
 @resif.command(short_help='Initialize the git repository in the srcpath.')
 @click.option('--git-architecture', 'git_architecture', envvar='RESIF_GIT_ARCHITECTURE', help='Defines an alternative git repository URL or path to get the architecture from.')
 @click.option('--srcpath', 'srcpath', envvar='RESIF_SRCPATH', help='Defines an alternative path to put the sources in.')
+@click.option('--overwrite', 'overwrite', flag_value=True, envvar='RESIF_OVERWRITE', help='Set this flag if you want to overwrite any existing previous installation at --apps-root.')
 def init(**kwargs):
     config = configManager.generateInitConfig(kwargs)
-    subprocess.check_call(['git', 'clone', config['git_architecture'], config['srcpath']])
+    if not os.path.isdir(config["srcpath"]) or config["overwrite"]:
+        if config["overwrite"]:
+            shutil.rmtree(config["srcpath"], True)
+        subprocess.check_call(['git', 'clone', config['git_architecture'], config['srcpath']])
+    else:
+        sys.stdout.write("A repository already exist at your srcpath: " + config["srcpath"] +"\nPlease use the --overwrite flag if you want to overwrite this repository.\n")
+        exit(50)
 
 @resif.command(short_help='Update the git repository in the srcpath.')
 @click.option('--srcpath', 'srcpath', envvar='RESIF_SRCPATH', help='Defines an alternative path to the repository.')
@@ -159,13 +166,20 @@ def count(**kwargs):
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files). Default: <apps-root>/<releasedir>')
 # Module Naming Scheme choice
 @click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
+@click.option('--overwrite', 'overwrite', flag_value=True, envvar='RESIF_OVERWRITE', help='Set this flag if you want to overwrite any existing previous installation at --apps-root.')
 def bootstrap(**kwargs):
     # Generate the configuration for the bootstrap.
     config = configManager.generateBootstrapConfig(kwargs)
     # Bootstrap EasyBuild.
-    click.echo("Bootstrapping EasyBuild.")
-    bootstrapEB.bootstrap(config)
-    click.echo("Bootstrapping ended successfully.")
+    if not os.path.isdir(config["apps_root"]) or config["overwrite"]:
+        if config["overwrite"]:
+            shutil.rmtree(config["apps_root"], True)
+        click.echo("Bootstrapping EasyBuild.")
+        bootstrapEB.bootstrap(config)
+        click.echo("Bootstrapping ended successfully.")
+    else:
+        sys.stdout.write("An installation is already present at your apps-root: " + config["apps_root"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n")
+        exit(50)
 
 
 # Build a (or multiple) software set(s) (Adding new software to an existing EasyBuild install.)
@@ -228,6 +242,7 @@ def build(**kwargs):
 # Software building variables
 @click.option('--buildmode', envvar='RESIF_BUILDMODE', type=click.Choice(['local', 'job']), help='Mode to build the software: either building locally or in a job.')
 @click.option('--swsets-config', 'swsets_config', envvar='RESIF_SWSETS_CONFIG', help='Path to a file defining the software sets.')
+@click.option('--overwrite', 'overwrite', flag_value=True, envvar='RESIF_OVERWRITE', help='Set this flag if you want to overwrite any existing previous installation at --apps-root.')
 @click.argument('swsets', nargs=-1)
 def cleaninstall(**kwargs):
     """
@@ -238,15 +253,22 @@ def cleaninstall(**kwargs):
     click.echo("Starting full installation.")
     # Bootstrap EasyBuild.
     click.echo("Bootstrapping EasyBuild.")
-    modulePath = bootstrapEB.bootstrap(config)
+    if not os.path.isdir(config["apps_root"]) or config["overwrite"]:
+        if config["overwrite"]:
+            shutil.rmtree(config["apps_root"], True)
+        modulePath = bootstrapEB.bootstrap(config)
+    else:
+        sys.stdout.write("An installation is already present at your apps-root: " + config["apps_root"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n")
+        exit(50)
     click.echo("Bootstrapping ended successfully.")
     # Build the software sets.
     click.echo("Building the software sets.")
     # Setting the correct MODULEPATH and EasyBuild variables.
     # (Necessary for the behavior to not be modified by external environment variables)
-    os.environ['MODULEPATH'] = modulePath
     if config["module_cmd"] == "lmod":
         os.environ["EASYBUILD_MODULES_TOOL"] = "Lmod"
+        subprocess.check_call(["module", "unuse", "$MODULEPATH"])
+    os.environ['MODULEPATH'] = modulePath
     configManager.setEasyBuildVariables(config)
     config['easybuild_module'] = configManager.getEasyBuildModule(config)
     buildSwSets.build(config)

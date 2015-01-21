@@ -28,13 +28,19 @@ def build(hashTable):
 
         # We add the place where the software will be installed to the MODULEPATH for the duration of the installation
         # so that EasyBuild will not instantly forget that it has installed them after it is done (problematic for dependency resolution)
-        try:
-            os.environ['MODULEPATH'] = ':'.join([os.environ['MODULEPATH'], os.path.join(os.path.join(installpath, 'modules'), 'all')])
-        except KeyError:
-            os.environ['MODULEPATH'] = os.path.join(os.path.join(installpath, 'modules'), 'all')
+        # Part for environment-modules (come later for Lmod)
+        if hashTable["module_cmd"] == "modulecmd":
+            try:
+                os.environ['MODULEPATH'] = ':'.join([os.environ['MODULEPATH'], os.path.join(os.path.join(installpath[15:], 'modules'), 'all')])
+            except KeyError:
+                os.environ['MODULEPATH'] = os.path.join(os.path.join(installpath, 'modules'), 'all')
     	
     	process = subprocess.Popen('/bin/bash', stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    	process.stdin.write('module load ' + easybuild + '\n')    	
+    	process.stdin.write('module load ' + easybuild + '\n')
+
+        # Lmod part for MODULEPATH management
+        if hashTable["module_cmd"] == "lmod":
+            process.stdin.write("module use " + os.path.join(os.path.join(installpath[15:], 'modules'), 'all'))
     	
     	# If it actually exist in the yaml file, we install the listed software.
     	if swset in swsets:
