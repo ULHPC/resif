@@ -45,6 +45,7 @@ def build(hashTable):
     	# If it actually exist in the yaml file, we install the listed software.
     	if swset in swsets:
     	    for software in swsets[swset]:
+                sys.stdout.write("Now starting to install " + software[:-3] + "\n")
     	        process.stdin.write('eb ' + software + installpath + sharedOptions + ' --robot\n')
     	        # Command to have at the end of the output the execution code of the last command
     	        process.stdin.write('echo $?\n')
@@ -59,9 +60,9 @@ def build(hashTable):
     	                sys.stdout.write(out)
     	            else:
     	                if i == 0:
-    	                    sys.stdout.write('Operation successful\n')
+    	                    sys.stdout.write('Successfully installed ' + software[:-3] + ' \n')
     	                else:
-    	                    sys.stdout.write('Operation failed with return code ' + out)
+    	                    sys.stdout.write('Failed to install ' + software[:-3] + '\n' + 'Operation failed with return code ' + out + '\n')
     	                    exit(out)
     	                break
     	
