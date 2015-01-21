@@ -29,7 +29,7 @@ def build(hashTable):
         # We add the place where the software will be installed to the MODULEPATH for the duration of the installation
         # so that EasyBuild will not instantly forget that it has installed them after it is done (problematic for dependency resolution)
         if hashTable["module_cmd"] == "lmod":
-            subprocess.checkcall(["module", "use", os.path.join(os.path.join(installpath, 'modules'), 'all')])
+            subprocess.check_call(["module", "use", os.path.join(os.path.join(installpath, 'modules'), 'all')])
         else:
             try:
                 os.environ['MODULEPATH'] = ':'.join([os.environ['MODULEPATH'], os.path.join(os.path.join(installpath, 'modules'), 'all')])
