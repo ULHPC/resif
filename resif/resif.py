@@ -265,9 +265,10 @@ def cleaninstall(**kwargs):
     click.echo("Building the software sets.")
     # Setting the correct MODULEPATH and EasyBuild variables.
     # (Necessary for the behavior to not be modified by external environment variables)
-    os.environ['MODULEPATH'] = modulePath
     if config["module_cmd"] == "lmod":
         os.environ["EASYBUILD_MODULES_TOOL"] = "Lmod"
+        subprocess.check_call(["module", "unuse", "$MODULEPATH"])
+    os.environ['MODULEPATH'] = modulePath
     configManager.setEasyBuildVariables(config)
     config['easybuild_module'] = configManager.getEasyBuildModule(config)
     buildSwSets.build(config)

@@ -243,7 +243,7 @@ def sourcefileCreator(hashTable):
 export EASYBUILD_SOURCEPATH=" + sourcepathOnPlace + "\n\
 export EASYBUILD_BUILDPATH=" + buildpathOnPlace + "\n\
 export EASYBUILD_INSTALLPATH=" + installpathOnPlace + "\n\
-export MODULEPATH=" + modulePath + ":$MODULEPATH\n\
+export MODULEPATH=" + modulePath + "\n\
 export EASYBUILD_REPOSITORY=FileRepository\n\
 export EASYBUILD_REPOSITORYPATH=" + repositorypathOnPlace + "\n\
 export EASYBUILD_LOGFILE_FORMAT=(\"easybuild\", \"easybuild-%(name)s-%(version)s-%(date)s.%(time)s.log\")\n\
