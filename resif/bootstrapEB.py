@@ -247,7 +247,7 @@ export MODULEPATH=" + modulePath + "\n\
 export EASYBUILD_REPOSITORY=FileRepository\n\
 export EASYBUILD_REPOSITORYPATH=" + repositorypathOnPlace + "\n\
 export EASYBUILD_LOGFILE_FORMAT=(\"easybuild\", \"easybuild-%(name)s-%(version)s-%(date)s.%(time)s.log\")\n\
-#export EASYBUILD_MODULES_TOOL=Lmod\n\
+" + modulevar + "\n\
 export EASYBUILD_MODULE_NAMING_SCHEME=" + hashTable['mns'] + "\n\
 export RESIF_ROOTINSTALL=" + hashTable['rootinstall'] + "\n\
 ")
