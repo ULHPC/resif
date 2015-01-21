@@ -28,13 +28,13 @@ def build(hashTable):
 
         # We add the place where the software will be installed to the MODULEPATH for the duration of the installation
         # so that EasyBuild will not instantly forget that it has installed them after it is done (problematic for dependency resolution)
-        if hashTable["module_cmd"] == "lmod":
-            subprocess.check_call(["module", "use", os.path.join(os.path.join(installpath, 'modules'), 'all')])
-        else:
-            try:
-                os.environ['MODULEPATH'] = ':'.join([os.environ['MODULEPATH'], os.path.join(os.path.join(installpath, 'modules'), 'all')])
-            except KeyError:
-                os.environ['MODULEPATH'] = os.path.join(os.path.join(installpath, 'modules'), 'all')
+        #if hashTable["module_cmd"] == "lmod":
+        #    subprocess.check_call(["module", "use", os.path.join(os.path.join(installpath, 'modules'), 'all')])
+        #else:
+        try:
+            os.environ['MODULEPATH'] = ':'.join([os.environ['MODULEPATH'], os.path.join(os.path.join(installpath, 'modules'), 'all')])
+        except KeyError:
+            os.environ['MODULEPATH'] = os.path.join(os.path.join(installpath, 'modules'), 'all')
     	
     	process = subprocess.Popen('/bin/bash', stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     	process.stdin.write('module load ' + easybuild + '\n')    	
