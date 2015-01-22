@@ -8,6 +8,7 @@ import os
 import sys
 import subprocess
 import yaml
+import time
 
 #######################################################################################################################
 
@@ -46,6 +47,7 @@ def build(hashTable):
     	if swset in swsets:
     	    for software in swsets[swset]:
                 sys.stdout.write("Now starting to install " + software[:-3] + "\n")
+                time.sleep(1)
     	        process.stdin.write('eb ' + software + installpath + sharedOptions + ' --robot\n')
     	        # Command to have at the end of the output the execution code of the last command
     	        process.stdin.write('echo $?\n')
