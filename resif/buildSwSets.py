@@ -41,7 +41,7 @@ def build(hashTable):
 
         # Lmod part for MODULEPATH management
         if hashTable["module_cmd"] == "lmod":
-            process.stdin.write("module use " + os.path.join(os.path.join(installpath[15:], 'modules'), 'all'))
+            process.stdin.write("module use " + os.path.join(os.path.join(installpath[15:], 'modules'), 'all') + "\n")
     	
     	# If it actually exist in the yaml file, we install the listed software.
     	if swset in swsets:
