@@ -46,8 +46,6 @@ def build(hashTable):
     	# If it actually exist in the yaml file, we install the listed software.
     	if swset in swsets:
     	    for software in swsets[swset]:
-                sys.stdout.write("Now starting to install " + software[:-3] + "\n")
-                time.sleep(1)
     	        process.stdin.write('eb ' + software + installpath + sharedOptions + ' --robot\n')
     	        # Command to have at the end of the output the execution code of the last command
     	        process.stdin.write('echo $?\n')
