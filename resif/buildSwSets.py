@@ -56,7 +56,7 @@ def build(hashTable):
     	        out = ""
     	        while True:
     	            out = process.stdout.readline()
-                    if re.search("(module found)", out) == None:
+                    if re.search("\(module found\)", out) == None:
                         installed = True
     	            try:
     	                i = int(out)
