@@ -271,7 +271,7 @@ def cleaninstall(**kwargs):
     # (Necessary for the behavior to not be modified by external environment variables)
     if config["module_cmd"] == "lmod":
         os.environ["EASYBUILD_MODULES_TOOL"] = "Lmod"
-        subprocess.check_call(["module", "unuse", "$MODULEPATH"])
+        subprocess.Popen(["bash", "-c", "module unuse $MODULEPATH"])
     os.environ['MODULEPATH'] = modulePath
     configManager.setEasyBuildVariables(config)
     config['easybuild_module'] = configManager.getEasyBuildModule(config)

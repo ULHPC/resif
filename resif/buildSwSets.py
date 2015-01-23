@@ -47,6 +47,7 @@ def build(hashTable):
     	if swset in swsets:
     	    for software in swsets[swset]:
                 sys.stdout.write("Now starting to install " + software[:-3] + "\n")
+                start = time.time()
     	        process.stdin.write('eb ' + software + installpath + sharedOptions + ' --robot\n')
     	        # Command to have at the end of the output the execution code of the last command
     	        process.stdin.write('echo $?\n')
@@ -61,7 +62,10 @@ def build(hashTable):
     	                sys.stdout.write(out)
     	            else:
     	                if i == 0:
-    	                    sys.stdout.write('Successfully installed ' + software[:-3] + ' \n')
+                            end = time.time()
+                            duration = end - start
+                            durationStr = writeTime(hashTable, duration)
+    	                    sys.stdout.write('Successfully installed ' + software[:-3] + ' (duration of the build: ' + durationStr + ')\n')
     	                else:
     	                    sys.stdout.write('Failed to install ' + software[:-3] + '\n' + 'Operation failed with return code ' + out + '\n')
     	                    exit(out)
@@ -132,5 +136,15 @@ To do so, either:\n\
             exit(10)
 
     return installpath
+
+
+# Take a duration and write it in the easyconfig file in the easyconfig repsitory.
+def writeTime(hashTable, duration):
+    m, s = divmod(duration, 60)
+    h, m = divmod(m, 60)
+
+    if 
+
+    return "%d:%d:%d" % (h, m, s)
 
 #######################################################################################################################
