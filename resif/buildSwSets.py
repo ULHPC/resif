@@ -9,6 +9,7 @@ import sys
 import subprocess
 import yaml
 import time
+import re
 
 #######################################################################################################################
 
@@ -64,7 +65,7 @@ def build(hashTable):
     	                if i == 0:
                             end = time.time()
                             duration = end - start
-                            durationStr = writeTime(hashTable, duration)
+                            durationStr = writeTime(hashTable, software, duration)
     	                    sys.stdout.write('Successfully installed ' + software[:-3] + ' (duration of the build: ' + durationStr + ')\n')
     	                else:
     	                    sys.stdout.write('Failed to install ' + software[:-3] + '\n' + 'Operation failed with return code ' + out + '\n')
@@ -139,12 +140,19 @@ To do so, either:\n\
 
 
 # Take a duration and write it in the easyconfig file in the easyconfig repsitory.
-def writeTime(hashTable, duration):
+def writeTime(hashTable, software, duration):
     m, s = divmod(duration, 60)
     h, m = divmod(m, 60)
+    durationFormated = "%d:%d:%d" % (h, m, s)
 
-    if 
+    softwareDir = re.match("^[^⁻]*", software)
 
-    return "%d:%d:%d" % (h, m, s)
+    # If no repositorypath was given, we should write at the default location for EasyBuild (find the location)
+    if "eb_repositorypath" in hashTable:
+        with open(os.path.join(os.path.join(os.path.abspath(os.path.expandvars(hashTable['eb_repositorypath'])), softwareDir), software), "a") as f:
+            f.write("\n\nThis software build duration was: " + durationFormated + "\n")
+            f.write("It was build on " + time.strftime("%c") + "\n")
+
+    return durationFormated
 
 #######################################################################################################################
