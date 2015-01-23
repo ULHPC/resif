@@ -69,7 +69,7 @@ def easybuildFilesInstaller(hashTable):
 	subprocess.check_call(['git', 'init'])
 	subprocess.check_call(['touch', 'temp'])
 	subprocess.check_call(['git', 'add', 'temp'])
-	subprocess.check_call(['git', 'commit', '-m', 'initial commit'])
+	subprocess.check_call(['git', 'commit', '-m', "'initial commit'"])
 	tmp = os.getcwd()
 	for k,v in altSources.iteritems():
 		# Crash if the directory is not empty, not critical, but what would we do in this case ?

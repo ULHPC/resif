@@ -237,6 +237,10 @@ def build(**kwargs):
 @click.option('--release', envvar='RESIF_RELEASE', help='Release tag or commit of the RESIF repository to deploy.')
 @click.option('--releasedir', envvar='RESIF_RELEASEDIR', help='Directory in which to install the release (Relative path from the <apps-root>). Default: <branch>/v<release>-<date>')
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files). Default: <apps-root>/<releasedir>')
+@click.option('--eb-sourcepath', 'eb_sourcepath', envvar='EASYBUILD_SOURCEPATH', help='EasyBuild sourcepath.')
+@click.option('--eb-buildpath', 'eb_buildpath', envvar='EASYBUILD_BUILDPATH', help='EasyBuild buildpath.')
+@click.option('--eb-repository', 'eb_repository', envvar='EASYBUILD_REPOSITORY', help='EasyBuild repository type for successfully installed easyconfig files.')
+@click.option('--eb-repositorypath', 'eb_repositorypath', envvar='EASYBUILD_REPOSITORYPATH', help='EasyBuild path to the repository for successuflly installed easyconfig files.')
 # Module Naming Scheme choice
 @click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
 # Software building variables
@@ -267,7 +271,7 @@ def cleaninstall(**kwargs):
     # (Necessary for the behavior to not be modified by external environment variables)
     if config["module_cmd"] == "lmod":
         os.environ["EASYBUILD_MODULES_TOOL"] = "Lmod"
-        subprocess.check_call(["module", "unuse", "$MODULEPATH"])
+        subprocess.Popen(["bash", "-c", "module unuse $MODULEPATH"])
     os.environ['MODULEPATH'] = modulePath
     configManager.setEasyBuildVariables(config)
     config['easybuild_module'] = configManager.getEasyBuildModule(config)

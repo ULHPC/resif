@@ -374,10 +374,14 @@ def setEasyBuildVariables(hashTable):
     if not os.path.exists(ebdirsRoot):
             os.makedirs(ebdirsRoot)
 
-    hashTable['eb_sourcepath'] = os.path.join(ebdirsRoot, 'sources')
-    hashTable['eb_buildpath'] = os.path.join(ebdirsRoot, 'build')
-    hashTable['eb_repository'] = 'FileRepository'
-    hashTable['eb_repositorypath'] = os.path.join(ebdirsRoot, 'eb_repo')
+    if not "eb_sourcepath" in hashTable:
+        hashTable['eb_sourcepath'] = os.path.join(ebdirsRoot, 'sources')
+    if not "eb_buildpath" in hashTable:
+        hashTable['eb_buildpath'] = os.path.join(ebdirsRoot, 'build')
+    if not "eb_repository" in hashTable:
+        hashTable['eb_repository'] = 'FileRepository'
+    if not "eb_repositorypath" in hashTable:
+        hashTable['eb_repositorypath'] = os.path.join(ebdirsRoot, 'eb_repo')
 
 def expandMNS(hashTable):
     if hashTable['mns'] == 'E':
