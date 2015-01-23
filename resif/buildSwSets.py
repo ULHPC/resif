@@ -67,7 +67,7 @@ def build(hashTable):
     	            else:
     	                if i == 0:
                             if alreadyInstalled:
-                                sys.stdout.write(software[:3] + " was already installed. Nothing to be done.")
+                                sys.stdout.write(software[:-3] + " was already installed. Nothing to be done.\n")
                                 alreadyInstalled = False
                             else:
                                 end = time.time()
