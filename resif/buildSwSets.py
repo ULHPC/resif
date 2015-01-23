@@ -44,7 +44,7 @@ def build(hashTable):
         if hashTable["module_cmd"] == "lmod":
             process.stdin.write("module use " + os.path.join(os.path.join(installpath[15:], 'modules'), 'all') + "\n")
     	
-        installed = False
+        alreadyInstalled = False
     	# If it actually exist in the yaml file, we install the listed software.
     	if swset in swsets:
     	    for software in swsets[swset]:
@@ -56,8 +56,8 @@ def build(hashTable):
     	        out = ""
     	        while True:
     	            out = process.stdout.readline()
-                    if re.search("\(module found\)", out) == None:
-                        installed = True
+                    if re.search("\(module found\)", out) != None:
+                        alreadyInstalled = True
     	            try:
     	                i = int(out)
     	            except ValueError:
@@ -66,13 +66,14 @@ def build(hashTable):
     	                sys.stdout.write(out)
     	            else:
     	                if i == 0:
-                            if installed:
+                            if alreadyInstalled:
+                                sys.stdout.write(software[:3] + " was already installed. Nothing to be done.")
+                                alreadyInstalled = False
+                            else:
                                 end = time.time()
                                 duration = end - start
                                 durationStr = writeTime(hashTable, software, duration)
                                 sys.stdout.write('Successfully installed ' + software[:-3] + ' (duration of the build: ' + durationStr + ')\n')
-                            else:
-                                sys.stdout.write(software[:3] + " was already installed. Nothing to be done.")
     	                else:
     	                    sys.stdout.write('Failed to install ' + software[:-3] + '\n' + 'Operation failed with return code ' + out + '\n')
     	                    exit(out)
@@ -151,7 +152,7 @@ def writeTime(hashTable, software, duration):
     h, m = divmod(m, 60)
     durationFormated = "%d:%d:%d" % (h, m, s)
 
-    softwareDir = re.match("^[^⁻]*", software)
+    softwareDir = re.match("^[^-]*", software).group(0)
 
     # If no repositorypath was given, we should write at the default location for EasyBuild (find the location)
     if "eb_repositorypath" in hashTable:
