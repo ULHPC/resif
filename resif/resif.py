@@ -88,7 +88,8 @@ def wipe(**kwargs):
 @click.argument('content')
 def show(**kwargs):
     """
-    [CONTENT] TEXT                  Text to look for in the names of the installed softwares.
+    [CONTENT] TEXT                  Text to look for in the names of
+                                    the installed softwares.
     """
     try:
         if kwargs['mns'] == 'ThematicMNS' or kwargs['mns'] == 'T':
@@ -121,7 +122,8 @@ def show(**kwargs):
 @click.argument('content')
 def count(**kwargs):
     """
-    [CONTENT] TEXT                  Text to look for in the names of the installed softwares.
+    [CONTENT] TEXT                  Text to look for in the names of
+                                    the installed softwares.
     """
     try:
         if kwargs['mns'] == 'ThematicMNS' or kwargs['mns'] == 'T':
@@ -171,14 +173,14 @@ def bootstrap(**kwargs):
     # Generate the configuration for the bootstrap.
     config = configManager.generateBootstrapConfig(kwargs)
     # Bootstrap EasyBuild.
-    if not os.path.isdir(config["apps_root"]) or config["overwrite"]:
+    if not os.path.isdir(config["rootinstall"]) or config["overwrite"]:
         if config["overwrite"]:
-            shutil.rmtree(config["apps_root"], True)
+            shutil.rmtree(config["rootinstall"], True)
         click.echo("Bootstrapping EasyBuild.")
         bootstrapEB.bootstrap(config)
         click.echo("Bootstrapping ended successfully.")
     else:
-        sys.stdout.write("An installation is already present at your apps-root: " + config["apps_root"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n")
+        sys.stdout.write("An installation is already present at your rootinstall: " + config["rootinstall"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n")
         exit(50)
 
 
@@ -257,12 +259,12 @@ def cleaninstall(**kwargs):
     click.echo("Starting full installation.")
     # Bootstrap EasyBuild.
     click.echo("Bootstrapping EasyBuild.")
-    if not os.path.isdir(config["apps_root"]) or config["overwrite"]:
+    if not os.path.isdir(config["rootinstall"]) or config["overwrite"]:
         if config["overwrite"]:
-            shutil.rmtree(config["apps_root"], True)
+            shutil.rmtree(config["rootinstall"], True)
         modulePath = bootstrapEB.bootstrap(config)
     else:
-        sys.stdout.write("An installation is already present at your apps-root: " + config["apps_root"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n")
+        sys.stdout.write("An installation is already present at your rootinstall: " + config["rootinstall"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n")
         exit(50)
     click.echo("Bootstrapping ended successfully.")
     # Build the software sets.
