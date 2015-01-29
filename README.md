@@ -51,7 +51,7 @@ Note that in this last path, the part `python2.7` may change depending on the py
 #### With root permissions
 
 Clone the git repository:  
-`git clone https://github.com/sylmarien/RESIF-PyPi.git resif`
+`git clone https://github.com/sylmarien/RESIF-PyPi.git `
 
 Then go to in this directory and type the following command to install the script:  
 `python setup.py sdist && pip install dist/*`
@@ -59,7 +59,7 @@ Then go to in this directory and type the following command to install the scrip
 #### Without root permissions
 
 Clone the git repository:  
-`git clone https://github.com/sylmarien/RESIF-PyPi.git resif`
+`git clone https://github.com/sylmarien/RESIF-PyPi.git `
 
 Then go to in this directory directory and type the following command to install the script:  
 `python setup.py sdist && pip install --install-option="--prefix=$HOME/local" dist/*`  
