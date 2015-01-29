@@ -1,3 +1,12 @@
+-*- mode: markdown; mode: visual-line; fill-column: 80 -*-
+`command-line-interface.md`
+
+Copyright (c) 2014 [Sebastien Varrette](mailto:<Sebastien.Varrette@uni.lu>) [www]()
+
+        Time-stamp: <Mar 2014-12-02 11:22 mschmitt>
+
+-------------------
+
 # RESIF command line interface
 
 ## Overview
@@ -11,25 +20,49 @@ This page explains in a first part how to [install the resif script](#installati
 To install this script, you need to have some required packages installed on your computer:  
 - python 2.6 or above
 - git
-- a YAML parser for python (PyYaml works fine. On Ubuntu, simply install the `python-yaml` package.)
 - pip to install and uninstall the script (On Ubuntu, simply install the `python-pip` package.)
 
 That is enough to install and launch the script itself, but you still need to have the prerequisites for EasyBuild itself, in particular you will need a module tool (either environment-modules or Lmod).  
 See the other pages of this documentation for [more details about these tools](https://gitlab.uni.lu/modules/infrastructure/wikis/overview) and the [installation instructions for Lmod](https://gitlab.uni.lu/modules/infrastructure/wikis/Lmod-install).
 
-### Installation with root permissions
+### Install from PyPi (recommended)
 
-After having cloned the repository, go to the `bin` directory and type the following command to install the script:  
-`pip install .`
+#### With root permissions
 
-Then, for more comfort, activate the bash auto-completion for the module:  
-`source resif-complete.sh`  
-(This step has to be done each time you create a new shell)
+Simply use the following command:  
+`pip install resif`
 
-### Installation without root permissions
+You can now start use the command, see below for more information.
 
-After having cloned the repository, go to the `bin` directory and type the following command to install the script:  
-`pip install --install-option="--prefix=$HOME/local" .`  
+#### Without root permissions
+
+Use the following command to install the command:    
+`pip install --install-option="--prefix=$HOME/local" resif`  
+Note that you can replace `$HOME/local` by anything you want as long as you have all the right for this location, just modify the following commands accordingly.
+
+Add then `$HOME/local/bin` to you path to make the command accessible:  
+`export PATH=$PATH:$HOME/local/bin`  
+and `$HOME/local/lib/python2.7/site-packages` to your pythonpath so that the command's dependencies are accessible:  
+`export PYTHONPATH=$PYTHONPATH:$HOME/local/lib/python2.7/site-packages`  
+Note that in this last path, the part `python2.7` may change depending on the python version you use on your computer. Just modify the previous path accordingly to what is actually present in your tree at this point.
+
+### Installation from git
+
+#### With root permissions
+
+Clone the git repository:  
+`git clone https://github.com/sylmarien/RESIF-PyPi.git resif`
+
+Then go to in this directory and type the following command to install the script:  
+`python setup.py sdist && pip install dist/*`
+
+#### Without root permissions
+
+Clone the git repository:  
+`git clone https://github.com/sylmarien/RESIF-PyPi.git resif`
+
+Then go to in this directory directory and type the following command to install the script:  
+`python setup.py sdist && pip install --install-option="--prefix=$HOME/local" dist/*`  
 Note that you can replace `$HOME/local` by anything you want as long as you have all the right for this location, just modify the following commands accordingly.
 
 Add then `$HOME/local/bin` to you path:  
@@ -38,9 +71,22 @@ and `$HOME/local/lib/python2.7/site-packages` to your pythonpath:
 `export PYTHONPATH=$PYTHONPATH:$HOME/local/lib/python2.7/site-packages`  
 Note that in this last path, the part `python2.7` may change depending on the python version you use on your computer. Just modify the previous path accordingly to what is actually present in your tree at this point.
 
+### Bash completion
+
 Then, for more comfort, activate the bash auto-completion for the module:  
+`eval "$(_RESIF_COMPLETE=source resif)"`
+
+Since this has to be done each time you launch a new terminal, you may want to create an activation script:  
+`_RESIF_COMPLETE=source resif > resif-complete.sh`  
+Then you'll just source this file to activate the bash completion (still each time you launch a new terminal):  
 `source resif-complete.sh`  
-(This step has to be done each time you create a new shell)
+If you want to always have the bash completion, put this file in your `/etc/bash_completion.d` directory (requires root access).
+
+### Full bootstrap (Obsolete)
+
+If all you want is to replicate the architecture on the clusters but on your computer (requires root permissions), just execute the following command:  
+`bash <(curl https://raw.githubusercontent.com/ULHPC/modules/develop/binscripts/bootstrap.sh)`  
+It will clone the modules repository in the default place (`$HOME/.resif/src`), install the script and execute the `resif cleaninstall` command, installing EasyBuild and the core set of softwares at the default place (`/user/local/apps`).
 
 ### Check the installation
 
@@ -52,164 +98,291 @@ Usage: resif [OPTIONS] COMMAND [ARGS]...
 
   RESIF commandline interface.
 
-  To use this software, first choose between the 'admin' or the 'user'
-  command, depending on your role and what you want to do.
+  Choose the sub-command you want to execute.
 
 Options:
-  --help  Show this message and exit.
+  --version  Return the version of this script.
+  --help     Show this message and exit.
 
 Commands:
-  admin  Commands for the clusters administrators.
-  user   Commands for the clusters users.
+  bootstrap     Deploy a fresh EasyBuild install.
+  build         Deploy software sets on an existing installatation.
+  cleaninstall  Deploy a full environment: bootstrap EasyBuild and use it to
+                install the software sets.
+  count         [CONTENT] TEXT Text to look for in the names...
+  init          Initialize the git repository in the srcpath.
+  show          [CONTENT] TEXT Text to look for in the names...
+  update        Update the git repository in the srcpath.
+  wipe          Wipe all data in the srcpath.
 ```
 
 If you have that, then you're all set, continue to learn how to actually use this tool.  
 
 ## Usage of the CLI
 
-The resif command is divided in two main usages:  
-- the `admin` one which is meant to be used by the cluster sysadmins to deploy the softwares.
-- the `user` one which is meant for the users of the cluster that would want to replicate the installation of the clusters or add some missing software for themselves.
-
-The differences between those two modes are minor, as they lie on the default values for the options. (see the [variables page](https://gitlab.uni.lu/modules/infrastructure/wikis/variables) for more details)  
-Considering that fact, this documentation page will refer to the `admin` usage and add a note when some precautions have to be taken when using the `user` usage. If no such note is present, just consider that replacing `admin` with `user` in the command line will work properly.
-
-Note that if at some point when using the command line interface you want to get some help, use the `--help` option which is implemented for all the commands and that will show you an help message for the current command (ex: `resif admin bootstrap --help`).
-
 This documentation is divided in three parts, corresponding to the three main commands of the resif script:  
+- [init](#init)
+- [update](#update)
+- [wipe](#wipe)
+- [count](#count)
+- [show](#show)
 - [bootstrap](#bootstrap)
 - [build](#build)
 - [cleaninstall](#cleaninstall)
 
+### Init
+
+Usage: `resif init [OPTIONS]`
+
+```
+Options:
+  --git-architecture URL   Defines an alternative git repository URL or path
+                           to get the architecture from.
+  --srcpath path           Defines an alternative path to put the sources in.
+  --overwrite              Set this flag if you want to overwrite any existing
+                           previous installation at --apps-root.
+  --help                   Show this message and exit.
+```
+
+Default behavior:  
+The `resif init` command will clone the default git infrastructure repository (e.g https://github.com/ULHPC/modules) in the default srcpath (e.g $HOME/.resif/src).  
+
+If you want to use your own configuration, just fork our infrastructure repository and make the changes you want (or create it from scratch but then pay attention to respect the layout we use) and use the `--git-architecture` option to the URL (or the path) to your git repository.
+
+Note that this command must have been executed before using any of the other commands since the other commands rely on the files initialize by this command.
+
+### Update
+
+Usage: `resif update [OPTIONS]`
+
+```
+Options:
+  --srcpath path  Defines an alternative path to the repository.
+  --help          Show this message and exit.
+```
+
+Default behavior:  
+The `resif update` command will update the repository at the default srcpath (e.g $HOME/.resif/src).
+
+### Wipe
+
+Usage: `resif wipe [OPTIONS]`
+
+```
+Options:
+  --srcpath path  Defines an alternative path to the repository.
+  --yes           Use to not prompt confirmation message. (Check what you are
+                  trying to do before !)
+  --help          Show this message and exit.
+```
+
+Default behavior:  
+The `resif wipe` command will remove all data from the default srcpath (e.g $HOME/.resif/src) after having prompt you to confirm it.
+
+### Count
+
+Usage: `resif count [OPTIONS] CONTENT`
+
+    CONTENT TEXT                  Text to look for in the names of the installed softwares.
+
+```
+Options:
+  --rootinstall path              Path to the root of the EasyBuild
+                                  installation (contains the various software
+                                  sets deployed and the EasyBuild files).
+  --mns [EasyBuildMNS|E|HierarchicalMNS|H|ThematicMNS|T]
+                                  Module Naming Scheme to be used.
+  --help                          Show this message and exit.
+```
+
+Default behabvior:  
+The `resif count sample` will return the number of software installed that contain "sample" in their name.
+
+### Show
+
+Usage: `resif show [OPTIONS] CONTENT`
+
+    CONTENT TEXT                  Text to look for in the names of the installed softwares.
+
+```
+Options:
+  --rootinstall path              Path to the root of the EasyBuild
+                                  installation (contains the various software
+                                  sets deployed and the EasyBuild files).
+  --mns [EasyBuildMNS|E|HierarchicalMNS|H|ThematicMNS|T]
+                                  Module Naming Scheme to be used.
+  --help                          Show this message and exit.
+```
+
+Default behabvior:  
+The `resif show sample` will return the names of the installed software that contain "sample" in their name.
+
 ### Bootstrap
 
-Usage: `resif admin bootstrap [OPTIONS]`
+Usage: `resif bootstrap [OPTIONS]`
 
 Options:
 ```
-  --srcpath TEXT                  Source path to the RESIF directory.
-  --configfile TEXT               Specify path to a config file to load.
+  --srcpath path                  Source path to the RESIF directory.
+  --configfile path               Specify path to a config file to load.
   --gh-ebuser TEXT                Specify a GitHub user that has the EasyBuild
                                   repositories you want to use instead of the
                                   one provided by ULHPC.
-  --git-ebframework TEXT          URL or path to EasyBuild framework Git
+  --git-ebframework URL           URL or path to EasyBuild framework Git
                                   repository.
-  --git-ebblocks TEXT             URL or path for EasyBuild easyblocks Git
+  --git-ebblocks URL              URL or path for EasyBuild easyblocks Git
                                   repository.
-  --git-ebconfigs TEXT            URL or path for EasyBuild easyconfigs Git
+  --git-ebconfigs URL             URL or path for EasyBuild easyconfigs Git
                                   repository.
   --branch-ebframework TEXT       Git branch for EasyBuild framework.
   --branch-ebblocks TEXT          Git branch for EasyBuild easyblocks.
   --branch-ebconfigs TEXT         Git branch for EasyBuild easyconfigs.
-  --apps-root TEXT                Path to the root directory for apps
+  --apps-root path                Path to the root directory for apps
                                   (contains all the architecture correspondig
                                   to RESIF).
   --production                    Set this variable if you want to work with
                                   the production branch of the RESIF
                                   repository. (By default, work with the
-                                  current branch). Do not use with --devel or
-                                  --branch !
+                                  production branch). Do not use with --devel
+                                  or --branch !
   --devel                         Set this variable if you want to work with
                                   the devel branch of the RESIF repository.
-                                  (By default, work with the current branch).
-                                  Do not use with --production or --branch !
+                                  (By default, work with the production
+                                  branch). Do not use with --production or
+                                  --branch !
   --branch TEXT                   Set this variable if you want to work with
                                   the devel branch of the RESIF repository.
-                                  (By default, work with the current branch).
-                                  Do not use with --production or --branch !
+                                  (By default, work with the production
+                                  branch). Do not use with --production or
+                                  --branch !
   --release TEXT                  Release tag or commit of the RESIF
                                   repository to deploy.
-  --releasedir TEXT               Directory in which to install the release.
-  --rootinstall TEXT              Path to the root of the EasyBuild
+  --releasedir relative path      Directory in which to install the release
+                                  (Relative path from the <apps-root>).
+                                  Default: <branch>/v<release>-<date>
+  --rootinstall path              Path to the root of the EasyBuild
                                   installation (contains the various software
                                   sets deployed and the EasyBuild files).
-  --mns [EasyBuildMNS|HierarchicalMNS|ThematicMNS]
+                                  Default: <apps-root>/<releasedir>
+  --mns [EasyBuildMNS|E|HierarchicalMNS|H|ThematicMNS|T]
                                   Module Naming Scheme to be used.
+  --overwrite                     Set this flag if you want to overwrite any
+                                  existing previous installation at --apps-
+                                  root.
   --help                          Show this message and exit.
 ```
 
+Default behavior:  
+`resif  bootstrap` will install EasyBuild in the default <rootinstall>: `/usr/local/<branch>/v<version>-<date>` where <branch> is the current branch of the repository at your sourcepath (which by default is `$HOME/.resif/src`), <version> the version of this same repository and <date> the date of the build day (the format is YYYYMMDD). In particular, the EasyBuild module is going to be put in `<rootinstall>/core/modules/base/base/EasyBuild` under the name `install-<version>`.  
+To use this EasyBuild, just load one of the files starting with LOADME in <rootinstall> (the choice depends on whether you want to install any new software inside this architecture or outside it: the LOADME suffixed with '-out-place' will put everything outside the rootinstall (see the [variables documentation page](https://gitlab.uni.lu/modules/infrastructure/wikis/variables) for further details.)) and your environment variables will be set up to make you able to load the module.
 
 ### Build
 
-Usage: `resif admin build [OPTIONS] EASYBUILD_MODULE [SWSETS]...`
+Usage: `resif build [OPTIONS] [SWSETS]...`
 
-    EASYBUILD_MODULE TEXT...  
-        EasyBuild module to use to build the software sets. The given EasyBuild module must already be in your MODULEPATH.
-    [SWSETS] TEXT...  
-        Software sets to deploy.
+    [SWSETS] TEXT...              Software sets to deploy.
 
 Options:
 ```
-  --srcpath TEXT                  Source path to the RESIF directory.
-  --configfile TEXT               Specify path to a config file to load.
-  --rootinstall TEXT              Path to the root of an EasyBuild
+  --srcpath path                  Source path to the RESIF directory.
+  --configfile path               Specify path to a config file to load.
+  --rootinstall path              Path to the root of an EasyBuild
                                   installation (contains the various software
                                   sets deployed and the EasyBuild files).
-  --eb-sourcepath TEXT            EasyBuild sourcepath.
-  --eb-buildpath TEXT             EasyBuild buildpath.
+                                  Softwares will be installed in
+                                  <rootinstall>/<swset>/modules
+  --installdir path               Use if you don't want to deploy the software
+                                  inside the <rootinstall>. Softwares will
+                                  then be deployed in
+                                  <installdir>/<swset>/modules
+  --eb-sourcepath path            EasyBuild sourcepath.
+  --eb-buildpath path             EasyBuild buildpath.
   --eb-repository TEXT            EasyBuild repository type for successfully
                                   installed easyconfig files.
-  --eb-repositorypath TEXT        EasyBuild path to the repository for
+  --eb-repositorypath path        EasyBuild path to the repository for
                                   successuflly installed easyconfig files.
   --buildmode [local|job]         Mode to build the software: either building
                                   locally or in a job.
-  --mns [EasyBuildMNS|HierarchicalMNS|ThematicMNS]
+  --mns [EasyBuildMNS|E|HierarchicalMNS|H|ThematicMNS|T]
                                   Module Naming Scheme to be used.
-  --swsets-config TEXT            Path to a file defining the software sets.
+  --out-place                     Set this option if you want all the files
+                                  (sources, build, repository) to be put
+                                  outside the rootinstall (in an associated
+                                  subdirectory in $HOME/.resif).
+  --swsets-config path            Path to a file defining the software sets.
   --help                          Show this message and exit.
+
 ```
+
+Default behavior:  
+To work properly, you have to load one of the LOADME files before using this command as the minimal requirements to use it are to have the EasyBuild module (the one which name ends with install-<version>) in the MODULEPATH and to know the <rootinstall> of the given EasyBuild (which is also defined in the LOADME file).  
+`resif build` will deploy the `core` software set describe in the `$HOME/.resif/src/config/swsets.yaml` file using the EasyBuild module mentioned above installed in the <rootinstall> and will put them in the `<rootinstall>/<swset>/modules` directory.
+
+Note that in each case, if you don't have the rights to write in the directory in which the scripts try to deploy the softwares, it won't work. Moreover, to use the newly installed softwares, you will have to add their path to the MODULEPATH (the easiest way is to add `<rootinstall>/<swset>/modules/all` to the MODULEPATH).
 
 ### Cleaninstall
 
-Usage: `resif admin cleaninstall [OPTIONS] [SWSETS]...`
+Usage: `resif cleaninstall [OPTIONS] [SWSETS]...`
 
     [SWSETS] TEXT...                Software set to deploy.
 
 Options:
 ```
-  --srcpath TEXT                  Source path to the RESIF directory.
-  --configfile TEXT               Specify path to a config file to load.
+  --srcpath path                  Source path to the RESIF directory.
+  --configfile path               Specify path to a config file to load.
   --gh-ebuser TEXT                Specify a GitHub user that has the EasyBuild
                                   repositories you want to use instead of the
                                   one provided by ULHPC.
-  --git-ebframework TEXT          URL or path to EasyBuild framework Git
+  --git-ebframework URL           URL or path to EasyBuild framework Git
                                   repository.
-  --git-ebblocks TEXT             URL or path for EasyBuild easyblocks Git
+  --git-ebblocks URL              URL or path for EasyBuild easyblocks Git
                                   repository.
-  --git-ebconfigs TEXT            URL or path for EasyBuild easyconfigs Git
+  --git-ebconfigs URL             URL or path for EasyBuild easyconfigs Git
                                   repository.
   --branch-ebframework TEXT       Git branch for EasyBuild framework.
   --branch-ebblocks TEXT          Git branch for EasyBuild easyblocks.
   --branch-ebconfigs TEXT         Git branch for EasyBuild easyconfigs.
-  --apps-root TEXT                Path to the root directory for apps
+  --apps-root path                Path to the root directory for apps
                                   (contains all the architecture correspondig
                                   to RESIF).
   --production                    Set this variable if you want to work with
                                   the production branch of the RESIF
                                   repository. (By default, work with the
-                                  current branch). Do not use with --devel or
-                                  --branch !
+                                  production branch). Do not use with --devel
+                                  or --branch !
   --devel                         Set this variable if you want to work with
                                   the devel branch of the RESIF repository.
-                                  (By default, work with the current branch).
-                                  Do not use with --production or --branch !
+                                  (By default, work with the production
+                                  branch). Do not use with --production or
+                                  --branch !
   --branch TEXT                   Set this variable if you want to work with
                                   the devel branch of the RESIF repository.
-                                  (By default, work with the current branch).
-                                  Do not use with --production or --branch !
+                                  (By default, work with the production
+                                  branch). Do not use with --production or
+                                  --branch !
   --release TEXT                  Release tag or commit of the RESIF
                                   repository to deploy.
-  --releasedir TEXT               Directory in which to install the release.
-  --rootinstall TEXT              Path to the root of the EasyBuild
+  --releasedir relative path      Directory in which to install the release
+                                  (Relative path from the <apps-root>).
+                                  Default: <branch>/v<release>-<date>
+  --rootinstall path              Path to the root of the EasyBuild
                                   installation (contains the various software
                                   sets deployed and the EasyBuild files).
-  --mns [EasyBuildMNS|HierarchicalMNS|ThematicMNS]
+                                  Default: <apps-root>/<releasedir>
+  --mns [EasyBuildMNS|E|HierarchicalMNS|H|ThematicMNS|T]
                                   Module Naming Scheme to be used.
   --buildmode [local|job]         Mode to build the software: either building
                                   locally or in a job.
-  --swsets-config TEXT            Path to a file defining the software sets.
+  --swsets-config path            Path to a file defining the software sets.
+  --overwrite                     Set this flag if you want to overwrite any
+                                  existing previous installation at --apps-
+                                  root.
   --help                          Show this message and exit.
+
 ```
+
+Default behavior:  
+`resif cleaninstall` basically does `resif bootstrap` and then `resif build`.
 
 ## Alternative configuration methods
 
