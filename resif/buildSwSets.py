@@ -10,6 +10,7 @@ import subprocess
 import yaml
 import time
 import re
+import glob
 
 #######################################################################################################################
 
@@ -47,9 +48,9 @@ def build(hashTable):
         alreadyInstalled = False
     	# If it actually exist in the yaml file, we install the listed software.
     	if swset in swsets:
+            swsetStart= time.time()
     	    for software in swsets[swset]:
                 sys.stdout.write("Now starting to install " + software[:-3] + "\n")
-                start = time.time()
     	        process.stdin.write('eb ' + software + installpath + sharedOptions + ' --robot\n')
     	        # Command to have at the end of the output the execution code of the last command
     	        process.stdin.write('echo $?\n')
@@ -70,16 +71,15 @@ def build(hashTable):
                                 sys.stdout.write(software[:-3] + " was already installed. Nothing to be done.\n")
                                 alreadyInstalled = False
                             else:
-                                end = time.time()
-                                duration = end - start
-                                durationStr = writeTime(hashTable, software, duration)
-                                sys.stdout.write('Successfully installed ' + software[:-3] + ' (duration of the build: ' + durationStr + ')\n')
+                                sys.stdout.write('Successfully installed ' + software[:-3] + '.\n')
     	                else:
     	                    sys.stdout.write('Failed to install ' + software[:-3] + '\n' + 'Operation failed with return code ' + out + '\n')
     	                    exit(out)
     	                break
-    	
-    	    sys.stdout.write("Finishing EasyBuild software installation step.\n")
+            swsetEnd = time.time()
+            swsetDuration = swsetEnd - swsetStart
+            swsetDurationStr = writeTime(hashTable, swset, swsetDuration)
+    	    sys.stdout.write("Software set " + swset + " Successfully installed. Build duration: " + swsetDurationStr + ".\n")
     	# If it doesn't, we print an error message as well as an help to use the script.
     	else:
     	    sys.stdout.write("Error: Invalid set of software.\nYou asked for the software set named " + swset  + \
@@ -147,19 +147,37 @@ To do so, either:\n\
 
 
 # Take a duration and write it in the easyconfig file in the easyconfig repsitory.
-def writeTime(hashTable, software, duration):
+def writeTime(hashTable, swset, duration):
     m, s = divmod(duration, 60)
     h, m = divmod(m, 60)
     durationFormated = "%d:%d:%d" % (h, m, s)
 
-    softwareDir = re.match("^[^-]*", software).group(0)
+    # We get all the log files of the installed softwares
+    files = glob.glob(hashTable['rootinstall']+'/'+swset+'/software/*/*/*/easybuild/*log')
 
-    # If no repositorypath was given, we should write at the default location for EasyBuild (find the location)
-    if "eb_repositorypath" in hashTable:
-        with open(os.path.join(os.path.join(os.path.abspath(os.path.expandvars(hashTable['eb_repositorypath'])), softwareDir), software), "a") as f:
-            f.write("\n\nThis software build duration was: " + durationFormated + "\n")
-            f.write("It was build on " + time.strftime("%c") + "\n")
+    with open(os.path.join(hashTable['rootinstall'], swset+"BuildTimes-"+time.strftime("%Y%m%d")+".txt"), "a") as f:
+        f.write(swset + "\t" + durationFormated + "\n")
+        for logfile in files:
+            software, softwareDurationFormated = getSoftwareBuildTimes(logfile)
+            f.write(software + "\t" + softwareDurationFormated + "\n")
 
     return durationFormated
+
+# For a given logfile we get the name of the software, the start and end dates of the build and convert them to timestamp and then determine the duration of the build.
+def getSoftwareBuildTimes(logfile):
+    logfileReduced = re.search("[^/]*$", logfile).group(0)
+    software = re.search("-[^-]*", logfileReduced).group(0)[1:]
+    with open(logfile, "r") as log:
+        raw = log.readlines()
+        stime = "%s %s"%(raw[0].split()[1],raw[0].split()[2])
+        stime = time.mktime(time.strptime(stime[:-4], "%Y-%m-%d %H:%M:%S"))
+        etime = "%s %s"%(raw[-1].split()[1],raw[0].split()[2])
+        etime = time.mktime(time.strptime(etime[:-4], "%Y-%m-%d %H:%M:%S"))
+        softwareDuration = etime - stime
+        m, s = divmod(softwareDuration, 60)
+        h, m = divmod(m, 60)
+        softwareDurationFormated = "%d:%d:%d" % (h, m, s)
+        
+    return (software, softwareDurationFormated)
 
 #######################################################################################################################
