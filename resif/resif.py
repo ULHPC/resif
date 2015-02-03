@@ -9,6 +9,8 @@ import click
 import os
 import subprocess
 import shutil
+import time
+import glob
 
 sys.path.append('.')
 import configManager
@@ -138,6 +140,40 @@ def count(**kwargs):
     process.stdin.write('eb -S ' + kwargs['content'] + ' | grep "^ \* " | wc -l' + '\n')
     sys.stdout.write(process.stdout.readline())
 
+
+# Print the build duration of all the softwares in the given software set.
+@resif.command()
+@click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
+@click.argument('swsets')
+def getBuildTimeSwSet(**kwargs):
+    files = glob.glob(kwargs['rootinstall']+'/'+swset+'/software/*/*/*/easybuild/*log')
+    if files != []:
+        for logfile in files:
+            software, softwareDurationFormated = buildSwSets.getSoftwareBuildTimes(logfile)
+            sys.stdout.write(software + "\t" + softwareDurationFormated + "\n")
+    else:
+        sys.stdout.write("No software found.")
+        exit(80)
+
+
+# Print the build durations of all the versions of the given software if it is found.
+@resif.command()
+@click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
+@click.argument('swsets')
+@click.argument('software')
+def getBuildTimeSoftware(**kwargs):
+    softwareFound = False
+    files = glob.glob(kwargs['rootinstall']+'/'+swset+'/software/*/*/*/easybuild/*log')
+    for logfile in files:
+        software, softwareDurationFormated = buildSwSets.getSoftwareBuildTimes(logfile)
+        if software == kwargs['software']:
+            softwareFound = True
+            sys.stdout.write(software + "\t" + softwareDurationFormated + "\n")
+            # We do not exit since there may be multiple version of the same software.
+    if not softwareFound:
+        sys.stdout.write("The software you asked for has not been found. This software is either not installed or in another software set.\n")
+        exit(90)
+
 #######################################################################################################################
 
 
@@ -213,8 +249,14 @@ def build(**kwargs):
     # Build the software sets.
     click.echo("Building the software sets.")
     config['easybuild_module'] = configManager.getEasyBuildModule(config)
+    start = time.time()
     buildSwSets.build(config)
-    click.echo("Software sets successfully built.")
+    end = time.time()
+    duration = end - start
+    m, s = divmod(duration, 60)
+    h, m = divmod(m, 60)
+    durationFormated = "%dh%dm%ds" % (h, m, s)
+    click.echo("Software sets successfully built. The build duration was of " + durationFormated)
 
 
 # Full install (Correspond to making a new release)
@@ -277,8 +319,14 @@ def cleaninstall(**kwargs):
     os.environ['MODULEPATH'] = modulePath
     configManager.setEasyBuildVariables(config)
     config['easybuild_module'] = configManager.getEasyBuildModule(config)
+    start = time.time()
     buildSwSets.build(config)
-    click.echo("Software sets successfully built.")
+    end = time.time()
+    duration = end - start
+    m, s = divmod(duration, 60)
+    h, m = divmod(m, 60)
+    durationFormated = "%dh%dm%ds" % (h, m, s)
+    click.echo("Software sets successfully built. The build duration was of " + durationFormated)
     click.echo("Full installation ended successfully.")
 
 
