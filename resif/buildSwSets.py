@@ -71,7 +71,7 @@ def build(hashTable):
                                 sys.stdout.write(software[:-3] + " was already installed. Nothing to be done.\n")
                                 alreadyInstalled = False
                             else:
-                                sys.stdout.write('Successfully installed ' + software[:-3] + '\n')
+                                sys.stdout.write('Successfully installed ' + software[:-3] + '.\n')
     	                else:
     	                    sys.stdout.write('Failed to install ' + software[:-3] + '\n' + 'Operation failed with return code ' + out + '\n')
     	                    exit(out)
