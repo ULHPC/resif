@@ -144,9 +144,9 @@ def count(**kwargs):
 # Print the build duration of all the softwares in the given software set.
 @resif.command()
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
-@click.argument('swsets')
+@click.argument('swset')
 def buildTimeSwSet(**kwargs):
-    files = glob.glob(kwargs['rootinstall']+'/'+swset+'/software/*/*/*/easybuild/*log')
+    files = glob.glob(kwargs['rootinstall']+'/'+kwargs['swset']+'/software/*/*/*/easybuild/*log')
     if files != []:
         for logfile in files:
             software, softwareDurationFormated = buildSwSets.getSoftwareBuildTimes(logfile)
@@ -159,11 +159,11 @@ def buildTimeSwSet(**kwargs):
 # Print the build durations of all the versions of the given software if it is found.
 @resif.command()
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
-@click.argument('swsets')
+@click.argument('swset')
 @click.argument('software')
 def buildTimeSoftware(**kwargs):
     softwareFound = False
-    files = glob.glob(kwargs['rootinstall']+'/'+swset+'/software/*/*/*/easybuild/*log')
+    files = glob.glob(kwargs['rootinstall']+'/'+kwargs['swset']+'/software/*/*/*/easybuild/*log')
     for logfile in files:
         software, softwareDurationFormated = buildSwSets.getSoftwareBuildTimes(logfile)
         if software == kwargs['software']:

@@ -77,7 +77,7 @@ def build(hashTable):
     	                    exit(out)
     	                break
             swsetEnd = time.time()
-            swsetDuration = end - start
+            swsetDuration = swsetEnd - swsetStart
             swsetDurationStr = writeTime(hashTable, swset, swsetDuration)
     	    sys.stdout.write("Software set " + swset + " Successfully installed. Build duration: " + swsetDurationStr + ".\n")
     	# If it doesn't, we print an error message as well as an help to use the script.
@@ -156,7 +156,7 @@ def writeTime(hashTable, swset, duration):
     files = glob.glob(hashTable['rootinstall']+'/'+swset+'/software/*/*/*/easybuild/*log')
 
     with open(os.path.join(hashTable['rootinstall'], swset+"BuildTimes-"+time.strftime("%Y%m%d")+".txt"), "a") as f:
-        f.write(swset + "\t" + swsetDurationStr + "\n")
+        f.write(swset + "\t" + durationFormated + "\n")
         for logfile in files:
             software, softwareDurationFormated = getSoftwareBuildTimes(logfile)
             f.write(software + "\t" + softwareDurationFormated + "\n")
