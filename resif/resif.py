@@ -84,7 +84,7 @@ def wipe(**kwargs):
 # (At the very least, they require the module path to be set correctly to use the EasyBuild install and the RESIF_ROOTINSTALL variable to be set to the root of the EasyBuild install.)
 
 # Show the list of softwares which easyconfig file contains the "content" string
-@resif.command()
+@resif.command(short_help="Show all the installed softwares which name contains a given pattern.")
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
 @click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
 @click.argument('content')
@@ -118,12 +118,13 @@ def show(**kwargs):
             break
 
 # Count the number of softwares which easyconfig file contains the "content" string
-@resif.command()
+@resif.command(short_help="count the number of installed softwares which name contains a given pattern.")
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
 @click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
 @click.argument('content')
 def count(**kwargs):
     """
+    \b
     [CONTENT] TEXT                  Text to look for in the names of
                                     the installed softwares.
     """
@@ -142,10 +143,13 @@ def count(**kwargs):
 
 
 # Print the build duration of all the softwares in the given software set.
-@resif.command()
+@resif.command(short_help="Print the build times of all the installed software of a given software set.")
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
 @click.argument('swset')
 def buildTimeSwSet(**kwargs):
+    """
+    [SWSET] TEXT        Software set to consider.
+    """
     files = glob.glob(kwargs['rootinstall']+'/'+kwargs['swset']+'/software/*/*/*/easybuild/*log')
     if files != []:
         for logfile in files:
@@ -157,11 +161,16 @@ def buildTimeSwSet(**kwargs):
 
 
 # Print the build durations of all the versions of the given software if it is found.
-@resif.command()
+@resif.command(short_help="Print the build time of of a given installed software from a specific software set.")
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
 @click.argument('swset')
 @click.argument('software')
 def buildTimeSoftware(**kwargs):
+    """
+    \b
+    [SWSET] TEXT        Software set to consider.
+    [SOFTWARE] TEXT     Software name to consider.
+    """
     softwareFound = False
     files = glob.glob(kwargs['rootinstall']+'/'+kwargs['swset']+'/software/*/*/*/easybuild/*log')
     for logfile in files:
