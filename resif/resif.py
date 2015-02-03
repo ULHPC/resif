@@ -145,7 +145,7 @@ def count(**kwargs):
 @resif.command()
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
 @click.argument('swsets')
-def getBuildTimeSwSet(**kwargs):
+def buildTimeSwSet(**kwargs):
     files = glob.glob(kwargs['rootinstall']+'/'+swset+'/software/*/*/*/easybuild/*log')
     if files != []:
         for logfile in files:
@@ -161,7 +161,7 @@ def getBuildTimeSwSet(**kwargs):
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
 @click.argument('swsets')
 @click.argument('software')
-def getBuildTimeSoftware(**kwargs):
+def buildTimeSoftware(**kwargs):
     softwareFound = False
     files = glob.glob(kwargs['rootinstall']+'/'+swset+'/software/*/*/*/easybuild/*log')
     for logfile in files:
