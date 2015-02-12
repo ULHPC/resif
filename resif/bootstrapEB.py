@@ -103,14 +103,14 @@ def easybuildFilesInstaller(hashTable):
 	
 		for k in ['easybuild-framework', 'easybuild-easyblocks', 'easybuild-easyconfigs']:
 			if not k in altSources:
-				ebPart = re.search("[^-]*$", k).group(0)
+				# ebPart = re.search("[^-]*$", k).group(0) # Obsolete
 				if hashTable['release'] != 'HEAD':
 					subprocess.check_call(['git', 'checkout', 'install-resif/'+hashTable['branch'], '-b', k])
 				elif 'branch' in hashTable:
 					subprocess.check_call(['git', 'checkout', hashTable['release'], '-b', k])
 				else:
 					subprocess.check_call(['git', 'checkout', 'FETCH_HEAD', '-b', k])
-				subprocess.check_call(['git', 'filter-branch', '-f', '--subdirectory-filter', 'easybuild/'+ebPart , k])
+				subprocess.check_call(['git', 'filter-branch', '-f', '--subdirectory-filter', 'easybuild/'+k, k]) #ebPart , k])
 				subprocess.check_call(['git', 'checkout', 'master'])
 				subprocess.check_call(['git', 'submodule', 'add', '-b', k, './', k])
 				subprocess.check_call(['git', 'branch', '-D', k])
