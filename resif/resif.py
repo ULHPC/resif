@@ -156,7 +156,7 @@ def buildTimeSwSet(**kwargs):
         for logfile in files:
             software, softwareDuration = buildSwSets.getSoftwareBuildTimes(logfile)
             if kwargs['seconds']:
-                sys.stdout.write(software + "\t" + softwareDuration + "\n")
+                sys.stdout.write(software + "\t" + str(softwareDuration) + "\n")
             else:
                 m, s = divmod(softwareDuration, 60)
                 h, m = divmod(m, 60)
@@ -186,7 +186,7 @@ def buildTimeSoftware(**kwargs):
         if software == kwargs['software']:
             softwareFound = True
             if kwargs['seconds']:
-                sys.stdout.write(software + "\t" + softwareDuration + "\n")
+                sys.stdout.write(software + "\t" + str(softwareDuration) + "\n")
             else:
                 m, s = divmod(softwareDuration, 60)
                 h, m = divmod(m, 60)

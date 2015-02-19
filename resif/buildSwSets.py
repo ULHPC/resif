@@ -159,7 +159,7 @@ def writeTime(hashTable, swset, duration):
         f.write(swset + "\t" + durationFormated + "\n")
         for logfile in files:
             software, softwareDuration = getSoftwareBuildTimes(logfile)
-            f.write(software + "\t" + softwareDuration + "\n")
+            f.write(software + "\t" + str(softwareDuration) + "\n")
 
     return durationFormated
 
