@@ -171,7 +171,7 @@ def getSoftwareBuildTimes(logfile):
         raw = log.readlines()
         stime = "%s %s"%(raw[0].split()[1],raw[0].split()[2])
         stime = time.mktime(time.strptime(stime[:-4], "%Y-%m-%d %H:%M:%S"))
-        etime = "%s %s"%(raw[-1].split()[1],raw[0].split()[2])
+        etime = "%s %s"%(raw[-1].split()[1],raw[-1].split()[2])
         etime = time.mktime(time.strptime(etime[:-4], "%Y-%m-%d %H:%M:%S"))
         softwareDuration = etime - stime
         m, s = divmod(softwareDuration, 60)
