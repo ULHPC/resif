@@ -145,6 +145,7 @@ def count(**kwargs):
 # Print the build duration of all the softwares in the given software set.
 @resif.command(short_help="Print the build times of all the installed software of a given software set.")
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
+@click.option('--seconds', flag_value=True, envvar='RESIF_SECONDS', help='Set this flag if you want the software build time output to be in seconds (not formated).')
 @click.argument('swset')
 def buildTimeSwSet(**kwargs):
     """
@@ -153,8 +154,14 @@ def buildTimeSwSet(**kwargs):
     files = glob.glob(kwargs['rootinstall']+'/'+kwargs['swset']+'/software/*/*/*/easybuild/*log')
     if files != []:
         for logfile in files:
-            software, softwareDurationFormated = buildSwSets.getSoftwareBuildTimes(logfile)
-            sys.stdout.write(software + "\t" + softwareDurationFormated + "\n")
+            software, softwareDuration = buildSwSets.getSoftwareBuildTimes(logfile)
+            if kwargs['seconds']:
+                sys.stdout.write(software + "\t" + softwareDuration + "\n")
+            else:
+                m, s = divmod(softwareDuration, 60)
+                h, m = divmod(m, 60)
+                softwareDurationFormated = "%d:%d:%d" % (h, m, s)
+                sys.stdout.write(software + "\t" + softwareDurationFormated + "\n")
     else:
         sys.stdout.write("No software found.")
         exit(80)
@@ -163,6 +170,7 @@ def buildTimeSwSet(**kwargs):
 # Print the build durations of all the versions of the given software if it is found.
 @resif.command(short_help="Print the build time of of a given installed software from a specific software set.")
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
+@click.option('--seconds', flag_value=True, envvar='RESIF_SECONDS', help='Set this flag if you want the software build time output to be in seconds (not formated).')
 @click.argument('swset')
 @click.argument('software')
 def buildTimeSoftware(**kwargs):
@@ -174,11 +182,17 @@ def buildTimeSoftware(**kwargs):
     softwareFound = False
     files = glob.glob(kwargs['rootinstall']+'/'+kwargs['swset']+'/software/*/*/*/easybuild/*log')
     for logfile in files:
-        software, softwareDurationFormated = buildSwSets.getSoftwareBuildTimes(logfile)
+        software, softwareDuration = buildSwSets.getSoftwareBuildTimes(logfile)
         if software == kwargs['software']:
             softwareFound = True
-            sys.stdout.write(software + "\t" + softwareDurationFormated + "\n")
-            # We do not exit since there may be multiple version of the same software.
+            if kwargs['seconds']:
+                sys.stdout.write(software + "\t" + softwareDuration + "\n")
+            else:
+                m, s = divmod(softwareDuration, 60)
+                h, m = divmod(m, 60)
+                softwareDurationFormated = "%d:%d:%d" % (h, m, s)
+                sys.stdout.write(software + "\t" + softwareDurationFormated + "\n")
+            # We do not exit() since there may be multiple version of the same software.
     if not softwareFound:
         sys.stdout.write("The software you asked for has not been found. This software is either not installed or in another software set.\n")
         exit(90)

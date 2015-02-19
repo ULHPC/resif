@@ -158,8 +158,8 @@ def writeTime(hashTable, swset, duration):
     with open(os.path.join(hashTable['rootinstall'], swset+"BuildTimes-"+time.strftime("%Y%m%d")+".txt"), "a") as f:
         f.write(swset + "\t" + durationFormated + "\n")
         for logfile in files:
-            software, softwareDurationFormated = getSoftwareBuildTimes(logfile)
-            f.write(software + "\t" + softwareDurationFormated + "\n")
+            software, softwareDuration = getSoftwareBuildTimes(logfile)
+            f.write(software + "\t" + softwareDuration + "\n")
 
     return durationFormated
 
@@ -174,10 +174,7 @@ def getSoftwareBuildTimes(logfile):
         etime = "%s %s"%(raw[-1].split()[1],raw[-1].split()[2])
         etime = time.mktime(time.strptime(etime[:-4], "%Y-%m-%d %H:%M:%S"))
         softwareDuration = etime - stime
-        m, s = divmod(softwareDuration, 60)
-        h, m = divmod(m, 60)
-        softwareDurationFormated = "%d:%d:%d" % (h, m, s)
         
-    return (software, softwareDurationFormated)
+    return (software, softwareDuration)
 
 #######################################################################################################################
