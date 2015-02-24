@@ -201,6 +201,28 @@ def buildTimeSoftware(**kwargs):
 
 
 #######################################################################################################################
+
+# Outputs the path to the LOADME file.
+@resif.command(short_help='Activate the installation at the given rootinstall')
+@click.option('--out-place', 'out_place', flag_value=True, envvar='RESIF_ON_PLACE', help='Set this option if you want your modifications to be put outside of the installation directory (They will be put in a dedicated directory in $HOME/.resif instead).')
+@click.argument('rootinstall', envvar='RESIF_ROOTINSTALL')
+def getLoadMe(**kwargs):
+    """
+    \b
+    [ROOTINSTALL] TEXT      Path to the installation you want to activate.
+    """
+    trueVersion = os.path.basename(kwargs['rootinstall'].rstrip('/'))
+    if not kwargs['out_place']:
+        loadme = os.path.join(kwargs['rootinstall'], "LOADME-" + trueVersion + ".sh")
+    else:
+        loadme = os.path.join(kwargs['rootinstall'], "LOADME-" + trueVersion + "-out-place.sh")
+
+    sys.stdout.write(loadme + '\n')
+
+#######################################################################################################################
+
+
+#######################################################################################################################
 # The subcommands bootstrap, build and cleaninstall.
 
 # Make a new install of EasyBuild.
