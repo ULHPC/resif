@@ -33,7 +33,7 @@ Here are all the variables that can be set, followed by their descriptions.
       | `$mns`                  | Module Naming Scheme     ['EasyBuildMNS',          | ThematicMNS                        |
       |                         |           'HierarchicalMNS', 'ThematicMNS']        |                                    |
       | `$buildmode`            | Local build ('local') vs. job  ('job')             | local                              |
-      | `$apps_root`            | Root directory for apps (modules & sw)             | /usr/local/apps                    |
+      | `$apps_root`            | Root directory for apps (modules & sw)             | $HOME/.local/resif                 |
       | `$branch`               | Branch of the RESIF repository to work with        |                                    |
       | `$release`              | Release tag or commit to deploy                    | HEAD                               |
       | `$releasedir`           | Subdirectory in which to deploy the release        | <branch>/<release>-<date>          |
@@ -47,6 +47,8 @@ Here are all the variables that can be set, followed by their descriptions.
       | `$eb_repositorypath`    | Path to this repository                            | $HOME/.resif/eb_repo               |
       | `$out_place`            | Modify the building behavior so EasyBuild files    | False                              |
       |                         |   are all put inside the $HOME/.resif directory    |                                    |
+      | `$overwrite`            | Set this flag if you want to overwrite any file    | False                              |
+      |                         |  that is already present at the install location   |                                    |
  
 ## Specific Configuration variables
 
@@ -233,9 +235,9 @@ The way the software package are built, _i.e._ either locally (`local`) or via j
 
 The root directory hosting both the software package and the corresponding modules. Default value:
 
-      | Variable   | value           |
-      |------------+-----------------|
-      | $apps_root | /usr/local/apps |
+      | Variable   | value              |
+      |------------+--------------------|
+      | $apps_root | $HOME/.local/resif |
 
 ### RESIF branch `$branch`
 
@@ -341,3 +343,7 @@ The new values are then:
       | $eb_repositorypath | $HOME/.resif/v<version>-<date>/eb_repo |
 
 Note that all of this is overriden by the other options managing these variables (the EASYBUILD environement variables in particular)
+
+### Overwrite flag `$overwrite`
+
+If set to `True`, RESIF will remove any existing file at the location you want to make the install. If set to `False`, RESIF will stop its execution and throw an error message if it find existing files at the install location.
