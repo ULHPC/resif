@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+        <title>Variables - My Docs</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">My Docs</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="../Command-line-interface">Command line interface</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../Lmod-install">Lmod install</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../home">Home</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../layout-and-versioning">Layout and versioning</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../overview">Overview</a>
+                    </li>
+                
+                
+                
+                    <li class="active">
+                        <a href=".">Variables</a>
+                    </li>
+                
+                
+                </ul>
+            
+
+            
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                
+                
+                <li >
+                    <a rel="next" href="../overview">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a rel="prev" >
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                
+            </ul>
+            
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#resif-variables">RESIF  Variables</a></li>
+        
+            <li><a href="#specific-configuration-variables">Specific Configuration variables</a></li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<p>-<em>- mode: markdown; mode: visual-line; fill-column: 80 -</em>-
+<code>workflow.md</code></p>
+<p>Copyright (c) 2014 <a href="mailto:&lt;Sebastien.Varrette@uni.lu&gt;">Sebastien Varrette</a> <a href="">www</a></p>
+<pre><code>    Time-stamp: &lt;Mar 2014-12-02 11:22 mschmitt&gt;
+</code></pre>
+<hr />
+<h1 id="resif-variables">RESIF  Variables</h1>
+<p>The workflow revolves around a few variables that are defined below.<br />
+Although it is interesting to take a look at them to personalize an installation, the script can be used without manually setting any of these options since the necessary ones have a default value. </p>
+<p>Here are all the variables that can be set, followed by their descriptions.</p>
+<pre><code>  | Variable                | Description                                        | Default (if any)                   |
+  |-------------------------+----------------------------------------------------+------------------------------------|
+  | `$git_architecture`     | Git URL/path for your architecture repository      | `https://github.com/ULHPC/modules` |
+  | `$ebuser`               | User operating the process                         | `whoami`                           |
+  | `$ebgroup`              | Group                                              |                                    |
+  | `$gh_ebuser`            | (opt.) Github user ['hpcugent','ULHPC']            |                                    |
+  | `$git_ebframework`      | (opt.) Git URL/path for EB framework repo          |                                    |
+  | `$git_ebblocks`         | (opt.) Git URL/path for EB easyblocks repo         |                                    |
+  | `$git_ebconfigs`        | (opt.) Git URL/path for EB easyconfigs repo        |                                    |
+  | `$branch_ebframework`   | (opt.) Git branch for EB framework                 |                                    |
+  | `$branch_ebblocks       | (opt.) Git branch for EB easyblocks                |                                    |
+  | `$branch_ebconfigs      | (opt.) Git branch for EB easyconfigs               |                                    |
+  | `$srcpath`              | Source path for the conf. repository               | $HOME/.resif/src                   |
+  | `$configfile`           | Path to custom configuration file                  |                                    |
+  | `$swsets_config`        | Path to file defining the software sets            | &lt;srcpath&gt;/config/swsets.yaml       |
+  | `$swsets`               | Software set to deploy  ['core','ulhpc']           | core                               |
+  | `$mns`                  | Module Naming Scheme     ['EasyBuildMNS',          | ThematicMNS                        |
+  |                         |           'HierarchicalMNS', 'ThematicMNS']        |                                    |
+  | `$buildmode`            | Local build ('local') vs. job  ('job')             | local                              |
+  | `$apps_root`            | Root directory for apps (modules &amp; sw)             | $HOME/.local/resif                 |
+  | `$branch`               | Branch of the RESIF repository to work with        |                                    |
+  | `$release`              | Release tag or commit to deploy                    | HEAD                               |
+  | `$releasedir`           | Subdirectory in which to deploy the release        | &lt;branch&gt;/&lt;release&gt;-&lt;date&gt;          |
+  | `$rootinstall`          | Root Installation directory                        | &lt;apps_root&gt;/&lt;releasedir&gt;           |
+  | `$installdir`           | Path to an alternative directory in which to build |                                    |
+  | `$eb_sourcepath`        | Directory to store software sources                | $HOME/.resif/sources               |
+  |                         | and install files                                  |                                    |
+  | `$eb_buildpath`         | (temporary) directories to host builds             | $HOME./resif/build                 |
+  | `$eb_repository`        | Type of repository to store the .eb files          | FileRepository                     |
+  |                         | of the successfuly installed softwares             |                                    |
+  | `$eb_repositorypath`    | Path to this repository                            | $HOME/.resif/eb_repo               |
+  | `$out_place`            | Modify the building behavior so EasyBuild files    | False                              |
+  |                         |   are all put inside the $HOME/.resif directory    |                                    |
+  | `$overwrite`            | Set this flag if you want to overwrite any file    | False                              |
+  |                         |  that is already present at the install location   |                                    |
+</code></pre>
+<h2 id="specific-configuration-variables">Specific Configuration variables</h2>
+<h3 id="git-architecture-repository-git_architecture">Git architecture repository <code>$git_architecture</code></h3>
+<p>Set this variable to a Git URL or path to use another infractructure repository than the default one.</p>
+<pre><code>  | Variable          | value                            |
+  |-------------------+----------------------------------|
+  | $git_architecture | https://github.com/ULHPC/modules |
+</code></pre>
+<p>To learn more about this architecture repository (and learn how to create your own, fitting your needs), go to the <a href="https://gitlab.uni.lu/modules/infrastructure/wikis/layout-and-versioning">layout and versioning page</a>.</p>
+<h3 id="local-usergroup-deploying-the-infrastructure-ebuser-ebgroup">Local user/group deploying the infrastructure <code>$ebuser</code> <code>$ebgroup</code></h3>
+<ul>
+<li>all processes / jobs are run as this user</li>
+<li>all [sub]directory are assuming having read/write access for that user and/or group</li>
+</ul>
+<p>Default value:</p>
+<pre><code>  | Variables | value    |
+  |-----------+----------|
+  | $ebuser   | `whoami` |
+  | $ebgroup  |          |
+</code></pre>
+<h3 id="optional-alternatives-to-the-use-of-the-easybuild-subtrees-of-the-infrastructure-repository">(optional) Alternatives to the use of the Easybuild subtrees of the <a href="https://gitlab.uni.lu/modules/infrastructure"><code>infrastructure</code></a> repository</h3>
+<p>If you do not wish to use the Easybuild subtrees present in the <a href="https://gitlab.uni.lu/modules/infrastructure"><code>modules-infrastructure</code></a> repository, you might use the following alternative approaches:</p>
+<ul>
+<li>precising the <a href="https://github.com/">Github user</a> that fork <strong>all three</strong> Easybuild repositories <em>i.e</em> <code>easybuild-{framework,easyblocks,easyconfigs}</code> -- see <code>$gh_ebuser</code><ul>
+<li>in this case, you might wish also to customize the Git branch to consider -- see <code>$branch_eb{framework,blocks,configs}}</code></li>
+</ul>
+</li>
+<li><strong>[TODO]</strong> customizing the Git URLs for the Easybuild repositories -- see <code>$git_eb{framework,blocks,configs}}</code><ul>
+<li>as above, you might wish also to customize the Git branch to consider -- see <code>$branch_eb{framework,blocks,configs}}</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="github-user-hosting-the-easybuild-git-repository-forks-gh_ebuser">Github user hosting the Easybuild git repository forks <code>$gh_ebuser</code></h4>
+<p>If you do not wish to use the Easybuild subtrees present in the <a href="https://gitlab.uni.lu/modules/infrastructure"><code>modules-infrastructure</code></a> repository but rather your own [fork] of easybuild sources (<em>i.e.</em>), you might precise here the GitHub user.</p>
+<p>Default value:</p>
+<pre><code>  | Variable     | value |
+  |--------------+-------+
+  | `$gh_ebuser` |       |
+</code></pre>
+<p>In particular in this case, we expect to find the following repository available:</p>
+<ul>
+<li>Easybuild Framework repository: <code>https://github.com/&lt;gh_ebuser&gt;/easybuild-framework</code></li>
+<li>Easyblocks repository:          <code>https://github.com/&lt;gh_ebuser&gt;/easybuild-easyblocks</code></li>
+<li>Easyconfigs repository:         <code>https://github.com/&lt;gh_ebuser&gt;/easybuild-easyconfigs</code></li>
+</ul>
+<p>For each of the above repository, you might wish to specialize the Git branch to consider (<code>master</code> by default) using the variables <code>$branch_eb{framework,blocks,configs}</code>.</p>
+<h4 id="github-repositories-forks-for-easybuild-git_framework-git_easyblocks-git_easyconfigs">Github repositories forks for EasyBuild <code>$git_framework</code>, <code>$git_easyblocks</code>, <code>$git_easyconfigs</code></h4>
+<p>If you want to use forks coming from several sources, you can provide directly the URL or path to the git you want to use for a given EasyBuild part.</p>
+<p>Note that you can combine this method with the previous one, taking into consideration that the git repository that will be given with this method will be prefered over the first one. E.g if you provide hpcugent as the gh-ebuser and the URL to the ULHPC fork of the easyconfig repository, you will in the end use the framework and the easyblocks from the hpcugent GitHub repositories and the easyconfigs from the ULHPC fork of this repository.</p>
+<p>You can specify the branch from the given repository either by using the variables described below (<code>$branch_ebframework</code>) and so on) or by using the following syntax for in the current variables:<br />
+<code>'url|branch'</code><br />
+which in an example would look like that:<br />
+<code>'https://github.com/hpcugent/easybuild-framework|master'</code><br />
+for the framework part.<br />
+Note that if you use this syntax you have to use the single quotes <code>''</code> or the double quotes <code>""</code> or else it won't work.</p>
+<h4 id="specifying-branch-to-use-for-alternative-sources-branch_ebframework-branch_ebblocks-branch_ebconfigs">Specifying branch to use for alternative sources <code>$branch_ebframework</code>, <code>$branch_ebblocks</code>, <code>$branch_ebconfigs</code></h4>
+<p>You can specify a branch to use. If this options is unused for a given source, then, for this source, the branch used will be the one of the HEAD.</p>
+<h4 id="final-notes-on-the-alternative-sources-provisioning">Final notes on the alternative sources provisioning</h4>
+<p>It is important to keep in mind that if you give a gh_ebuser, then this user MUST have all the three repositories of EasyBuild, even if you don't use all of them (by providing a specific repositroy with the second method), although this requirement isn't true with the second method, because any missing repository will be taken from the gh_ebuser if you provide one, or from the subtree if you don't.</p>
+<h3 id="top-source-path-srcpath">Top Source path <code>$srcpath</code></h3>
+<p>The parent path of the directory in which the <a href="https://gitlab.uni.lu/modules/infrastructure"><code>modules-infrastructure</code></a> repository shall / has been cloned.
+In particular, all operations (testing / building / installing) are operated from this directory.</p>
+<p>The layout of this directory shall typically reflect the following topology:</p>
+<pre><code> &lt;srcpath&gt;.
+    ├── Gemfile[.lock]   # bundler stuff
+    ├── README.md
+    ├── Rakefile         # main rakefile 
+    ├── VERSION          # current release of the repository
+    ├── bin/             # hold the scripts piloting all operations
+    ├── config/          # hold configurations
+    │   ├── swsets.yaml  # YAML definitions for the software sets
+    ├── easybuild/
+    │   ├── easyblocks/  # git subtree for Easyblocks
+    │   ├── easyconfigs/ # git subtree for Easyconfigs
+    │   ├── framework/   # git subtree for EasyBuild framework
+    └─  └── wiki/        # git subtree for the wiki
+</code></pre>
+<p>Default value:</p>
+<pre><code>  | Variable   | value            |
+  |------------+------------------+
+  | `$srcpath` | $HOME/.resif/src |
+</code></pre>
+<p><strong>See also</strong>: <a href="../layout-and-versioning">Layout and Versioning</a></p>
+<h3 id="configuration-file-configfile">Configuration file <code>$configfile</code></h3>
+<p>Path to a configuration file that defines several options to use instead of the default ones.</p>
+<p>The syntax to follow is from YAML and is the following:  </p>
+<pre><code class="yaml">option_name: option_value
+</code></pre>
+
+<p>Except for <code>$swsets</code> for which the syntax is:  </p>
+<pre><code class="yaml">swsets:
+    - value1
+    - value2
+</code></pre>
+
+<p>To find information on the available option names and possible values, see the <a href="https://gitlab.uni.lu/modules/infrastructure/wikis/Command-line-interface">corresponding page</a> of the documentation.</p>
+<h3 id="software-set-to-deploy-swsets">Software set to deploy <code>$swsets</code></h3>
+<p>Management of software / module sets for which different policies applies, at least:</p>
+<ul>
+<li><code>core</code>: set of software present by default, which deserve a special attention (automatic software testing reported on Cdash, etc.)</li>
+<li><code>ulhpc</code>: in addition to core, all built software availaible to the users of the <a href="http://hpc.uni.lu">UL HPC platform</a>.</li>
+</ul>
+<p>In practice, each software set is assigned a dedicated section of the YAML configuration file <code>software_sets.yaml</code> precising the software it holds, for instance:</p>
+<pre><code class="yaml">core:
+  - GCC-4.8.1.eb
+  - GCC-4.9.1.eb
+ulhpc:
+  - GCC-4.8.2.eb
+</code></pre>
+
+<p>We can imagine to extend the notion of software sets to match the expectations of a given research group in terms of software to be used on the platform, prior to its addition to the <code>core</code> set.</p>
+<p>Default value:</p>
+<pre><code>  | Variable | value |
+  |----------+-------+
+  | $swsets  | core  |
+</code></pre>
+<h3 id="module-naming-scheme-mns">Module Naming Scheme <code>$mns</code></h3>
+<p>The module naming scheme affect the way the modules (resp. the software packages) are organized behind the <code>&lt;modulesroot&gt;</code> (resp. the <code>&lt;packageroot&gt;</code>) directory.
+In particular, they are installed in  their own subdirectory following the active module naming scheme, which can be one of the following:</p>
+<pre><code>  | Naming Scheme   | Software package/Modulefiles subdirectory layout            | Example                                 |
+  |-----------------+-------------------------------------------------------------+-----------------------------------------|
+  | EasyBuildMNS    | `&lt;name&gt;/&lt;version&gt;-&lt;toolchain&gt;&lt;versionsuffix&gt;`               | OpenFOAM-2.1.1-goolf-1.4.10             |
+  |                 |                                                             | ABySS-1.3.4-ictce-5.3.0-Python-2.7.3    |
+  | HierarchicalMNS | `&lt;moduleclass&gt;/&lt;toolchain&gt;/&lt;name&gt;/&lt;version&gt;`                | CAE/goolf-2.1.1/OpenFOAM/2.1.1          |
+  |                 |                                                             | Bio/ictce-5.3.0/ABySS/1.3.4             |
+  | ThematicMNS     | `&lt;moduleclass&gt;/&lt;name&gt;/&lt;version&gt;-&lt;toolchain&gt;&lt;versionsuffix&gt;` | Bio/ABySS/1.3.4-ictce-5.3.0-Python-2.7.3|
+  |                 |                                                             | compiler/GCC/4.8.2                      |
+</code></pre>
+<p>Typical toolchains supported on the UL HPC platform includes (see also <code>eb --list-toolchains</code>):</p>
+<ul>
+<li><code>goalf</code>: GCC, OpenMPI, ATLAS, ScaLAPACK, FFTW,</li>
+<li><code>goolf</code>: as above, yet with OpenBLAS replacing ATLAS</li>
+<li><code>goolfc</code>: as above, with CUDA</li>
+<li><code>ictce</code>:  Intel Cluster Studio components with Intel Compilers, iMPI stack, iMKL</li>
+</ul>
+<p>Default value:</p>
+<pre><code>  | Variable | value       |
+  |----------+-------------+
+  | $mns     | ThematicMNS |
+</code></pre>
+<h3 id="build-mode-buildmode">Build mode <code>$buildmode</code></h3>
+<p><strong>Not yet implemented.</strong></p>
+<p>The way the software package are built, <em>i.e.</em> either locally (<code>local</code>) or via job submission on the platform (<code>job</code>). Default value:</p>
+<pre><code>  | Variable   | value |
+  |------------+-------+
+  | $buildmode | local |
+</code></pre>
+<h3 id="application-root-directory-apps_root">Application Root directory <code>$apps_root</code></h3>
+<p>The root directory hosting both the software package and the corresponding modules. Default value:</p>
+<pre><code>  | Variable   | value              |
+  |------------+--------------------|
+  | $apps_root | $HOME/.local/resif |
+</code></pre>
+<h3 id="resif-branch-branch">RESIF branch <code>$branch</code></h3>
+<p>The branch to use for all the files considering RESIF. By default, it is the one pointed by the HEAD.</p>
+<h3 id="release-to-deploy-release-and-corresponding-sub-directory-releasedir">Release to deploy <code>$release</code> and corresponding sub-directory <code>$releasedir</code></h3>
+<p>For all deploying situations, we wish to force the specification of a specific <em>release</em> to consider corresponding to any valid git tag / commit / branch of the <code>$srcpath</code> repository with the following convention:</p>
+<ul>
+<li>if <code>$release == HEAD</code>, then deploy under the sub-directory named with the current branch <em>i.e.</em> <code>&lt;branch&gt;/v&lt;MAJOR&gt;.&lt;MINOR&gt;</code></li>
+<li>if <code>$release</code> correspond to a tag, try to find it in the git branch (<code>production</code> most probably), then deploy under the sub-directory <code>tag/&lt;tag&gt;</code></li>
+<li>otherwise, <code>$release</code> shall corresponds to a commit sha1. Use it as reference and deploy it under the sub-directory <code>commit/&lt;sha1&gt;</code></li>
+</ul>
+<p>Default value:</p>
+<pre><code>  | Variable    | value                            |
+  |-------------+----------------------------------|
+  | $release    | HEAD                             |
+  | $releasedir | &lt;branch&gt;/v&lt;major&gt;.&lt;minor&gt;-date&gt; |
+</code></pre>
+<p><em>Ex</em>: <code>production/v0.6</code> </p>
+<h3 id="root-installation-directory-rootinstall">Root installation directory <code>$rootinstall</code></h3>
+<p>Place holder for all installation. Default value:</p>
+<pre><code>  | Variable     | value                    |
+  |--------------+--------------------------|
+  | $rootinstall | &lt;apps_root&gt;/&lt;releasedir&gt; |
+</code></pre>
+<p><em>Ex</em>: <code>/opt/apps/production/v0.6-20141117</code></p>
+<h3 id="install-directory-installdir">Install directory <code>$installdir</code></h3>
+<p>When using the <code>build</code> sub-command, if you don't want to install your software in the rootinstall (adding them to the already existing installation), you can specify this variable.<br />
+The softwares will be installed in the path given, e.g in <code>&lt;installdir&gt;/modules</code> and <code>&lt;installdir&gt;/software</code>.</p>
+<h3 id="sources-path-eb_sourcepath">Sources path <code>$eb_sourcepath</code></h3>
+<p>The directory in which EasyBuild looks for software source and install files.</p>
+<p>Default value:</p>
+<pre><code>  | Variable        | value                         |
+  |-----------------+-------------------------------+
+  | $eb_sourcepath  | &lt;rootinstall&gt;/.ebdirs/sources |
+</code></pre>
+<h3 id="build-path-eb_buildpath">Build path <code>$eb_buildpath</code></h3>
+<p>Each software package is (by default) built in a subdirectory of the specified buildpath under <code>&lt;name&gt;/&lt;version&gt;/&lt;toolchain&gt;&lt;versionsuffix&gt;</code></p>
+<p>Using <code>/dev/shm</code> as build path can significantly speed up builds, if it is available and provides a sufficient amount of space.</p>
+<p>Default value:</p>
+<pre><code>  | Variable      | value                       |
+  |---------------+-----------------------------+
+  | $eb_buildpath | &lt;rootinstall&gt;/.ebdirs/build |
+</code></pre>
+<h3 id="repository-and-repository-path-eb_repository-eb_repositorypath">Repository and repository path <code>$eb_repository</code> <code>$eb_repositorypath</code></h3>
+<p><code>$eb_repository</code>: The type of repository that is going to be used to store the easyconfig files of the successfully installed software.<br />
+<code>$eb_repositorypath</code>: The path to this repository and depending of the type repostiry chosen, you can also specify a subdirectory in which store the files inside the repository (see below).</p>
+<p>Different configurations possible:<br />
+- Flat file repository:<br />
+<code>$eb_repository = FileRepository</code><br />
+<code>$eb_repositorypath = &lt;path&gt;</code><br />
+where <path> is the path to a directory in which to store the files.
+- Git repository:<br />
+<code>$eb_repository = GitRepository</code><br />
+<code>$eb_repositorypath = &lt;path&gt;,&lt;subdir&gt;</code><br />
+where <path> is the path to the git repository (can be an url) and <subdir> is optional and defines a subdirectory in the git repository in which to store the files.
+- SVN repository:<br />
+<code>$eb_repository = SvnRepository</code><br />
+<code>$eb_repositorypath = &lt;path&gt;,&lt;subdir&gt;</code><br />
+where <path> is the path to the svn repository (can be an url) and <subdir> is optional and defines a subdirectory in the svn repository in which to store the files.</p>
+<p>If you add the <code>&lt;subdir&gt;</code>, do not put any spaces between the two fields (e.g: /path/to/repo,path/to/subdir and not /path/to/repo, path/to/subdir) as it is considered as a single value, not two separate
+ones.</p>
+<p>Note that to work properly, the SvnRepository and the GitRepository require some tools that are not installed by default. (See EasyBuild documentation for more details)</p>
+<p>Default values:</p>
+<pre><code>  | Variables          | values                        |
+  |--------------------+-------------------------------+
+  | $eb_repository     | FileRepository                |
+  | $eb_repositorypath | &lt;rootinstall&gt;/.ebdirs/eb_repo |
+</code></pre>
+<h3 id="admin-mode-out_place">Admin mode <code>$out_place</code></h3>
+<p>If set to <code>True</code>,  this will change the behavior of the <code>build</code> subcommand so that the EasyBuild files (sources, builds, easyconfigs repository) are going to be put inside the rootinstall (in the <code>.ebdirs</code> subdirectory).<br />
+<strong>Note</strong> that it doesn't concern the modules and software files. Where you put these ones depends on the <code>$rootinstall</code> and the <code>$installdir</code> variables.</p>
+<p>The new values are then:</p>
+<pre><code>  | Variables          | values                                |
+  |--------------------+---------------------------------------|
+  | $eb_sourcepath     | $HOME/.resif/v&lt;version&gt;-&lt;date&gt;/sources |
+  | $eb_buildpath      | $HOME/.resif/v&lt;version&gt;-&lt;date&gt;/build   |
+  | $eb_repositorypath | $HOME/.resif/v&lt;version&gt;-&lt;date&gt;/eb_repo |
+</code></pre>
+<p>Note that all of this is overriden by the other options managing these variables (the EASYBUILD environement variables in particular)</p>
+<h3 id="overwrite-flag-overwrite">Overwrite flag <code>$overwrite</code></h3>
+<p>If set to <code>True</code>, RESIF will remove any existing file at the location you want to make the install. If set to <code>False</code>, RESIF will stop its execution and throw an error message if it find existing files at the install location.</p>
+</div>
+            
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+
+        
+
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/prettify-1.0.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script src="../js/base.js"></script>
+    </body>
+</html>

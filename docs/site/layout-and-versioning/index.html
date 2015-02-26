@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+        <title>Layout and versioning - My Docs</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">My Docs</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="../Command-line-interface">Command line interface</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../Lmod-install">Lmod install</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../home">Home</a>
+                    </li>
+                
+                
+                
+                    <li class="active">
+                        <a href=".">Layout and versioning</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../overview">Overview</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../variables">Variables</a>
+                    </li>
+                
+                
+                </ul>
+            
+
+            
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                
+                
+                <li >
+                    <a rel="next" href="../home">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../overview">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                
+            </ul>
+            
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#directory-git-modules-layout-and-versioning">Directory / git / Modules  Layout and Versioning</a></li>
+        
+            <li><a href="#source-repository-layout">Source Repository Layout</a></li>
+        
+            <li><a href="#releasing-mechanism">Releasing mechanism</a></li>
+        
+            <li><a href="#installed-apps-directory-layout">Installed Apps Directory Layout</a></li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<p>-<em>- mode: markdown; mode: visual-line; fill-column: 80 -</em>-
+<code>layout-and-versioning.markdown</code></p>
+<p>Copyright (c) 2014 <a href="mailto:Sebastien.Varrette@uni.lu">Sebastien Varrette</a> </p>
+<pre><code>    Time-stamp: &lt;Lun 2014-11-17 01:17 svarrette&gt;
+</code></pre>
+<hr />
+<h1 id="directory-git-modules-layout-and-versioning">Directory / git / Modules  Layout and Versioning</h1>
+<h2 id="source-repository-layout">Source Repository Layout</h2>
+<p>The layout of the source repository reflects the topology detailed in the <a href="../variables">Variables page</a>.</p>
+<pre><code> &lt;srcpath&gt;.
+    ├── ... 
+    ├── VERSION          # current release of the repository
+    ├── bin/             # hold some script files (Custom Module Naming scheme and bash completion script)
+    ├── config/          # hold configurations
+    ├── easybuild/       # Git subtrees for EB
+    ├── ...
+</code></pre>
+<p><strong>See also</strong> Top Source path <code>$srcpath</code> in <a href="../variables">Variables</a></p>
+<h2 id="releasing-mechanism">Releasing mechanism</h2>
+<p>A <a href="http://semver.org/">semantic versioning</a> approach is enforced, the current version being stored on the <code>VERSION</code> file at the root of the <a href="https://gitlab.uni.lu/modules/infrastructure/">module-infrastructure</a> repository.
+In this context, a version number have the following format:</p>
+<pre><code>  &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;
+</code></pre>
+<p>where:</p>
+<ul>
+<li><code>&lt; major &gt;</code> corresponds to the major version number</li>
+<li><code>&lt; minor &gt;</code> corresponds to the minor version number</li>
+<li><code>&lt; patch &gt;</code> corresponds to the patching version number</li>
+</ul>
+<p>Example: <code>0.1.5</code></p>
+<blockquote>
+<p>Again, the current version number is stored in the file <code>VERSION</code>.
+<strong>/!\ NEVER MAKE ANY MANUAL CHANGES TO THIS FILE</strong></p>
+</blockquote>
+<p>For more information on the version, run:</p>
+<pre><code> $&gt; rake version:info
+</code></pre>
+<h3 id="releasing-policy">Releasing policy</h3>
+<ul>
+<li>
+<p>MAJOR version increments when incompatible changes applies.
+This includes for instance</p>
+<ul>
+<li>any major change in the <a href="http://hpc.uni.lu">UL HPC platform</a>  that render the provided software useless or with limited performance (<em>ex:</em> introduction of a new interconnect technology / topology etc.)</li>
+<li>a new major release of <a href="http://hpcugent.github.io/easybuild/">Easybuild</a></li>
+</ul>
+</li>
+<li>
+<p>MINOR version increments when functionalities are provided in a backwards-compatible manner.
+This includes for instance:</p>
+<ul>
+<li>a new minor release of <a href="http://hpcugent.github.io/easybuild/">Easybuild</a></li>
+<li>adding a new software to the <code>core</code> software set (implying the testing framework reported on <a href="http://cdash.uni.lu/index.php?project=UL-HPC-Testing">CDash</a>)</li>
+</ul>
+</li>
+<li>
+<p>PATCH version increments when backwards-compatible bug fixes / changes are provided.
+This includes for instance:</p>
+<ul>
+<li>adding a new missing software to the <code>ulhpc</code> software set</li>
+</ul>
+</li>
+</ul>
+<p>For the sake of simplicity, <strong>only the Major and Minor release lead to a new root directory (named v.X.Y) in the environment modules directory layout</strong>.
+In particular, any patch release <code>X.Y.Z</code> is applied into the existing <code>X.Y</code> environment modules hierarchy.</p>
+<h3 id="modules-directory-layout-vs-releasing">Modules Directory layout vs. Releasing</h3>
+<p>The below layout applies below <code>$appsroot</code> (see <a href="../variables">Variable</a>), <em>i.e.</em> <code>/opt/apps</code> in the below examples. </p>
+<h3 id="git-layout-vs-releasing">Git layout vs. Releasing</h3>
+<p><strong>All associated operations are automated by a set of tasks within the <code>Rakefile</code></strong> (see <code>rake -T</code> and all the tasks <code>rake {git,version}:*</code>)</p>
+<p>The Git branching model for the repository follows the guidelines of <a href="http://nvie.com/posts/a-successful-git-branching-model/">gitflow</a> -- see this <a href="http://blog.jessitron.com/2012/07/skinny-on-git-flow.html">tutorial</a> for instance.
+The full workflow is illustrated in the below image:</p>
+<p><img alt="Gitflow workflow" src="https://www.atlassian.com/git/images/tutorials/collaborating/comparing-workflows/gitflow-workflow/01.svg" /> </p>
+<p>In particular, the central repository holds two main <strong>immortal</strong> branches with an infinite lifetime:</p>
+<ul>
+<li>
+<p><code>production</code> (<em>blue</em>):  the <em>production-ready</em> branch. Every commit on this branch is a release version, and thus is tagged with its version number. Also, this is a <a href="https://gitlab.uni.lu/modules/infrastructure/protected_branches">protected branch</a>, meaning it is designed to:</p>
+<ul>
+<li>prevent push for all except masters.</li>
+<li>prevent branch from force push</li>
+<li>prevent branch from removal</li>
+</ul>
+</li>
+<li>
+<p><code>devel</code> (<em>violet</em>): the main branch where the latest developments intervene. Features will be merged in here. This is the <em>default</em> branch you get when you clone the repository.</p>
+</li>
+</ul>
+<p>In parallel, <a href="http://nvie.com/posts/a-successful-git-branching-model/">gitflow</a> allows for three species of <strong>mortal</strong> branches that come and go:</p>
+<ul>
+<li>
+<p><code>release/v.X.Y.Z</code> (<em>cyan</em>): Release branches, initiated from the <code>devel</code> branch upon invocation of the command <code>rake version:bump:{major,minor,patch}</code>, which will start the releasing process for you using <code>git-flow</code>.</p>
+<ul>
+<li><code>v.X.Y.Z</code> corresponds to the <strong>exact release version</strong>, in particular the <code>devel</code> branch remain in the previous version until the merge and the release is effective (see below)</li>
+<li>finishing the release is performed via <code>rake version:release</code>. This will merges back the commits into the <code>production</code> (resp. the <code>devel</code>) branch, create a new tag and push remotely all changes. Also, the release branch will be deleted.</li>
+</ul>
+</li>
+<li>
+<p><code>feature/&lt;name&gt;</code> (<em>green</em>): any new functionality that will be include several commits, initiated from the <code>devel</code> branch upon invocation of the command <code>rake git:feature:start[name]</code> (or <code>git flow feature start &lt;name&gt;</code>). </p>
+<ul>
+<li>this branch is local, you might want to publish it remotely using <code>git flow feature publish &lt;name&gt;</code>, allowing your colleagues can grab and track it using <code>git flow feature track &lt;name&gt;</code></li>
+<li>finishing the feature is performed via <code>rake git:feature:finish</code> (or <code>git flow feature finish &lt;name&gt;</code>). This will merge back the commits back into the <code>devel</code> branch. The feature branch is deleted.</li>
+</ul>
+</li>
+<li>
+<p><code>hotfix/v.X.Y.Z</code> (<em>white</em>):  this branches off the <code>production</code> branch, and allow fixes to wind up in a new production release.</p>
+<ul>
+<li><code>v.X.Y.Z</code> corresponds to the <strong>next release version</strong>, in particular the <code>production</code> branch (and thus the <code>devel</code> one) remain in the previous version until the merge and the hotfix is effective (see below)</li>
+<li>finishing a hotfix is performed via <code>git flow hotfix finish X.Y.Z</code>.This will merges back the commits into the <code>production</code> (resp. the <code>devel</code>) branch, create a new tag.</li>
+<li><strong>TODO [SV]</strong> complete Rakefile task for that</li>
+</ul>
+</li>
+</ul>
+<h2 id="installed-apps-directory-layout">Installed Apps Directory Layout</h2>
+<p>Upon installation in <code>&lt;appsroot&gt;</code> (<em>i.e.</em> <code>/opt/apps</code> by default assuming an admin role), we expect to have the following layout: </p>
+<pre><code> &lt;appsroot&gt;.
+     ├── commit
+     │   └── ecb532e-20141003
+     ├── devel
+     ├── production
+     │   ├── v0.5 -&gt; v0.5-20140211
+     │   ├── v0.5-20140211
+     │   ├── v0.6 -&gt; v0.6-20140611
+     │   ├── v0.6-20140611
+     │   └── v0.6-20141007
+     ├── stable -&gt; production/v0.6
+     ├── tag
+     │   ├── v0.5.0
+     │   ├── v0.5.1
+     │   └── v0.6.0
+     └── testing
+         ├── hcartiaux
+         ├── jflf
+         ├── svarrette
+         ├── vplugaru
+         └── xbesseron
+</code></pre>
+<p>In particular, the following sub-directories are proposed:</p>
+<ul>
+<li><code>commit/</code>: hosting specific commits</li>
+<li><code>{devel,production}/</code>:  hosting the deployment operated from the <code>devel</code> (resp. the <code>production</code>) branch</li>
+<li><code>stable</code>: a symlink to the current stable release of the platform </li>
+<li><code>tag/</code>: hosting specific tags, listed by their names</li>
+<li><code>testing/</code>: hosting the tested deployments operated by a specific [power] user, <em>i.e.</em> at least the UL HPC sysadmins. </li>
+</ul>
+</div>
+            
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+
+        
+
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/prettify-1.0.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script src="../js/base.js"></script>
+    </body>
+</html>
