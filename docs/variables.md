@@ -129,6 +129,7 @@ In particular, all operations (testing / building / installing) are operated fro
 
 The layout of this directory shall typically reflect the following topology:
 
+<pre>
      <srcpath>.
     ├── Gemfile[.lock]   # bundler stuff
 	  ├── README.md
@@ -142,7 +143,7 @@ The layout of this directory shall typically reflect the following topology:
 	  │   ├── easyconfigs/ # git subtree for Easyconfigs
 	  │   ├── framework/   # git subtree for EasyBuild framework
 	  └─  └── wiki/        # git subtree for the wiki
-
+</pre>
 
 Default value:
 
