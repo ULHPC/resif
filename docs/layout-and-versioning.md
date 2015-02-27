@@ -1,3 +1,12 @@
+-*- mode: markdown; mode: visual-line; fill-column: 80 -*-
+`layout-and-versioning.markdown`
+
+Copyright (c) 2014 [Sebastien Varrette](mailto:Sebastien.Varrette@uni.lu) 
+
+        Time-stamp: <Lun 2014-11-17 01:17 svarrette>
+
+-------------------
+
 # Directory / git / Modules  Layout and Versioning
 
 ## Source Repository Layout

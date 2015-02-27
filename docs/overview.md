@@ -1,3 +1,12 @@
+-*- mode: markdown; mode: visual-line; fill-column: 80 -*-
+`overview.md`
+
+Copyright (c) 2014 [Sebastien Varrette](mailto:<Sebastien.Varrette@uni.lu>) [www]()
+
+        Time-stamp: <Ven 2014-11-14 16:05 svarrette>
+
+-------------------
+
 # Overview and Underlying Tools
 
 ## [Environment Modules](http://modules.sourceforge.net/)
