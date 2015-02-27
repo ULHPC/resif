@@ -107,10 +107,12 @@ If you want to use forks coming from several sources, you can provide directly t
 
 Note that you can combine this method with the previous one, taking into consideration that the git repository that will be given with this method will be prefered over the first one. E.g if you provide hpcugent as the gh-ebuser and the URL to the ULHPC fork of the easyconfig repository, you will in the end use the framework and the easyblocks from the hpcugent GitHub repositories and the easyconfigs from the ULHPC fork of this repository.
 
-You can specify the branch from the given repository either by using the variables described below (`$branch_ebframework`) and so on) or by using the following syntax for in the current variables:  
-`'url|branch'`  
-which in an example would look like that:  
-`'https://github.com/hpcugent/easybuild-framework|master'`  
+You can specify the branch from the given repository either by using the variables described below (`$branch_ebframework`) and so on) or by using the following syntax for in the current variables:
+
+    'url|branch'
+which in an example would look like that:
+
+    'https://github.com/hpcugent/easybuild-framework|master'
 for the framework part.  
 Note that if you use this syntax you have to use the single quotes `''` or the double quotes `""` or else it won't work.
 

@@ -112,7 +112,8 @@ In parallel, [gitflow](http://nvie.com/posts/a-successful-git-branching-model/) 
 
 ## Installed Apps Directory Layout 
 
-Upon installation in `<appsroot>` (_i.e._ `/opt/apps` by default assuming an admin role), we expect to have the following layout: 
+Upon installation in `<appsroot>` (_i.e._ `/opt/apps` by default assuming an admin role), we expect to have the following layout:
+
 <pre>
 $appsroot
 ├── commit
@@ -135,6 +136,7 @@ $appsroot
 	├── svarrette
 	├── vplugaru
 	└── xbesseron
+</pre>
 
 In particular, the following sub-directories are proposed:
 

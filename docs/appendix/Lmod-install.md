@@ -6,7 +6,9 @@ This document provides indications to follow in order to install Lmod on CentOS 
 
 ## Install on CentOS
 
-**Prerequisites:** You need to have the EPEL testing repositories in the sources list. (Do not enable it by default): `` yum install epel-release -y ``
+**Prerequisites:** You need to have the EPEL testing repositories in the sources list. (Do not enable it by default):
+
+    yum install epel-release -y
 
 Then install the Lmod package using this repo:
 
