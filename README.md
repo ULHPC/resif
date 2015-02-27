@@ -9,7 +9,7 @@ Copyright (c) 2014 [Sebastien Varrette](mailto:<Sebastien.Varrette@uni.lu>) [www
 
 # RESIF command line interface
 
-[![Documentation Status](https://readthedocs.org/projects/resif-pypi/badge/?version=latest)](https://readthedocs.org/projects/resif-pypi/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/resif-pypi/badge/)](https://readthedocs.org/projects/resif-pypi/?badge=latest)
 
 ## Overview
 
