@@ -130,7 +130,7 @@ In particular, all operations (testing / building / installing) are operated fro
 The layout of this directory shall typically reflect the following topology:
 
      <srcpath>.
-	    ├── Gemfile[.lock]   # bundler stuff
+    ├── Gemfile[.lock]   # bundler stuff
 	  ├── README.md
 	  ├── Rakefile         # main rakefile 
 	  ├── VERSION          # current release of the repository
