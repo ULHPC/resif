@@ -58,7 +58,7 @@ Set this variable to a Git URL or path to use another infractructure repository 
 
         | Variable          | value                       |
         |-------------------+-----------------------------|
-        | $git_architecture | httpsgithub.comULHPCmodules |
+        | $git_architecture | https:github.comULHPCmodules |
 
 To learn more about this architecture repository (and learn how to create your own, fitting your needs), go to the [layout and versioning page](https://gitlab.uni.lu/modules/infrastructure/wikis/layout-and-versioning).
 
