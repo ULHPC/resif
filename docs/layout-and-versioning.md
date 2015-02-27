@@ -1,5 +1,5 @@
 -*- mode: markdown; mode: visual-line; fill-column: 80 -*-
-`layout-and-versioning.markdown`
+`layout-and-versioning.md`
 
 Copyright (c) 2014 [Sebastien Varrette](mailto:Sebastien.Varrette@uni.lu) 
 
@@ -11,7 +11,7 @@ Copyright (c) 2014 [Sebastien Varrette](mailto:Sebastien.Varrette@uni.lu)
 
 ## Source Repository Layout
 
-The layout of the source repository reflects the topology detailed in the [Variables page](variables.markdown).
+The layout of the source repository reflects the topology detailed in the [Variables page](variables.md).
 
      <srcpath>.
 	    ├── ... 
@@ -21,7 +21,7 @@ The layout of the source repository reflects the topology detailed in the [Varia
 		├── easybuild/       # Git subtrees for EB
 	    ├── ... 
 
-__See also__ Top Source path `$srcpath` in [Variables](variables.markdown)
+__See also__ Top Source path `$srcpath` in [Variables](variables.md)
 
 ## Releasing mechanism
 
@@ -66,7 +66,7 @@ In particular, any patch release `X.Y.Z` is applied into the existing `X.Y` envi
 
 ### Modules Directory layout vs. Releasing
 
-The below layout applies below `$appsroot` (see [Variable](variables.markdown)), _i.e._ `/opt/apps` in the below examples. 
+The below layout applies below `$appsroot` (see [Variable](variables.md)), _i.e._ `/opt/apps` in the below examples. 
 
 
 

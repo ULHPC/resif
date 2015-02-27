@@ -150,7 +150,7 @@ Default value:
       |------------+------------------+
       | `$srcpath` | $HOME/.resif/src |
 
-__See also__: [Layout and Versioning](layout-and-versioning.markdown)
+__See also__: [Layout and Versioning](layout-and-versioning.md)
 
 ### Configuration file `$configfile`
 
