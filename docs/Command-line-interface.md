@@ -30,7 +30,9 @@ See the other pages of this documentation for [more details about these tools](h
 #### With root permissions
 
 Simply use the following command:  
-`pip install resif`
+```
+pip install resif
+```
 
 You can now start use the command, see below for more information.
 
