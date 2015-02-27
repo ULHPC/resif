@@ -1,1 +1,8 @@
-site_name: My Docs
+site_name: RESIF Documentation
+repo_url: https://github.com/sylmarien/RESIF-PyPi
+pages:
+- ['index.md', 'Introduction']
+- ['overview.md', 'Overview and Underlying tools']
+- ['variables.md', 'Variables']
+- ['Command-line-interface.md', 'Command-line Interface']
+- ['Lmod-install.md', 'Lmod Installation']
