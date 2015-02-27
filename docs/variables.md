@@ -130,19 +130,19 @@ In particular, all operations (testing / building / installing) are operated fro
 The layout of this directory shall typically reflect the following topology:
 
 <pre>
-     <srcpath>.
+  $srcpath.
     ├── Gemfile[.lock]   # bundler stuff
-	  ├── README.md
-	  ├── Rakefile         # main rakefile 
-	  ├── VERSION          # current release of the repository
-	  ├── bin/             # hold the scripts piloting all operations
-	  ├── config/          # hold configurations
-	  │   ├── swsets.yaml  # YAML definitions for the software sets
-	  ├── easybuild/
-	  │   ├── easyblocks/  # git subtree for Easyblocks
-	  │   ├── easyconfigs/ # git subtree for Easyconfigs
-	  │   ├── framework/   # git subtree for EasyBuild framework
-	  └─  └── wiki/        # git subtree for the wiki
+	├── README.md
+  ├── Rakefile         # main rakefile 
+  ├── VERSION          # current release of the repository
+  ├── bin/             # hold the scripts piloting all operations
+  ├── config/          # hold configurations
+  │   ├── swsets.yaml  # YAML definitions for the software sets
+  ├── easybuild/
+  │   ├── easyblocks/  # git subtree for Easyblocks
+  │   ├── easyconfigs/ # git subtree for Easyconfigs
+  │   ├── framework/   # git subtree for EasyBuild framework
+  └─  └── wiki/        # git subtree for the wiki
 </pre>
 
 Default value:
