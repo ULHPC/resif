@@ -6,4 +6,4 @@ pages:
 - ['layout-and-versioning.md', 'Layout and Versioning']
 - ['variables.md', 'Variables']
 - ['Command-line-interface.md', 'Command-line Interface']
-- ['Lmod-install.md', 'Lmod Installation']
+- ['about/Lmod-install.md', 'Appendix', 'Lmod Installation']
