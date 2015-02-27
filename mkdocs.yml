@@ -3,6 +3,7 @@ repo_url: https://github.com/sylmarien/RESIF-PyPi
 pages:
 - ['index.md', 'Introduction']
 - ['overview.md', 'Overview and Underlying tools']
+- ['layout-and-versioning.md', 'Layout and Versioning']
 - ['variables.md', 'Variables']
 - ['Command-line-interface.md', 'Command-line Interface']
 - ['Lmod-install.md', 'Lmod Installation']
