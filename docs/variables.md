@@ -16,7 +16,7 @@ Here are all the variables that can be set, followed by their descriptions.
 
       | Variable                | Description                                        | Default (if any)                   |
       |-------------------------+----------------------------------------------------+------------------------------------|
-      | `$git_architecture`     | Git URL/path for your architecture repository      | `https://github.com/ULHPC/modules` |
+      | `$git_architecture`     | Git URL/path for your architecture repository      | 'https://github.com/ULHPC/modules' |
       | `$ebuser`               | User operating the process                         | `whoami`                           |
       | `$ebgroup`              | Group                                              |                                    |
       | `$gh_ebuser`            | (opt.) Github user ['hpcugent','ULHPC']            |                                    |
@@ -131,17 +131,17 @@ The layout of this directory shall typically reflect the following topology:
 
      <srcpath>.
 	    ├── Gemfile[.lock]   # bundler stuff
-		  ├── README.md
-		  ├── Rakefile         # main rakefile 
-		  ├── VERSION          # current release of the repository
-		  ├── bin/             # hold the scripts piloting all operations
-		  ├── config/          # hold configurations
-		  │   ├── swsets.yaml  # YAML definitions for the software sets
-		  ├── easybuild/
-		  │   ├── easyblocks/  # git subtree for Easyblocks
-		  │   ├── easyconfigs/ # git subtree for Easyconfigs
-		  │   ├── framework/   # git subtree for EasyBuild framework
-		  └─  └── wiki/        # git subtree for the wiki
+	  ├── README.md
+	  ├── Rakefile         # main rakefile 
+	  ├── VERSION          # current release of the repository
+	  ├── bin/             # hold the scripts piloting all operations
+	  ├── config/          # hold configurations
+	  │   ├── swsets.yaml  # YAML definitions for the software sets
+	  ├── easybuild/
+	  │   ├── easyblocks/  # git subtree for Easyblocks
+	  │   ├── easyconfigs/ # git subtree for Easyconfigs
+	  │   ├── framework/   # git subtree for EasyBuild framework
+	  └─  └── wiki/        # git subtree for the wiki
 
 
 Default value:
