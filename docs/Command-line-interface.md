@@ -123,8 +123,6 @@ Commands:
                      to install the software sets.
   count              count the number of installed softwares which name
                      contains a given pattern.
-  getloadme          Return the path to the LOADME file for a given
-                     installation.
   init               Initialize the git repository in the srcpath.
   show               Show all the installed softwares which name contains a
                      given pattern.
@@ -144,7 +142,6 @@ This documentation is divided in three parts, corresponding to the three main co
 - [show](#show)
 - [buildtimeswset](#buildtimeswset)
 - [buildtimesoftware](#buildtimesoftware)
-- [getloadme](#getloadme)
 - [bootstrap](#bootstrap)
 - [build](#build)
 - [cleaninstall](#cleaninstall)
@@ -280,24 +277,6 @@ Options:
 
 Default behavior:  
 The `resif buildtimesoftware core sample` command will return the build durations of all the versions of the "sample" software that are installed as a part of the "core" software set.
-
-### getloadme
-
-Usage:
-
-    resif getloadme [OPTIONS] ROOTINSTALL
-      [ROOTINSTALL] TEXT          Path to the installation you want to activate.
-
-```
-Options:
-  --out-place                     Set this option if you want your modifications to be put
-                                  outside of the installation directory (They will be put in a
-                                  dedicated directory in $HOME/.resif instead).
-  --help                          Show this message and exit.
-```
-
-Default behavior:  
-The `resif getloadme rootinstall` command will return (if exists) the LOADME file to activate the given installation at `rootinstall`.
 
 ### Bootstrap
 
