@@ -9,6 +9,8 @@ Copyright (c) 2014 [Sebastien Varrette](mailto:<Sebastien.Varrette@uni.lu>) [www
 
 # RESIF command line interface
 
+[![Documentation Status](https://readthedocs.org/projects/resif-pypi/badge/?version=latest)](https://readthedocs.org/projects/resif-pypi/?badge=latest)
+
 ## Overview
 
 This page explains in a first part how to [install the resif script](#installation-of-the-command-line-interface-cli), in a second part [how to use this script](#usage-of-the-cli) and in a third part exposes [some alternative methods to change the configuration](#alternative-configuration-methods).
