@@ -39,61 +39,76 @@ You can now start use the command, see below for more information.
 #### Without root permissions
 
 Use the following command to install the command:    
-`pip install --install-option="--prefix=$HOME/.local" resif`  
+
+    pip install --install-option="--prefix=$HOME/.local" resif
+  
 Note that you can replace `$HOME/.local` by anything you want as long as you have all the right for this location, just modify the following commands accordingly.
 
-Add then `$HOME/.local/bin` to you path to make the command accessible:  
-`export PATH=$PATH:$HOME/.local/bin`  
-and `$HOME/.local/lib/python2.7/site-packages` to your pythonpath so that the command's dependencies are accessible:  
-`export PYTHONPATH=$PYTHONPATH:$HOME/.local/lib/python2.7/site-packages`  
+Add then `$HOME/.local/bin` to you path to make the command accessible:
+
+    export PATH=$PATH:$HOME/.local/bin
+and `$HOME/.local/lib/python2.7/site-packages` to your pythonpath so that the command's dependencies are accessible:
+
+    export PYTHONPATH=$PYTHONPATH:$HOME/.local/lib/python2.7/site-packages
 Note that in this last path, the part `python2.7` may change depending on the python version you use on your computer. Just modify the previous path accordingly to what is actually present in your tree at this point.
 
 ### Installation from git
 
 #### With root permissions
 
-Clone the git repository:  
-`git clone https://github.com/sylmarien/RESIF-PyPi.git`
+Clone the git repository:
 
-Then go to in this directory and type the following command to install the script:  
-`python setup.py sdist && pip install dist/*`
+    git clone https://github.com/sylmarien/RESIF-PyPi.git
+
+Then go to in this directory and type the following command to install the script:
+
+    python setup.py sdist && pip install dist/*
 
 #### Without root permissions
 
-Clone the git repository:  
-`git clone https://github.com/sylmarien/RESIF-PyPi.git`
+Clone the git repository:
 
-Then go to in this directory directory and type the following command to install the script:  
-`python setup.py sdist && pip install --install-option="--prefix=$HOME/.local" dist/*`  
+    git clone https://github.com/sylmarien/RESIF-PyPi.git
+
+Then go to in this directory directory and type the following command to install the script:
+
+    python setup.py sdist && pip install --install-option="--prefix=$HOME/.local" dist/*
 Note that you can replace `$HOME/local` by anything you want as long as you have all the right for this location, just modify the following commands accordingly.
 
-Add then `$HOME/.local/bin` to you path:  
-`export PATH=$PATH:$HOME/.local/bin`  
-and `$HOME/.local/lib/python2.7/site-packages` to your pythonpath:  
-`export PYTHONPATH=$PYTHONPATH:$HOME/.local/lib/python2.7/site-packages`  
+Add then `$HOME/.local/bin` to you path:
+
+    export PATH=$PATH:$HOME/.local/bin
+and `$HOME/.local/lib/python2.7/site-packages` to your pythonpath:
+
+    export PYTHONPATH=$PYTHONPATH:$HOME/.local/lib/python2.7/site-packages
 Note that in this last path, the part `python2.7` may change depending on the python version you use on your computer. Just modify the previous path accordingly to what is actually present in your tree at this point.
 
 ### Bash completion
 
-Then, for more comfort, activate the bash auto-completion for the module:  
-`eval "$(_RESIF_COMPLETE=source resif)"`
+Then, for more comfort, activate the bash auto-completion for the module:
 
-Since this has to be done each time you launch a new terminal, you may want to create an activation script:  
-`_RESIF_COMPLETE=source resif > resif-complete.sh`  
-Then you'll just source this file to activate the bash completion (still each time you launch a new terminal):  
-`source resif-complete.sh`  
+    eval "$(_RESIF_COMPLETE=source resif)"
+
+Since this has to be done each time you launch a new terminal, you may want to create an activation script:
+
+    _RESIF_COMPLETE=source resif > resif-complete.sh
+Then you'll just source this file to activate the bash completion (still each time you launch a new terminal):
+
+    source resif-complete.sh
 If you want to always have the bash completion, put this file in your `/etc/bash_completion.d` directory (requires root access).
 
 ### Full bootstrap (Obsolete)
 
-If all you want is to replicate the architecture on the clusters but on your computer (requires root permissions), just execute the following command:  
-`bash <(curl https://raw.githubusercontent.com/ULHPC/modules/develop/binscripts/bootstrap.sh)`  
+If all you want is to replicate the architecture on the clusters but on your computer (requires root permissions), just execute the following command:
+
+    bash <(curl https://raw.githubusercontent.com/ULHPC/modules/develop/binscripts/bootstrap.sh)
 It will clone the modules repository in the default place (`$HOME/.resif/src`), install the script and execute the `resif cleaninstall` command, installing EasyBuild and the core set of softwares at the default place (`$HOME/.local/resif`).
 
 ### Check the installation
 
-Let's just check that the installation has been done properly, try this command:  
-`resif`  
+Let's just check that the installation has been done properly, try this command:
+
+    resif
 The output should be an help message looking like that:  
 ```
 Usage: resif [OPTIONS] COMMAND [ARGS]...
@@ -145,7 +160,9 @@ This documentation is divided in three parts, corresponding to the three main co
 
 ### Init
 
-Usage: `resif init [OPTIONS]`
+Usage:
+
+    resif init [OPTIONS]
 
 ```
 Options:
@@ -166,7 +183,9 @@ Note that this command must have been executed before using any of the other com
 
 ### Update
 
-Usage: `resif update [OPTIONS]`
+Usage:
+
+    resif update [OPTIONS]
 
 ```
 Options:
@@ -179,7 +198,9 @@ The `resif update` command will update the repository at the default srcpath (e.
 
 ### Wipe
 
-Usage: `resif wipe [OPTIONS]`
+Usage:
+
+    resif wipe [OPTIONS]
 
 ```
 Options:
@@ -194,9 +215,10 @@ The `resif wipe` command will remove all data from the default srcpath (e.g $HOM
 
 ### Count
 
-Usage: `resif count [OPTIONS] CONTENT`
+Usage:
 
-    [CONTENT] TEXT                Text to look for in the names of the installed softwares.
+    resif count [OPTIONS] CONTENT
+      [CONTENT] TEXT              Text to look for in the names of the installed softwares.
 
 ```
 Options:
@@ -213,9 +235,10 @@ The `resif count sample` command will return the number of software installed th
 
 ### Show
 
-Usage: `resif show [OPTIONS] CONTENT`
+Usage:
 
-    [CONTENT] TEXT                Text to look for in the names of the installed softwares.
+    resif show [OPTIONS] CONTENT
+      [CONTENT] TEXT                Text to look for in the names of the installed softwares.
 
 ```
 Options:
@@ -232,9 +255,10 @@ The `resif show sample` command will return the names of the installed software 
 
 ### buildtimeswset
 
-Usage `resif buildtimeswset [OPTIONS] SWSET`
+Usage
 
-    [SWSET] TEXT                  Software set to consider.
+    resif buildtimeswset [OPTIONS] SWSET
+      [SWSET] TEXT                Software set to consider.
 
 ```
 Options:
@@ -249,10 +273,11 @@ The `resif buildtimeswset core` command will return the build durations of all t
 
 ### buildtimesoftware
 
-Usage: `resif buildtimesoftware [OPTIONS] SWSET SOFTWARE`
+Usage:
 
-    [SWSET] TEXT                  Software set to consider.
-    [SOFTWARE] TEXT               Software name to consider.
+    resif buildtimesoftware [OPTIONS] SWSET SOFTWARE
+      [SWSET] TEXT                Software set to consider.
+      [SOFTWARE] TEXT             Software name to consider.
 
 ```
 Options:
@@ -267,9 +292,10 @@ The `resif buildtimesoftware core sample` command will return the build duration
 
 ### getloadme
 
-Usage: `resif getloadme [OPTIONS] ROOTINSTALL`
+Usage:
 
-    [ROOTINSTALL] TEXT            Path to the installation you want to activate.
+    resif getloadme [OPTIONS] ROOTINSTALL
+      [ROOTINSTALL] TEXT          Path to the installation you want to activate.
 
 ```
 Options:
@@ -284,7 +310,9 @@ The `resif getloadme rootinstall` command will return (if exists) the LOADME fil
 
 ### Bootstrap
 
-Usage: `resif bootstrap [OPTIONS]`
+Usage:
+
+    resif bootstrap [OPTIONS]
 
 Options:
 ```
@@ -343,9 +371,10 @@ To use this EasyBuild, just load one of the files starting with LOADME in <rooti
 
 ### Build
 
-Usage: `resif build [OPTIONS] [SWSETS]...`
+Usage:
 
-    [SWSETS] TEXT...              Software sets to deploy.
+    resif build [OPTIONS] [SWSETS]...
+      [SWSETS] TEXT...            Software sets to deploy.
 
 Options:
 ```
@@ -387,9 +416,10 @@ Note that in each case, if you don't have the rights to write in the directory i
 
 ### Cleaninstall
 
-Usage: `resif cleaninstall [OPTIONS] [SWSETS]...`
+Usage:
 
-    [SWSETS] TEXT...                Software set to deploy.
+    resif cleaninstall [OPTIONS] [SWSETS]...
+      [SWSETS] TEXT...            Software set to deploy.
 
 Options:
 ```
