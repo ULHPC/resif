@@ -31,7 +31,7 @@ You can now use Lmod in a version compatible with EasyBuild.
 Eventually replacing _wheezy_ with the name of your release if different.
 2) Install the lmod package using this repository:
    
-   apt-get update
-   apt-get install -y -t sid lmod
+    apt-get update
+    apt-get install -y -t sid lmod
 
 You can now use Lmod in a version compatible with EasyBuild.

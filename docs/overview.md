@@ -27,8 +27,7 @@ The tool in itself is used to manage environment variables such as `PATH`, `LD_L
     | `module purge`                 | Unload all modules (purge)                                   |
     | `module use <path>`            | Prepend the directory to the MODULEPATH environment variable |
     |                                |                                                              |
-	
-	
+
 *Note:* for more information, see the reference man pages for [modules](http://modules.sourceforge.net/man/module.html) and [modulefile](http://modules.sourceforge.net/man/modulefile.html), or the [official FAQ](http://sourceforge.net/p/modules/wiki/FAQ/).
 
 You can also see the following pages on the [UL HPC website](http://hpc.uni.lu/users/):
