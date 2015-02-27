@@ -1,12 +1,3 @@
--*- mode: markdown; mode: visual-line; fill-column: 80 -*-
-`command-line-interface.md`
-
-Copyright (c) 2014 [Sebastien Varrette](mailto:<Sebastien.Varrette@uni.lu>) [www]()
-
-        Time-stamp: <Mar 2014-12-02 11:22 mschmitt>
-
--------------------
-
 # RESIF command line interface
 
 ## Overview
