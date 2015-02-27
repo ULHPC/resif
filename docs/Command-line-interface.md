@@ -23,7 +23,7 @@ To install this script, you need to have some required packages installed on you
 - pip to install and uninstall the script (On Ubuntu, simply install the `python-pip` package.)
 
 That is enough to install and launch the script itself, but you still need to have the prerequisites for EasyBuild itself, in particular you will need a module tool (either environment-modules or Lmod).  
-See the other pages of this documentation for [more details about these tools](https://gitlab.uni.lu/modules/infrastructure/wikis/overview) and the [installation instructions for Lmod](https://gitlab.uni.lu/modules/infrastructure/wikis/Lmod-install).
+See the other pages of this documentation for [more details about these tools](https://gitlab.uni.lu/modules/infrastructure/wikis/overview) and the [installation instructions for Lmod](appendix/Lmod-install.md).
 
 ### Install from PyPi (recommended)
 
