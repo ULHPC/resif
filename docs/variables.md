@@ -56,11 +56,10 @@ Here are all the variables that can be set, followed by their descriptions.
 
 Set this variable to a Git URL or path to use another infractructure repository than the default one.
 
-```
-| Variable          | value                            |
-|-------------------+----------------------------------|
-| $git_architecture | https://github.com/ULHPC/modules |
-```
+
+    | Variable          | value                            |
+    |-------------------+----------------------------------|
+    | $git_architecture | https://github.com/ULHPC/modules |
 
 To learn more about this architecture repository (and learn how to create your own, fitting your needs), go to the [layout and versioning page](https://gitlab.uni.lu/modules/infrastructure/wikis/layout-and-versioning).
 
