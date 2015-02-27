@@ -304,17 +304,20 @@ Default value:
 `$eb_repositorypath`: The path to this repository and depending of the type repostiry chosen, you can also specify a subdirectory in which store the files inside the repository (see below).
 
 Different configurations possible:  
-- Flat file repository:  
-`$eb_repository = FileRepository`  
-`$eb_repositorypath = <path>`  
+- Flat file repository:
+
+    $eb_repository = FileRepository
+    $eb_repositorypath = <path>
 where <path> is the path to a directory in which to store the files.
-- Git repository:  
-`$eb_repository = GitRepository`  
-`$eb_repositorypath = <path>,<subdir>`  
+- Git repository:
+
+    $eb_repository = GitRepository
+    $eb_repositorypath = <path>,<subdir>
 where <path> is the path to the git repository (can be an url) and <subdir> is optional and defines a subdirectory in the git repository in which to store the files.
-- SVN repository:  
-`$eb_repository = SvnRepository`  
-`$eb_repositorypath = <path>,<subdir>`  
+- SVN repository:
+
+    $eb_repository = SvnRepository
+    $eb_repositorypath = <path>,<subdir>
 where <path> is the path to the svn repository (can be an url) and <subdir> is optional and defines a subdirectory in the svn repository in which to store the files.
 
 If you add the `<subdir>`, do not put any spaces between the two fields (e.g: /path/to/repo,path/to/subdir and not /path/to/repo, path/to/subdir) as it is considered as a single value, not two separate
