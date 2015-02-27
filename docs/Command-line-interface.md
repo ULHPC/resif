@@ -8,15 +8,12 @@ Copyright (c) 2014 [Sebastien Varrette](mailto:<Sebastien.Varrette@uni.lu>) [www
 -------------------
 
 # RESIF command line interface
-=============================
 
 ## Overview
-------------
 
 This page explains in a first part how to [install the resif script](#installation-of-the-command-line-interface-cli), in a second part [how to use this script](#usage-of-the-cli) and in a third part exposes [some alternative methods to change the configuration](#alternative-configuration-methods).
 
 ## Installation of the Command Line Interface (CLI)
---------------------------------------------------
 
 **Prerequisites:**
 
@@ -130,7 +127,6 @@ Commands:
 If you have that, then you're all set, continue to learn how to actually use this tool.  
 
 ## Usage of the CLI
--------------------
 
 This documentation is divided in three parts, corresponding to the three main commands of the resif script:  
 - [init](#init)
@@ -452,7 +448,6 @@ Default behavior:
 `resif cleaninstall` basically does `resif bootstrap` and then `resif build`.
 
 ## Alternative configuration methods
-------------------------------------
 
 As of now, we have only seen one way to modify the configuration of the script: the command line options. But there are 2 other ways to do it:  
 - through the environment variables
