@@ -17,7 +17,8 @@ This page explains in a first part how to [install the resif script](#installati
 
 **Prerequisites:**
 
-To install this script, you need to have some required packages installed on your computer:  
+To install this script, you need to have some required packages installed on your computer:
+
 - python 2.6 or above
 - git
 - pip to install and uninstall the script (On Ubuntu, simply install the `python-pip` package.)
