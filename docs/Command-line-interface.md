@@ -26,7 +26,7 @@ To install this script, you need to have some required packages installed on you
 That is enough to install and launch the script itself, but you still need to have the prerequisites for EasyBuild itself, in particular you will need a module tool (either environment-modules or Lmod).  
 See the other pages of this documentation for [more details about these tools](https://gitlab.uni.lu/modules/infrastructure/wikis/overview) and the [installation instructions for Lmod](appendix/Lmod-install.md). Easybuild 2.0 and further also requires the vsc-base python module which you can install using pip:
 
-                pip install vsc-base
+    pip install vsc-base
 
 ### Install from PyPi (recommended)
 
