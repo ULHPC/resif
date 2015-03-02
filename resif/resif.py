@@ -252,7 +252,6 @@ def bootstrap(**kwargs):
 # Software building variables
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of an EasyBuild installation (contains the various software sets deployed and the EasyBuild files). Softwares will be installed in <rootinstall>/<swset>/modules')
 @click.option('--installdir', 'installdir', envvar='RESIF_INSTALLDIR', help="Use if you don't want to deploy the software inside the <rootinstall>. Softwares will then be deployed in <installdir>/<swset>/modules")
-#@click.option('--eb-installpath', 'eb_installpath', envvar='EASYBUILD_INSTALLPATH', help='EasyBuild installpath.')
 @click.option('--eb-sourcepath', 'eb_sourcepath', envvar='EASYBUILD_SOURCEPATH', help='EasyBuild sourcepath.')
 @click.option('--eb-buildpath', 'eb_buildpath', envvar='EASYBUILD_BUILDPATH', help='EasyBuild buildpath.')
 @click.option('--eb-repository', 'eb_repository', envvar='EASYBUILD_REPOSITORY', help='EasyBuild repository type for successfully installed easyconfig files.')
