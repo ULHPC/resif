@@ -1,1 +1,1 @@
-recursive-include docs *.md *.markdown
+recursive-include docs *.md

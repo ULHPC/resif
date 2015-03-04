@@ -11,7 +11,7 @@ Copyright (c) 2014 [Sebastien Varrette](mailto:Sebastien.Varrette@uni.lu)
 
 ## Source Repository Layout
 
-The layout of the source repository reflects the topology detailed in the [Variables page](variables.markdown).
+The layout of the source repository reflects the topology detailed in the [Variables page](variables.md).
 
      <srcpath>.
 	    ├── ... 
@@ -21,7 +21,7 @@ The layout of the source repository reflects the topology detailed in the [Varia
 		├── easybuild/       # Git subtrees for EB
 	    ├── ... 
 
-__See also__ Top Source path `$srcpath` in [Variables](variables.markdown)
+__See also__ Top Source path `$srcpath` in [Variables](variables.md)
 
 ## Releasing mechanism
 
@@ -66,7 +66,7 @@ In particular, any patch release `X.Y.Z` is applied into the existing `X.Y` envi
 
 ### Modules Directory layout vs. Releasing
 
-The below layout applies below `$appsroot` (see [Variable](variables.markdown)), _i.e._ `/opt/apps` in the below examples. 
+The below layout applies below `$appsroot` (see [Variable](variables.md)), _i.e._ `/opt/apps` in the below examples. 
 
 
 
@@ -112,29 +112,31 @@ In parallel, [gitflow](http://nvie.com/posts/a-successful-git-branching-model/) 
 
 ## Installed Apps Directory Layout 
 
-Upon installation in `<appsroot>` (_i.e._ `/opt/apps` by default assuming an admin role), we expect to have the following layout: 
+Upon installation in `<appsroot>` (_i.e._ `/opt/apps` by default assuming an admin role), we expect to have the following layout:
 
-     <appsroot>.
-	     ├── commit
-		 │   └── ecb532e-20141003
-		 ├── devel
-		 ├── production
-		 │   ├── v0.5 -> v0.5-20140211
-		 │   ├── v0.5-20140211
-		 │   ├── v0.6 -> v0.6-20140611
-		 │   ├── v0.6-20140611
-		 │   └── v0.6-20141007
-		 ├── stable -> production/v0.6
-		 ├── tag
-		 │   ├── v0.5.0
-		 │   ├── v0.5.1
-		 │   └── v0.6.0
-		 └── testing
-		     ├── hcartiaux
-			 ├── jflf
-			 ├── svarrette
-			 ├── vplugaru
-			 └── xbesseron
+<pre>
+$appsroot
+├── commit
+│   └── ecb532e-20141003
+├── devel
+├── production
+│   ├── v0.5 -> v0.5-20140211
+│   ├── v0.5-20140211
+│   ├── v0.6 -> v0.6-20140611
+│   ├── v0.6-20140611
+│   └── v0.6-20141007
+├── stable -> production/v0.6
+├── tag
+│   ├── v0.5.0
+│   ├── v0.5.1
+│   └── v0.6.0
+└── testing
+    ├── hcartiaux
+	├── jflf
+	├── svarrette
+	├── vplugaru
+	└── xbesseron
+</pre>
 
 In particular, the following sub-directories are proposed:
 

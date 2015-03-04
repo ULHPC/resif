@@ -123,7 +123,7 @@ def setInstallpath(hashTable, swset):
     # An installpath has to be provided. If not we do not let the install continue 
     # (so that it doesn't install at an unknown location)
     if 'installdir' in hashTable:
-        installpath = ' --installpath=' + os.path.join(hashTable['eb_installpath'], swset)
+        installpath = ' --installpath=' + os.path.join(hashTable['installdir'], swset)
     elif 'rootinstall' in hashTable:
         installpath = ' --installpath=' + os.path.join(hashTable['rootinstall'], swset)
     else:

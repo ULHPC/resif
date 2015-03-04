@@ -16,7 +16,7 @@ Here are all the variables that can be set, followed by their descriptions.
 
       | Variable                | Description                                        | Default (if any)                   |
       |-------------------------+----------------------------------------------------+------------------------------------|
-      | `$git_architecture`     | Git URL/path for your architecture repository      | `https://github.com/ULHPC/modules` |
+      | `$git_architecture`     | Git URL/path for your architecture repository      | 'https://github.com/ULHPC/modules' |
       | `$ebuser`               | User operating the process                         | `whoami`                           |
       | `$ebgroup`              | Group                                              |                                    |
       | `$gh_ebuser`            | (opt.) Github user ['hpcugent','ULHPC']            |                                    |
@@ -33,7 +33,7 @@ Here are all the variables that can be set, followed by their descriptions.
       | `$mns`                  | Module Naming Scheme     ['EasyBuildMNS',          | ThematicMNS                        |
       |                         |           'HierarchicalMNS', 'ThematicMNS']        |                                    |
       | `$buildmode`            | Local build ('local') vs. job  ('job')             | local                              |
-      | `$apps_root`            | Root directory for apps (modules & sw)             | /usr/local/apps                    |
+      | `$apps_root`            | Root directory for apps (modules & sw)             | $HOME/.local/resif                 |
       | `$branch`               | Branch of the RESIF repository to work with        |                                    |
       | `$release`              | Release tag or commit to deploy                    | HEAD                               |
       | `$releasedir`           | Subdirectory in which to deploy the release        | <branch>/<release>-<date>          |
@@ -47,6 +47,8 @@ Here are all the variables that can be set, followed by their descriptions.
       | `$eb_repositorypath`    | Path to this repository                            | $HOME/.resif/eb_repo               |
       | `$out_place`            | Modify the building behavior so EasyBuild files    | False                              |
       |                         |   are all put inside the $HOME/.resif directory    |                                    |
+      | `$overwrite`            | Set this flag if you want to overwrite any file    | False                              |
+      |                         |  that is already present at the install location   |                                    |
  
 ## Specific Configuration variables
 
@@ -54,9 +56,9 @@ Here are all the variables that can be set, followed by their descriptions.
 
 Set this variable to a Git URL or path to use another infractructure repository than the default one.
 
-      | Variable          | value                            |
-      |-------------------+----------------------------------|
-      | $git_architecture | https://github.com/ULHPC/modules |
+        | Variable          | value                              |
+        |-------------------+------------------------------------|
+        | $git_architecture | 'https://github.com/ULHPC/modules' |
 
 To learn more about this architecture repository (and learn how to create your own, fitting your needs), go to the [layout and versioning page](https://gitlab.uni.lu/modules/infrastructure/wikis/layout-and-versioning).
 
@@ -105,10 +107,12 @@ If you want to use forks coming from several sources, you can provide directly t
 
 Note that you can combine this method with the previous one, taking into consideration that the git repository that will be given with this method will be prefered over the first one. E.g if you provide hpcugent as the gh-ebuser and the URL to the ULHPC fork of the easyconfig repository, you will in the end use the framework and the easyblocks from the hpcugent GitHub repositories and the easyconfigs from the ULHPC fork of this repository.
 
-You can specify the branch from the given repository either by using the variables described below (`$branch_ebframework`) and so on) or by using the following syntax for in the current variables:  
-`'url|branch'`  
-which in an example would look like that:  
-`'https://github.com/hpcugent/easybuild-framework|master'`  
+You can specify the branch from the given repository either by using the variables described below (`$branch_ebframework`) and so on) or by using the following syntax for in the current variables:
+
+    'url|branch'
+which in an example would look like that:
+
+    'https://github.com/hpcugent/easybuild-framework|master'
 for the framework part.  
 Note that if you use this syntax you have to use the single quotes `''` or the double quotes `""` or else it won't work.
 
@@ -127,20 +131,21 @@ In particular, all operations (testing / building / installing) are operated fro
 
 The layout of this directory shall typically reflect the following topology:
 
-     <srcpath>.
-	    ├── Gemfile[.lock]   # bundler stuff
-		├── README.md
-		├── Rakefile         # main rakefile 
-		├── VERSION          # current release of the repository
-		├── bin/             # hold the scripts piloting all operations
-		├── config/          # hold configurations
-		│   ├── swsets.yaml  # YAML definitions for the software sets
-		├── easybuild/
-		│   ├── easyblocks/  # git subtree for Easyblocks
-		│   ├── easyconfigs/ # git subtree for Easyconfigs
-		│   ├── framework/   # git subtree for EasyBuild framework
-		└─  └── wiki/        # git subtree for the wiki
-
+<pre>
+$srcpath
+├── Gemfile[.lock]   # bundler stuff
+├── README.md
+├── Rakefile         # main rakefile 
+├── VERSION          # current release of the repository
+├── bin/             # hold the scripts piloting all operations
+├── config/          # hold configurations
+│   └── swsets.yaml  # YAML definitions for the software sets
+├── easybuild/
+│   ├── easyblocks/  # git subtree for Easyblocks
+│   ├── easyconfigs/ # git subtree for Easyconfigs
+│   ├── framework/   # git subtree for EasyBuild framework
+└─  └── wiki/        # git subtree for the wiki
+</pre>
 
 Default value:
 
@@ -148,7 +153,7 @@ Default value:
       |------------+------------------+
       | `$srcpath` | $HOME/.resif/src |
 
-__See also__: [Layout and Versioning](layout-and-versioning.markdown)
+__See also__: [Layout and Versioning](layout-and-versioning.md)
 
 ### Configuration file `$configfile`
 
@@ -233,9 +238,9 @@ The way the software package are built, _i.e._ either locally (`local`) or via j
 
 The root directory hosting both the software package and the corresponding modules. Default value:
 
-      | Variable   | value           |
-      |------------+-----------------|
-      | $apps_root | /usr/local/apps |
+      | Variable   | value              |
+      |------------+--------------------|
+      | $apps_root | $HOME/.local/resif |
 
 ### RESIF branch `$branch`
 
@@ -302,17 +307,20 @@ Default value:
 `$eb_repositorypath`: The path to this repository and depending of the type repostiry chosen, you can also specify a subdirectory in which store the files inside the repository (see below).
 
 Different configurations possible:  
-- Flat file repository:  
-`$eb_repository = FileRepository`  
-`$eb_repositorypath = <path>`  
+- Flat file repository:
+
+    $eb_repository = FileRepository
+    $eb_repositorypath = <path>
 where <path> is the path to a directory in which to store the files.
-- Git repository:  
-`$eb_repository = GitRepository`  
-`$eb_repositorypath = <path>,<subdir>`  
+- Git repository:
+
+    $eb_repository = GitRepository
+    $eb_repositorypath = <path>,<subdir>
 where <path> is the path to the git repository (can be an url) and <subdir> is optional and defines a subdirectory in the git repository in which to store the files.
-- SVN repository:  
-`$eb_repository = SvnRepository`  
-`$eb_repositorypath = <path>,<subdir>`  
+- SVN repository:
+
+    $eb_repository = SvnRepository
+    $eb_repositorypath = <path>,<subdir>
 where <path> is the path to the svn repository (can be an url) and <subdir> is optional and defines a subdirectory in the svn repository in which to store the files.
 
 If you add the `<subdir>`, do not put any spaces between the two fields (e.g: /path/to/repo,path/to/subdir and not /path/to/repo, path/to/subdir) as it is considered as a single value, not two separate
@@ -341,3 +349,7 @@ The new values are then:
       | $eb_repositorypath | $HOME/.resif/v<version>-<date>/eb_repo |
 
 Note that all of this is overriden by the other options managing these variables (the EASYBUILD environement variables in particular)
+
+### Overwrite flag `$overwrite`
+
+If set to `True`, RESIF will remove any existing file at the location you want to make the install. If set to `False`, RESIF will stop its execution and throw an error message if it find existing files at the install location.

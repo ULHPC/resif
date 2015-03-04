@@ -70,7 +70,6 @@ def easybuildFilesInstaller(hashTable):
 	subprocess.check_call(['touch', 'temp'])
 	subprocess.check_call(['git', 'add', 'temp'])
 	subprocess.check_call(['git', 'commit', '-m', "'initial commit'"])
-	tmp = os.getcwd()
 	for k,v in altSources.iteritems():
 		# Crash if the directory is not empty, not critical, but what would we do in this case ?
 		# Throw a error message of our own ? Overwrite ? (seems a bad idea) Consider it is ok ("already installed")
@@ -91,10 +90,7 @@ def easybuildFilesInstaller(hashTable):
 			subprocess.check_call(['git', 'checkout', 'master'])
 			subprocess.check_call(['git', 'submodule', 'add', '-b', k+'-'+v[1], './', k])
 			subprocess.check_call(['git', 'branch', '-D', k+'-'+v[1]])
-		# We remove the remotes when finished
-		os.chdir(os.path.join(tmp, k))
-		subprocess.check_call(['git', 'remote', 'rm', 'origin'])
-		os.chdir(tmp)
+		subprocess.check_call(['git', 'remote', 'rm', 'install-'+k])
 		subprocess.check_call(['git', 'commit', '-m', "'Adding "+k+"'"])
 
 	if any(True for x in ['easybuild-framework', 'easybuild-easyblocks', 'easybuild-easyconfigs'] if not x in altSources):
@@ -105,20 +101,26 @@ def easybuildFilesInstaller(hashTable):
 			if not k in altSources:
 				# ebPart = re.search("[^-]*$", k).group(0) # Obsolete
 				if hashTable['release'] != 'HEAD':
-					subprocess.check_call(['git', 'checkout', 'install-resif/'+hashTable['branch'], '-b', k])
-				elif 'branch' in hashTable:
 					subprocess.check_call(['git', 'checkout', hashTable['release'], '-b', k])
+				elif 'branch' in hashTable:
+					subprocess.check_call(['git', 'checkout', 'install-resif/'+hashTable['branch'], '-b', k])
 				else:
 					subprocess.check_call(['git', 'checkout', 'FETCH_HEAD', '-b', k])
 				subprocess.check_call(['git', 'filter-branch', '-f', '--subdirectory-filter', 'easybuild/'+k, k]) #ebPart , k])
 				subprocess.check_call(['git', 'checkout', 'master'])
 				subprocess.check_call(['git', 'submodule', 'add', '-b', k, './', k])
 				subprocess.check_call(['git', 'branch', '-D', k])
-				# We remove the local remote
-				os.chdir(os.path.join(tmp, k))
-				subprocess.check_call(['git', 'remote', 'rm', 'origin'])
-				os.chdir(tmp)
 				subprocess.check_call(['git', 'commit', '-m' , "'Adding "+k+"'"])
+		subprocess.check_call(['git', 'remote', 'rm', 'install-resif'])
+
+	# Adding vsc-base from the hpcugent git repository
+	subprocess.check_call(['git', 'remote', 'add', '-f', 'install-vsc-base', 'https://github.com/hpcugent/vsc-base.git'])
+	subprocess.check_call(['git', 'checkout', 'FETCH_HEAD', '-b', 'vsc-base-FETCH_HEAD'])
+	subprocess.check_call(['git', 'filter-branch', '-f', 'vsc-base-FETCH_HEAD'])
+	subprocess.check_call(['git', 'checkout', 'master'])
+	subprocess.check_call(['git', 'submodule', 'add', '-b', 'vsc-base-FETCH_HEAD', './', 'vsc-base'])
+	subprocess.check_call(['git', 'branch', '-D', 'vsc-base-FETCH_HEAD'])
+	subprocess.check_call(['git', 'remote', 'rm', 'install-vsc-base'])
 
 	# We remove the remote when finished, clean the repository and commit the final state.
 	subprocess.check_call(['git', 'rm', 'temp'])
@@ -179,6 +181,7 @@ prepend-path    PATH            \"$root/easybuild-framework\"\n" \
 "prepend-path    PYTHONPATH      \"$root/easybuild-framework\"\n\
 prepend-path    PYTHONPATH      \"$root/easybuild-easyblocks\"\n\
 prepend-path    PYTHONPATH      \"$root/easybuild-easyconfigs\"\n\
+prepend-path    PYTHONPATH      \"$root/vsc-base/lib\"\n\
 ")
 	
 	# Path to the symlink to the module file.

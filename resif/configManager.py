@@ -302,26 +302,28 @@ def generateSwsetsConfig(hashTable):
 
 # Get the version of EasyBuild installed in the <rootdirectory>/EasyBuild directory
 def getEasyBuildVersion(rootdirectory):
-	# We make sure that the path given is totally expanded.
-	absrootdirectory = os.path.abspath(os.path.expandvars(rootdirectory))
-	# Appending to path the EasyBuild directories (temporarily)
-	sys.path.insert(0, os.path.join(os.path.join(absrootdirectory, '.installRef'), 'easybuild-framework'))
-	sys.path.insert(0, os.path.join(os.path.join(absrootdirectory, '.installRef'), 'easybuild-easyblocks'))
-	sys.path.insert(0, os.path.join(os.path.join(absrootdirectory, '.installRef'), 'easybuild-easyconfigs'))
-
-	# Importing the function that EasyBuild uses to determnine its own version
-	from easybuild.tools.version import this_is_easybuild
-
-	# Getting the version of EasyBuild from the output message
-	msg = this_is_easybuild()
-	version = re.search("[0-9]*\.[0-9]*\.[0-9]*", msg).group(0)
-
-	# Removing from path the EasyBuild directories (cleanup)
-	sys.path.pop(0)
-	sys.path.pop(0)
-	sys.path.pop(0)
-
-	return version
+    # We make sure that the path given is totally expanded.
+    absrootdirectory = os.path.abspath(os.path.expandvars(rootdirectory))
+    # Appending to path the EasyBuild directories and vsc-base (temporarily)
+    sys.path.insert(0, os.path.join(os.path.join(absrootdirectory, '.installRef'), 'easybuild-framework'))
+    sys.path.insert(0, os.path.join(os.path.join(absrootdirectory, '.installRef'), 'easybuild-easyblocks'))
+    sys.path.insert(0, os.path.join(os.path.join(absrootdirectory, '.installRef'), 'easybuild-easyconfigs'))
+    sys.path.insert(0, os.path.join(os.path.join(absrootdirectory, '.installRef'), 'vsc-base'))
+    
+    # Importing the function that EasyBuild uses to determnine its own version
+    from easybuild.tools.version import this_is_easybuild
+    
+    # Getting the version of EasyBuild from the output message
+    msg = this_is_easybuild()
+    version = re.search("[0-9]*\.[0-9]*\.[0-9]*", msg).group(0)
+    
+    # Removing from path the EasyBuild directories (cleanup)
+    sys.path.pop(0)
+    sys.path.pop(0)
+    sys.path.pop(0)
+    sys.path.pop(0)
+    
+    return version
 
 
 # Generate a config file for EasyBuild

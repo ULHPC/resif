@@ -22,5 +22,3 @@ Wished features:
 * Reproducible and self-contained deployment, coupled with a strongly versioned release mechanism to facilitate access to old environments
 
 For this purpose, the proposed workflow relies heavily on [Easybuild](http://hpcugent.github.io/easybuild/), a flexible framework for building/installing (scientific) software. 
-
-
