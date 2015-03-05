@@ -5,6 +5,7 @@ python:
 before_install: "python setup.py bdist_wheel"
 # Install step (install the wheel that is in dist)
 install: "pip install dist/*"
+script: "echo 'arrived here'"
 matrix:
   fast_finish: true
   allow_failures:
