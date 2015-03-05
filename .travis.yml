@@ -1,0 +1,12 @@
+language: python
+python:
+  - "2.7"
+  - "2.6"
+# Pre-install step (create the wheel since we want to check if it is "Pypi ready")
+before_install: "python setup.py bdist_wheel"
+# Install step (install the wheel that is in dist)
+install: "pip install dist/*"
+matrix:
+  fast_finish: true
+  allow_failures:
+    - python: "2.6"
