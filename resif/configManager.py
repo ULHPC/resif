@@ -13,7 +13,7 @@ import subprocess
 from git import Repo
 
 #######################################################################################################################
-# This functions are wrapper to make the code more readable.
+# These functions are wrapper to make the code more readable.
 # They shouldn't do much more than calling the bellow functions.
 
 def generateInitConfig(hashTable):
@@ -125,7 +125,7 @@ def generateCleaninstallConfig(hashTable):
 #######################################################################################################################
 # Utilities functions (move to a separate module ?)
 
-# Encode all the field of a dict to a given encoding (Suppose all the fields are strings or tuples of strings).
+# Encode all the field of a dict to a given encoding (Assume all the fields are strings or tuples of strings).
 def encoder(hashTable, encoding):
     for k,v in hashTable.iteritems():
         if isinstance(v, tuple):
@@ -150,7 +150,6 @@ def configMerger(default, user):
 
 # Take the path to a YAML file that contains the configuration and return a dict containing the associated config.
 def configParser(configFile):
-    #repo stream = file(configFile)
     config = yaml.load(configFile)
 
     for k in ['swsets']:
@@ -163,7 +162,7 @@ def configParser(configFile):
     return config
 
 
-# Take a dict and expands any environment contained in its fields.
+# Take a dict and expands any environment variable contained in its fields.
 def configExpandVars(hashTable):
     for k,v in hashTable.iteritems():
         if isinstance(v, tuple):
@@ -176,6 +175,7 @@ def configExpandVars(hashTable):
             if v != None and isinstance(v, basestring):
                 hashTable[k] = os.path.expandvars(v)
 
+# Check if a command exists in the current environment
 def cmd_exists(cmd):
     return subprocess.call("type " + cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0
 
@@ -256,13 +256,13 @@ def generateReleasedir(hashTable):
         else:
             branch = hashTable['git_repo'].active_branch.name
 
-        tree = hashTable['git_repo'].heads[branch].commit.tree #repo
+        tree = hashTable['git_repo'].heads[branch].commit.tree
         release = tree['VERSION'].data_stream.read().splitlines()[0]
         shortVersion = re.match('[0-9]*\.[0-9]*', release).group(0)
         hashTable['releasedir'] = os.path.join(branch, 'v' + shortVersion + '-' + time.strftime("%Y%m%d"))
     # If we have been given a more specific release, the branch doesn't matter and we proceed directly
     else:
-        # But if we were provided a branch, if the branch really is the branch of the release, we wil build in the corresponding <branch> directory
+        # But if we were provided a branch, if the branch really is the branch of the release, we will build in the corresponding <branch> directory
         if 'branch' in hashTable:
             branch = hashTable['branch']
             tree = hashTable['git_repo'].commit(hashTable['release']).tree
@@ -304,20 +304,20 @@ def generateSwsetsConfig(hashTable):
 def getEasyBuildVersion(rootdirectory):
     # We make sure that the path given is totally expanded.
     absrootdirectory = os.path.abspath(os.path.expandvars(rootdirectory))
-    # Appending to path the EasyBuild directories and vsc-base (temporarily)
+    # Appending temporarily to PYTHONPATH the EasyBuild directories and vsc-base
     sys.path.insert(0, os.path.join(os.path.join(absrootdirectory, '.installRef'), 'easybuild-framework'))
     sys.path.insert(0, os.path.join(os.path.join(absrootdirectory, '.installRef'), 'easybuild-easyblocks'))
     sys.path.insert(0, os.path.join(os.path.join(absrootdirectory, '.installRef'), 'easybuild-easyconfigs'))
     sys.path.insert(0, os.path.join(os.path.join(absrootdirectory, '.installRef'), 'vsc-base'))
     
-    # Importing the function that EasyBuild uses to determnine its own version
+    # Importing the function that EasyBuild uses to determine its own version
     from easybuild.tools.version import this_is_easybuild
     
     # Getting the version of EasyBuild from the output message
     msg = this_is_easybuild()
     version = re.search("[0-9]*\.[0-9]*\.[0-9]*", msg).group(0)
     
-    # Removing from path the EasyBuild directories (cleanup)
+    # Removing from the PYTHONPATH the EasyBuild directories (cleanup)
     sys.path.pop(0)
     sys.path.pop(0)
     sys.path.pop(0)
@@ -364,13 +364,14 @@ def easybuildConfigfileCreator(hashTable):
         f.write('#logfile-format = ' + logfile_format[0] + ',' + logfile_format[1] + '\n')
 
 
-# Find the name of the EasyBuild module that should be loaded depending on the MNS.
+# Determine the name of the EasyBuild module that should be loaded depending on the MNS.
 def getEasyBuildModule(hashTable):
     if hashTable['mns'] == 'ThematicMNS':
         return "base/EasyBuild/install-" + getEasyBuildVersion(hashTable['rootinstall'])
     else:
         return 'EasyBuild/install-' + getEasyBuildVersion(hashTable['rootinstall'])
 
+# Set EasyBuild variables to default values (for cleaninstall)
 def setEasyBuildVariables(hashTable):
     ebdirsRoot = os.path.join(hashTable['rootinstall'], '.ebdirs') # <rootinstall>/.ebdirs
     if not os.path.exists(ebdirsRoot):
@@ -385,6 +386,7 @@ def setEasyBuildVariables(hashTable):
     if not "eb_repositorypath" in hashTable:
         hashTable['eb_repositorypath'] = os.path.join(ebdirsRoot, 'eb_repo')
 
+# Resolve MNS to be used (allow for short names of the MNS)
 def expandMNS(hashTable):
     if hashTable['mns'] == 'E':
         hashTable['mns'] = 'EasyBuildMNS'
@@ -393,6 +395,7 @@ def expandMNS(hashTable):
     if hashTable['mns'] == 'T':
         hashTable['mns'] = 'ThematicMNS'
 
+# Resolve the name of the branch to be used for alternative EasyBuild repositories.
 def resolveEBbranches(hashTable):
     for repo in ['framework', 'blocks', 'configs']:
         if 'git_eb'+repo in hashTable:

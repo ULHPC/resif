@@ -120,7 +120,7 @@ def defineSharedOptions(hashTable):
 # Return the installpath for the given swset.
 def setInstallpath(hashTable, swset):
     installpath = ""
-    # An installpath has to be provided. If not we do not let the install continue 
+    # An installpath has to be provided. If not, we do not let the installation continue 
     # (so that it doesn't install at an unknown location)
     if 'installdir' in hashTable:
         installpath = ' --installpath=' + os.path.join(hashTable['installdir'], swset)
@@ -146,7 +146,7 @@ To do so, either:\n\
     return installpath
 
 
-# Take a duration and write it in the easyconfig file in the easyconfig repsitory.
+# Take a duration and write it in a file in the rootinstall directory.
 def writeTime(hashTable, swset, duration):
     m, s = divmod(duration, 60)
     h, m = divmod(m, 60)
