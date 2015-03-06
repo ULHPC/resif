@@ -163,7 +163,7 @@ def buildTimeSwSet(**kwargs):
                 softwareDurationFormated = "%d:%d:%d" % (h, m, s)
                 sys.stdout.write(software + "\t" + softwareDurationFormated + "\n")
     else:
-        sys.stdout.write("No software found.")
+        sys.stdout.write("No software found.\n")
         exit(80)
 
 
@@ -183,7 +183,7 @@ def buildTimeSoftware(**kwargs):
     files = glob.glob(kwargs['rootinstall']+'/'+kwargs['swset']+'/software/*/*/*/easybuild/*log')
     for logfile in files:
         software, softwareDuration = buildSwSets.getSoftwareBuildTimes(logfile)
-        if software == kwargs['software']:
+        if software.lower() == kwargs['software'].lower():
             softwareFound = True
             if kwargs['seconds']:
                 sys.stdout.write(software + "\t" + str(softwareDuration) + "\n")
