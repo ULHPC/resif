@@ -71,10 +71,6 @@ def easybuildFilesInstaller(hashTable):
 	subprocess.check_call(['git', 'add', 'temp'])
 	subprocess.check_call(['git', 'commit', '-m', "'initial commit'"])
 	for k,v in altSources.iteritems():
-		# Crash if the directory is not empty, not critical, but what would we do in this case ?
-		# Throw a error message of our own ? Overwrite ? (seems a bad idea) Consider it is ok ("already installed")
-		# and proceed just throwing a Warning ?
-
 		# We get the remote
 		subprocess.check_call(['git', 'remote', 'add', '-f', 'install-'+k, v[0]])
 		# If a branch is provided we use it, otherwise we clone the one pointed by HEAD.
@@ -99,14 +95,13 @@ def easybuildFilesInstaller(hashTable):
 	
 		for k in ['easybuild-framework', 'easybuild-easyblocks', 'easybuild-easyconfigs']:
 			if not k in altSources:
-				# ebPart = re.search("[^-]*$", k).group(0) # Obsolete
 				if hashTable['release'] != 'HEAD':
 					subprocess.check_call(['git', 'checkout', hashTable['release'], '-b', k])
 				elif 'branch' in hashTable:
 					subprocess.check_call(['git', 'checkout', 'install-resif/'+hashTable['branch'], '-b', k])
 				else:
 					subprocess.check_call(['git', 'checkout', 'FETCH_HEAD', '-b', k])
-				subprocess.check_call(['git', 'filter-branch', '-f', '--subdirectory-filter', 'easybuild/'+k, k]) #ebPart , k])
+				subprocess.check_call(['git', 'filter-branch', '-f', '--subdirectory-filter', 'easybuild/'+k, k])
 				subprocess.check_call(['git', 'checkout', 'master'])
 				subprocess.check_call(['git', 'submodule', 'add', '-b', k, './', k])
 				subprocess.check_call(['git', 'branch', '-D', k])
