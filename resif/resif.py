@@ -152,9 +152,11 @@ def buildTimeSwSet(**kwargs):
     [SWSET] TEXT        Software set to consider.
     """
     files = glob.glob(kwargs['rootinstall']+'/'+kwargs['swset']+'/software/*/*/*/easybuild/*log')
+    coreTime = 0
     if files != []:
         for logfile in files:
             software, softwareDuration = buildSwSets.getSoftwareBuildTimes(logfile)
+            coreTime += softwareDuration
             if kwargs['seconds']:
                 sys.stdout.write(software + "\t" + str(softwareDuration) + "\n")
             else:
@@ -162,6 +164,14 @@ def buildTimeSwSet(**kwargs):
                 h, m = divmod(m, 60)
                 softwareDurationFormated = "%d:%d:%d" % (h, m, s)
                 sys.stdout.write(software + "\t" + softwareDurationFormated + "\n")
+        # Output the build time of the whole software set.
+        if kwargs['seconds']:
+            sys.stdout.write("core software set\t" + coreTime + "\n")
+        else:
+            m, s = divmod(coreTime, 60)
+            h, m = divmod(m, 60)
+            coreTimeStr = "%d:%d:%d" % (h, m, s)
+            sys.stdout.write("core software set\t" + coreTimeStr + "\n")
     else:
         sys.stdout.write("No software found.\n")
         exit(80)
