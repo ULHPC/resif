@@ -132,11 +132,11 @@ Commands:
                      given software set.
   cleaninstall       Deploy a full environment: bootstrap EasyBuild and use it
                      to install the software sets.
-  count              count the number of installed softwares which name
-                     contains a given pattern.
+  count              Count the number of easyconfig files that contain the
+                     given pattern in their name.
   init               Initialize the git repository in the srcpath.
-  show               Show all the installed softwares which name contains a
-                     given pattern.
+  search             Show all the easyconfigs which name contains the given
+                     pattern.
   update             Update the git repository in the srcpath.
   wipe               Wipe all data in the srcpath.
 ```
@@ -150,7 +150,7 @@ This documentation is divided in three parts, corresponding to the three main co
 - [update](#update)
 - [wipe](#wipe)
 - [count](#count)
-- [show](#show)
+- [search](#search)
 - [buildtimeswset](#buildtimeswset)
 - [buildtimesoftware](#buildtimesoftware)
 - [bootstrap](#bootstrap)
@@ -217,6 +217,26 @@ The `resif wipe` command will remove all data from the default srcpath (e.g $HOM
 Usage:
 
     resif count [OPTIONS] CONTENT
+      [CONTENT] TEXT              Text to look for in the names of the easyconfig files.
+
+```
+Options:
+  --rootinstall path              Path to the root of the EasyBuild
+                                  installation (contains the various software
+                                  sets deployed and the EasyBuild files).
+  --mns [EasyBuildMNS|E|HierarchicalMNS|H|ThematicMNS|T]
+                                  Module Naming Scheme to be used.
+  --help                          Show this message and exit.
+```
+
+Default behavior:  
+The `resif count sample` command will return the number of easyconfig files that contain "sample" in their name.
+
+### Search
+
+Usage:
+
+    resif search [OPTIONS] CONTENT
       [CONTENT] TEXT              Text to look for in the names of the installed softwares.
 
 ```
@@ -226,31 +246,13 @@ Options:
                                   sets deployed and the EasyBuild files).
   --mns [EasyBuildMNS|E|HierarchicalMNS|H|ThematicMNS|T]
                                   Module Naming Scheme to be used.
+  --show-path                     Make the command to show the full path to
+                                  the files listed.
   --help                          Show this message and exit.
 ```
 
 Default behavior:  
-The `resif count sample` command will return the number of software installed that contain "sample" in their name.
-
-### Show
-
-Usage:
-
-    resif show [OPTIONS] CONTENT
-      [CONTENT] TEXT                Text to look for in the names of the installed softwares.
-
-```
-Options:
-  --rootinstall path              Path to the root of the EasyBuild
-                                  installation (contains the various software
-                                  sets deployed and the EasyBuild files).
-  --mns [EasyBuildMNS|E|HierarchicalMNS|H|ThematicMNS|T]
-                                  Module Naming Scheme to be used.
-  --help                          Show this message and exit.
-```
-
-Default behavior:  
-The `resif show sample` command will return the names of the installed software that contain "sample" in their name.
+The `resif search sample` command will return the names of the easyconfig files that contain "sample" in their name.
 
 ### buildtimeswset
 
@@ -264,6 +266,8 @@ Options:
   --rootinstall path              Path to the root of the EasyBuild installation (contains
                                   the various software sets deployed and the EasyBuild
                                   files).
+  --seconds                       Set this flag if you want the software build time output
+                                  to be in seconds (not formated).
   --help                          Show this message and exit.
 ```
 
@@ -280,9 +284,11 @@ Usage:
 
 ```
 Options:
-  --rootinstall path              Path to the root of the EasyBuild installation (contains
+  --rootinstall TEXT              Path to the root of the EasyBuild installation (contains
                                   the various software sets deployed and the EasyBuild
                                   files).
+  --seconds                       Set this flag if you want the software build time output
+                                  to be in seconds (not formated).
   --help                          Show this message and exit.
 ```
 

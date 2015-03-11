@@ -84,7 +84,7 @@ def wipe(**kwargs):
 # (At the very least, they require the module path to be set correctly to use the EasyBuild install and the RESIF_ROOTINSTALL variable to be set to the root of the EasyBuild install.)
 
 # Show the list of softwares which easyconfig file contains the "content" string
-@resif.command(short_help="Show all the easyconfigs which name contains a given pattern.")
+@resif.command(short_help="Show all the easyconfigs which name contains the given pattern.")
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
 @click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
 @click.option('--show-path', 'show_path', flag_value=True, envvar='RESIF_SHOW_PATH', help='Make the command to show the full path to the files listed.')
@@ -121,8 +121,8 @@ def search(**kwargs):
         else:
             break
 
-# Count the number of softwares which easyconfig file contains the "content" string
-@resif.command(short_help="count the number of installed softwares which name contains a given pattern.")
+#Count the number of easyconfig files that contain the given pattern in their name.
+@resif.command(short_help="Count the number of easyconfig files that contain the given pattern in their name.")
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
 @click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
 @click.argument('content')
@@ -130,7 +130,7 @@ def count(**kwargs):
     """
     \b
     [CONTENT] TEXT                  Text to look for in the names of
-                                    the installed softwares.
+                                    the easyconfig files.
     """
     try:
         if kwargs['mns'] == 'ThematicMNS' or kwargs['mns'] == 'T':
