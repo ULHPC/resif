@@ -84,11 +84,12 @@ def wipe(**kwargs):
 # (At the very least, they require the module path to be set correctly to use the EasyBuild install and the RESIF_ROOTINSTALL variable to be set to the root of the EasyBuild install.)
 
 # Show the list of softwares which easyconfig file contains the "content" string
-@resif.command(short_help="Show all the installed softwares which name contains a given pattern.")
+@resif.command(short_help="Show all the easyconfigs which name contains a given pattern.")
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files).')
 @click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
+@click.option('--show-path', 'show_path', flag_value=True, envvar='RESIF_SHOW_PATH', help='Make the command to show the full path to the files listed.')
 @click.argument('content')
-def show(**kwargs):
+def search(**kwargs):
     """
     [CONTENT] TEXT                  Text to look for in the names of
                                     the installed softwares.
@@ -103,7 +104,10 @@ def show(**kwargs):
         exit(1)
     process = subprocess.Popen('/bin/bash', stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     process.stdin.write('module load ' + easybuild_module + '\n')
-    process.stdin.write('eb -S ' + kwargs['content'] + '\n')
+    if kwargs['show_path']:
+        process.stdin.write('eb -S ' + kwargs['content'] + " | grep '^[^=]' | sed 's#^ \* ##'\n")
+    else:
+        process.stdin.write('eb -S ' + kwargs['content'] + " | grep '^ \* ' | sed 's#.*/##'\n")
     process.stdin.write('echo $?\n')
     out = ""
     while True:
