@@ -281,10 +281,10 @@ def generateReleasedir(hashTable):
             tree = hashTable['git_repo'].commit(hashTable['release']).tree
             release = tree['VERSION'].data_stream.read().splitlines()[0]
             if re.match(tagRegex, hashTable['release']):
-                hashTable['releasedir'] = os.path.join(branch, 'v' + release + '-' + hashTable['release'])
+                hashTable['releasedir'] = os.path.join('tag', 'v' + release + '-' + hashTable['release'])
             else:
                 commit = hashTable['release'][:7]
-                hashTable['releasedir'] = os.path.join(branch, 'v' + release + '-' + commit)
+                hashTable['releasedir'] = os.path.join('commit', 'v' + release + '-' + commit)
 
 
 # Generate a value for the rootinstall field of the dict.
