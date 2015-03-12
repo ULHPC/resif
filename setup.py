@@ -33,9 +33,9 @@ setup(
     ],
     packages=['resif'],
     install_requires=[
-        'click',
-        'GitPython',
-        'PyYaml',
+        'click >= 3.3',
+        'GitPython >= 0.3',
+        'PyYaml >= 3.10',
     ],
     entry_points='''
         [console_scripts]
