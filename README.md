@@ -54,7 +54,7 @@ Note that in this last path, the part `python2.7` may change depending on the py
 #### With root permissions
 
 Clone the git repository:  
-`git clone https://github.com/sylmarien/RESIF-PyPi.git `
+`git clone https://github.com/ULHPC/resif.git`
 
 Then go to in this directory and type the following command to install the script:  
 `python setup.py sdist && pip install dist/*`
@@ -62,7 +62,7 @@ Then go to in this directory and type the following command to install the scrip
 #### Without root permissions
 
 Clone the git repository:  
-`git clone https://github.com/sylmarien/RESIF-PyPi.git `
+`git clone https://github.com/ULHPC/resif.git`
 
 Then go to in this directory directory and type the following command to install the script:  
 `python setup.py sdist && pip install --install-option="--prefix=$HOME/local" dist/*`  
@@ -84,12 +84,6 @@ Since this has to be done each time you launch a new terminal, you may want to c
 Then you'll just source this file to activate the bash completion (still each time you launch a new terminal):  
 `source resif-complete.sh`  
 If you want to always have the bash completion, put this file in your `/etc/bash_completion.d` directory (requires root access).
-
-### Full bootstrap (Obsolete)
-
-If all you want is to replicate the architecture on the clusters but on your computer (requires root permissions), just execute the following command:  
-`bash <(curl https://raw.githubusercontent.com/ULHPC/modules/develop/binscripts/bootstrap.sh)`  
-It will clone the modules repository in the default place (`$HOME/.resif/src`), install the script and execute the `resif cleaninstall` command, installing EasyBuild and the core set of softwares at the default place (`/user/local/apps`).
 
 ### Check the installation
 
