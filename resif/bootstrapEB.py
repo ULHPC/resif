@@ -9,7 +9,6 @@ import re
 import sys
 import shutil
 import subprocess
-from git import Repo
 
 sys.path.append('.')
 from configManager import getEasyBuildVersion
