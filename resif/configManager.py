@@ -217,7 +217,7 @@ def generateCommonConfig(hashTable):
         tree = repo.commit('HEAD').tree
 
     # We load the default config file and use it to complete the configuration given by the user
-    defaultConfigFile = tree['config/config.yaml'].data_stream.read()
+    defaultConfigFile = tree['config']['config.yaml'].data_stream.read()
     config = configParser(defaultConfigFile)
     configMerger(config, userConfig)
 
