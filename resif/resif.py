@@ -170,7 +170,7 @@ def buildTimeSwSet(**kwargs):
                 sys.stdout.write(software + "\t" + softwareDurationFormated + "\n")
         # Output the build time of the whole software set.
         if kwargs['seconds']:
-            sys.stdout.write("core software set\t" + coreTime + "\n")
+            sys.stdout.write("core software set\t" + str(coreTime) + "\n")
         else:
             m, s = divmod(coreTime, 60)
             h, m = divmod(m, 60)
