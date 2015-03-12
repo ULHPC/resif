@@ -200,7 +200,7 @@ def generateCommonConfig(hashTable):
 
     # If the the "srcpath" key has not been defined in the dict through one of the previous ways, we assume that it has its default value
     if not "srcpath" in userConfig:
-        userConfig['srcpath'] = '~/.resif/src'
+        userConfig['srcpath'] = os.path.join(os.path.expandvars('$HOME'), '.resif/src')
 
     try:
         repo = Repo(userConfig['srcpath'])
@@ -217,11 +217,7 @@ def generateCommonConfig(hashTable):
         tree = repo.commit('HEAD').tree
 
     # We load the default config file and use it to complete the configuration given by the user
-    # Try [GitPython >= 0.2] except [GitPython < 0.2]
-    try:
-        defaultConfigFile = tree['config']['config.yaml'].data_stream.read()
-    except AttributeError:
-        defaultConfigFile = tree['config']['config.yaml'].data
+    defaultConfigFile = tree['config/config.yaml'].data_stream.read()
     config = configParser(defaultConfigFile)
     configMerger(config, userConfig)
 
@@ -261,11 +257,7 @@ def generateReleasedir(hashTable):
             branch = hashTable['git_repo'].active_branch.name
 
         tree = hashTable['git_repo'].heads[branch].commit.tree
-        # Try [GitPython >= 0.2] except [GitPython < 0.2]
-        try:
-            release = tree['VERSION'].data_stream.read().splitlines()[0]
-        except AttributeError:
-            release = tree['VERSION'].data.splitlines()[0]
+        release = tree['VERSION'].data_stream.read().splitlines()[0]
         shortVersion = re.match('[0-9]*\.[0-9]*', release).group(0)
         hashTable['releasedir'] = os.path.join(branch, 'v' + shortVersion + '-' + time.strftime("%Y%m%d"))
     # If we have been given a more specific release, the branch doesn't matter and we proceed directly
@@ -278,11 +270,7 @@ def generateReleasedir(hashTable):
             commitBranches = subprocess.check_output(['git', 'branch', '--contains', hashTable['release']]).split("\n")
             if not any(True for line in commitBranches if re.search("[^\s]*$", line).group(0) == branch):
                 sys.exit("\nThe release you want to build is not part of the branch you have given.\n")
-            # Try [GitPython >= 0.2] except [GitPython < 0.2]
-            try:
-                release = tree['VERSION'].data_stream.read().splitlines()[0]
-            except AttributeError:
-                release = tree['VERSION'].data.splitlines()[0]
+            release = tree['VERSION'].data_stream.read().splitlines()[0]
             shortVersion = re.match('[0-9]*\.[0-9]*', release).group(0)
             hashTable['releasedir'] = os.path.join(branch, 'v' + shortVersion + '-' + time.strftime("%Y%m%d"))
         # if not provided, then we find out if we build a tag or a commit and build in the appropriate directory
@@ -291,11 +279,7 @@ def generateReleasedir(hashTable):
             branch = 'tag'
             # VERSION-{tag, SHA1}
             tree = hashTable['git_repo'].commit(hashTable['release']).tree
-            # Try [GitPython >= 0.2] except [GitPython < 0.2]
-            try:
-                release = tree['VERSION'].data_stream.read().splitlines()[0]
-            except AttributeError:
-                release = tree['VERSION'].data.splitlines()[0]
+            release = tree['VERSION'].data_stream.read().splitlines()[0]
             if re.match(tagRegex, hashTable['release']):
                 hashTable['releasedir'] = os.path.join('tag', 'v' + release + '-' + hashTable['release'])
             else:
