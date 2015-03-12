@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='resif',
-    version='0.9.4',
+    version='1.0.0',
     author='ULHPC',
     author_email='hpc-sysadmins@uni.lu',
     maintainer='ULHPC',
@@ -33,9 +33,9 @@ setup(
     ],
     packages=['resif'],
     install_requires=[
-        'click',
-        'GitPython',
-        'PyYaml',
+        'click >= 3.3',
+        'GitPython >= 0.3',
+        'PyYaml >= 3.10',
     ],
     entry_points='''
         [console_scripts]

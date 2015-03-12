@@ -18,7 +18,7 @@ from git import Repo
 
 def generateInitConfig(hashTable):
     if hashTable['git_architecture'] == None:
-        hashTable['git_architecture'] = 'https://gitlab.uni.lu/modules/infrastructure.git' # TODO: 'https://github.com/ULHPC/modules'
+        hashTable['git_architecture'] = 'https://github.com/ULHPC/modules.git'
 
     if hashTable['srcpath'] == None:
         hashTable['srcpath'] = os.path.join(os.path.join('$HOME', '.resif'), 'src')
@@ -200,7 +200,7 @@ def generateCommonConfig(hashTable):
 
     # If the the "srcpath" key has not been defined in the dict through one of the previous ways, we assume that it has its default value
     if not "srcpath" in userConfig:
-        userConfig['srcpath'] = '$HOME/.resif/src'
+        userConfig['srcpath'] = os.path.join(os.path.expandvars('$HOME'), '.resif/src')
 
     try:
         repo = Repo(userConfig['srcpath'])

@@ -156,7 +156,7 @@ def writeTime(hashTable, swset, duration):
     files = glob.glob(hashTable['rootinstall']+'/'+swset+'/software/*/*/*/easybuild/*log')
 
     with open(os.path.join(hashTable['rootinstall'], swset+"BuildTimes-"+time.strftime("%Y%m%d")+".txt"), "a") as f:
-        f.write(swset + "\t" + durationFormated + "\n")
+        f.write(swset + " software set\t" + str(round(duration*10)/10) + "\n")
         for logfile in files:
             software, softwareDuration = getSoftwareBuildTimes(logfile)
             f.write(software + "\t" + str(softwareDuration) + "\n")
@@ -166,7 +166,7 @@ def writeTime(hashTable, swset, duration):
 # For a given logfile we get the name of the software, the start and end dates of the build and convert them to timestamp and then determine the duration of the build.
 def getSoftwareBuildTimes(logfile):
     logfileReduced = re.search("[^/]*$", logfile).group(0)
-    software = re.search("-[^-]*", logfileReduced).group(0)[1:]
+    software = re.findall("-.*-", logfileReduced)[0][1:-1]
     with open(logfile, "r") as log:
         raw = log.readlines()
         stime = "%s %s"%(raw[0].split()[1],raw[0].split()[2])

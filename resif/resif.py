@@ -170,7 +170,7 @@ def buildTimeSwSet(**kwargs):
                 sys.stdout.write(software + "\t" + softwareDurationFormated + "\n")
         # Output the build time of the whole software set.
         if kwargs['seconds']:
-            sys.stdout.write("core software set\t" + coreTime + "\n")
+            sys.stdout.write("core software set\t" + str(coreTime) + "\n")
         else:
             m, s = divmod(coreTime, 60)
             h, m = divmod(m, 60)
@@ -252,6 +252,8 @@ def bootstrap(**kwargs):
         click.echo("Bootstrapping EasyBuild.")
         bootstrapEB.bootstrap(config)
         click.echo("Bootstrapping ended successfully.")
+        sourcemePath = os.path.join(config['rootinstall'], 'LOADME-'+os.path.basename(config['rootinstall'])+'.sh')
+        click.echo("To start using this installation, source the following file:\n" + sourcemePath)
     else:
         sys.stdout.write("An installation is already present at your rootinstall: " + config["rootinstall"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n")
         exit(50)
@@ -293,6 +295,14 @@ def build(**kwargs):
     h, m = divmod(m, 60)
     durationFormated = "%dh%dm%ds" % (h, m, s)
     click.echo("Software sets successfully built. The build duration was of " + durationFormated)
+    # We return a list of modulepaths to load to start using the new software sets
+    modulepaths = ""
+    for swset in config['swsets']:
+        if 'installdir' in config:
+            modulepaths += os.path.join(os.path.join(os.path.join(config['installdir'], swset), 'modules'), 'all') + ':'
+        else:
+            modulepaths += os.path.join(os.path.join(os.path.join(config['rootinstall'], swset), 'modules'), 'all') + ':'
+    sys.stdout.write("To make the software sets available, add the following paths to your MODULEPATH environment variable:\n" + modulepaths + "\n")
 
 
 # Full install (Correspond to making a new release)
@@ -364,6 +374,8 @@ def cleaninstall(**kwargs):
     durationFormated = "%dh%dm%ds" % (h, m, s)
     click.echo("Software sets successfully built. The build duration was of " + durationFormated)
     click.echo("Full installation ended successfully.")
+    sourcemePath = os.path.join(config['rootinstall'], 'LOADME-'+os.path.basename(config['rootinstall'])+'.sh')
+    click.echo("To start using this installation, source the following file:\n" + sourcemePath)
 
 
 #######################################################################################################################
