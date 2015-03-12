@@ -200,7 +200,7 @@ def generateCommonConfig(hashTable):
 
     # If the the "srcpath" key has not been defined in the dict through one of the previous ways, we assume that it has its default value
     if not "srcpath" in userConfig:
-        userConfig['srcpath'] = '$HOME/.resif/src'
+        userConfig['srcpath'] = '~/.resif/src'
 
     try:
         repo = Repo(userConfig['srcpath'])
