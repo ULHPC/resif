@@ -78,7 +78,9 @@ def build(hashTable):
     	                break
             swsetEnd = time.time()
             swsetDuration = swsetEnd - swsetStart
-            swsetDurationStr = writeTime(hashTable, swset, swsetDuration)
+            m, s = divmod(swsetDuration, 60)
+            h, m = divmod(m, 60)
+            swsetDurationStr = "%d:%d:%d" % (h, m, s)
     	    sys.stdout.write("Software set " + swset + " Successfully installed. Build duration: " + swsetDurationStr + ".\n")
     	# If it doesn't, we print an error message as well as an help to use the script.
     	else:
@@ -144,24 +146,6 @@ To do so, either:\n\
             exit(10)
 
     return installpath
-
-
-# Take a duration and write it in a file in the rootinstall directory.
-def writeTime(hashTable, swset, duration):
-    m, s = divmod(duration, 60)
-    h, m = divmod(m, 60)
-    durationFormated = "%d:%d:%d" % (h, m, s)
-
-    # We get all the log files of the installed softwares
-    files = glob.glob(hashTable['rootinstall']+'/'+swset+'/software/*/*/*/easybuild/*log')
-
-    with open(os.path.join(hashTable['rootinstall'], swset+"BuildTimes-"+time.strftime("%Y%m%d")+".txt"), "a") as f:
-        f.write(swset + " software set\t" + str(round(duration*10)/10) + "\n")
-        for logfile in files:
-            software, softwareDuration = getSoftwareBuildTimes(logfile)
-            f.write(software + "\t" + str(softwareDuration) + "\n")
-
-    return durationFormated
 
 # For a given logfile we get the name of the software, the start and end dates of the build and convert them to timestamp and then determine the duration of the build.
 def getSoftwareBuildTimes(logfile):
