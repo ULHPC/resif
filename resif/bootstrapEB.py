@@ -63,63 +63,25 @@ def easybuildFilesInstaller(hashTable):
 				altSources['easybuild-easy'+v] = (hashTable['git_eb'+v], hashTable['branch_eb'+v] if 'branch_eb'+v in hashTable else None)
 
 	# Import any alternative EasyBuild files from given sources
-	pwd = os.getcwd()
-	os.chdir(os.path.join(hashTable['rootinstall'], '.installRef'))
-	subprocess.check_call(['git', 'init'])
-	subprocess.check_call(['touch', 'temp'])
-	subprocess.check_call(['git', 'add', 'temp'])
-	subprocess.check_call(['git', 'commit', '-m', "'initial commit'"])
 	for k,v in altSources.iteritems():
-		# We get the remote
-		subprocess.check_call(['git', 'remote', 'add', '-f', 'install-'+k, v[0]])
-		# If a branch is provided we use it, otherwise we clone the one pointed by HEAD.
-		if v[1] == None:
-			subprocess.check_call(['git', 'checkout', 'FETCH_HEAD', '-b', k+'-FETCH_HEAD'])
-			subprocess.check_call(['git', 'filter-branch', '-f', k+'-FETCH_HEAD'])
-			subprocess.check_call(['git', 'checkout', 'master'])
-			subprocess.check_call(['git', 'submodule', 'add', '-b', k+'-FETCH_HEAD', './', k])
-			subprocess.check_call(['git', 'branch', '-D', k+'-FETCH_HEAD'])
-		else:
-			subprocess.check_call(['git', 'checkout', 'install-'+k+'/'+v[1], '-b', k+'-'+v[1]])
-			subprocess.checkout(['git', 'filter-branch', '-f', k+'-'+v[1]])
-			subprocess.check_call(['git', 'checkout', 'master'])
-			subprocess.check_call(['git', 'submodule', 'add', '-b', k+'-'+v[1], './', k])
-			subprocess.check_call(['git', 'branch', '-D', k+'-'+v[1]])
-		subprocess.check_call(['git', 'remote', 'rm', 'install-'+k])
-		subprocess.check_call(['git', 'commit', '-m', "'Adding "+k+"'"])
+		subprocess.check_call(['git', 'clone', v[0], os.path.join(os.path.join(hashTable['rootinstall'], '.installRef'), k)])
 
+	# Complete the EasyBuild files with the ones from the subtree if necessary
 	if any(True for x in ['easybuild-framework', 'easybuild-easyblocks', 'easybuild-easyconfigs'] if not x in altSources):
-		# We complete the EasyBuild files with the ones from the subtree if necessary
-		subprocess.check_call(['git', 'remote', 'add', '-f', 'install-resif', hashTable['srcpath']])
-	
+		pwd = os.getcwd()
+		os.chdir(hashTable['srcpath'])
+
 		for k in ['easybuild-framework', 'easybuild-easyblocks', 'easybuild-easyconfigs']:
 			if not k in altSources:
-				if hashTable['release'] != 'HEAD':
-					subprocess.check_call(['git', 'checkout', hashTable['release'], '-b', k])
-				elif 'branch' in hashTable:
-					subprocess.check_call(['git', 'checkout', 'install-resif/'+hashTable['branch'], '-b', k])
-				else:
-					subprocess.check_call(['git', 'checkout', 'FETCH_HEAD', '-b', k])
+				subprocess.check_call(['git', 'branch', k])
 				subprocess.check_call(['git', 'filter-branch', '-f', '--subdirectory-filter', 'easybuild/'+k, k])
-				subprocess.check_call(['git', 'checkout', 'master'])
-				subprocess.check_call(['git', 'submodule', 'add', '-b', k, './', k])
+				subprocess.check_call(['git', 'clone', hashTable['srcpath'], '-b', k, '--single-branch', os.path.join(os.path.join(hashTable['rootinstall'], '.installRef'), k)])
 				subprocess.check_call(['git', 'branch', '-D', k])
-				subprocess.check_call(['git', 'commit', '-m' , "'Adding "+k+"'"])
-		subprocess.check_call(['git', 'remote', 'rm', 'install-resif'])
+
+		os.chdir(pwd)
 
 	# Adding vsc-base from the hpcugent git repository
-	subprocess.check_call(['git', 'remote', 'add', '-f', 'install-vsc-base', 'https://github.com/hpcugent/vsc-base.git'])
-	subprocess.check_call(['git', 'checkout', 'FETCH_HEAD', '-b', 'vsc-base-FETCH_HEAD'])
-	subprocess.check_call(['git', 'filter-branch', '-f', 'vsc-base-FETCH_HEAD'])
-	subprocess.check_call(['git', 'checkout', 'master'])
-	subprocess.check_call(['git', 'submodule', 'add', '-b', 'vsc-base-FETCH_HEAD', './', 'vsc-base'])
-	subprocess.check_call(['git', 'branch', '-D', 'vsc-base-FETCH_HEAD'])
-	subprocess.check_call(['git', 'remote', 'rm', 'install-vsc-base'])
-
-	# We remove the remote when finished, clean the repository and commit the final state.
-	subprocess.check_call(['git', 'rm', 'temp'])
-	subprocess.check_call(['git', 'commit', '-m', "'EasyBuild installed'"])
-	os.chdir(pwd)
+	subprocess.check_call(['git', 'clone', 'https://github.com/hpcugent/vsc-base.git', os.path.join(os.path.join(hashTable['rootinstall'], '.installRef'), 'vsc-base')])
 
 
 # Create the EasyBuild module file and the associated symlink and put them at the right places.
