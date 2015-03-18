@@ -44,7 +44,7 @@ def resif(ctx, version):
 
 # Initialize the necessary directories
 @resif.command(short_help='Initialize the git repository in the srcpath.')
-@click.option('--git-architecture', 'git_architecture', envvar='RESIF_GIT_ARCHITECTURE', help='Defines an alternative git repository URL or path to get the architecture from.')
+@click.option('--git-architecture', 'git_architecture', envvar='RESIF_GIT_ARCHITECTURE', help='Defines an alternative git repository URL or absolute path to get the architecture from.')
 @click.option('--srcpath', 'srcpath', envvar='RESIF_SRCPATH', help='Defines an alternative path to put the sources in.')
 @click.option('--overwrite', 'overwrite', flag_value=True, envvar='RESIF_OVERWRITE', help='Set this flag if you want to overwrite any existing previous installation at --apps-root.')
 def init(**kwargs):
@@ -225,9 +225,9 @@ def buildTimeSoftware(**kwargs):
 @click.option('--configfile', envvar='RESIF_CONFIGFILE', help='Specify path to a config file to load.')
 # git variables
 @click.option('--gh-ebuser', 'gh_ebuser', envvar='RESIF_GH_EBUSER', help='Specify a GitHub user that has the EasyBuild repositories you want to use instead of the one provided by ULHPC.')
-@click.option('--git-ebframework', 'git_ebframework', envvar='RESIF_GIT_EBFRAMEWORK', help='URL or path to EasyBuild framework Git repository.')
-@click.option('--git-ebblocks', 'git_ebblocks', envvar='RESIF_GIT_EBBLOCKS', help='URL or path for EasyBuild easyblocks Git repository.')
-@click.option('--git-ebconfigs', 'git_ebconfigs', envvar='RESIF_GIT_EBCONFIGS', help='URL or path for EasyBuild easyconfigs Git repository.')
+@click.option('--git-ebframework', 'git_ebframework', envvar='RESIF_GIT_EBFRAMEWORK', help='URL or absolute path to EasyBuild framework Git repository.')
+@click.option('--git-ebblocks', 'git_ebblocks', envvar='RESIF_GIT_EBBLOCKS', help='URL or absolute path for EasyBuild easyblocks Git repository.')
+@click.option('--git-ebconfigs', 'git_ebconfigs', envvar='RESIF_GIT_EBCONFIGS', help='URL or absolute path for EasyBuild easyconfigs Git repository.')
 @click.option('--branch-ebframework', 'branch_ebframework', envvar='RESIF_BRANCH_EBFRAMEWORK', help='Git branch for EasyBuild framework.')
 @click.option('--branch-ebblocks', 'branch_ebblocks', envvar='RESIF_BRANCH_EBBLOCKS', help='Git branch for EasyBuild easyblocks.')
 @click.option('--branch-ebconfigs', 'branch_ebconfigs', envvar='RESIF_BRANCH_EBCONFIGS', help='Git branch for EasyBuild easyconfigs.')
@@ -313,9 +313,9 @@ def build(**kwargs):
 @click.option('--configfile', envvar='RESIF_CONFIGFILE', help='Specify path to a config file to load.')
 # git variables
 @click.option('--gh-ebuser', 'gh_ebuser', envvar='RESIF_GH_EBUSER', help='Specify a GitHub user that has the EasyBuild repositories you want to use instead of the one provided by ULHPC.')
-@click.option('--git-ebframework', 'git_ebframework', envvar='RESIF_GIT_EBFRAMEWORK', help='URL or path to EasyBuild framework Git repository.')
-@click.option('--git-ebblocks', 'git_ebblocks', envvar='RESIF_GIT_EBBLOCKS', help='URL or path for EasyBuild easyblocks Git repository.')
-@click.option('--git-ebconfigs', 'git_ebconfigs', envvar='RESIF_GIT_EBCONFIGS', help='URL or path for EasyBuild easyconfigs Git repository.')
+@click.option('--git-ebframework', 'git_ebframework', envvar='RESIF_GIT_EBFRAMEWORK', help='URL or absolute path to EasyBuild framework Git repository.')
+@click.option('--git-ebblocks', 'git_ebblocks', envvar='RESIF_GIT_EBBLOCKS', help='URL or absolute path for EasyBuild easyblocks Git repository.')
+@click.option('--git-ebconfigs', 'git_ebconfigs', envvar='RESIF_GIT_EBCONFIGS', help='URL or absolute path for EasyBuild easyconfigs Git repository.')
 @click.option('--branch-ebframework', 'branch_ebframework', envvar='RESIF_BRANCH_EBFRAMEWORK', help='Git branch for EasyBuild framework.')
 @click.option('--branch-ebblocks', 'branch_ebblocks', envvar='RESIF_BRANCH_EBBLOCKS', help='Git branch for EasyBuild easyblocks.')
 @click.option('--branch-ebconfigs', 'branch_ebconfigs', envvar='RESIF_BRANCH_EBCONFIGS', help='Git branch for EasyBuild easyconfigs.')
