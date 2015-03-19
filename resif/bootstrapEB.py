@@ -76,7 +76,7 @@ def easybuildFilesInstaller(hashTable):
 
 		for k in ['easybuild-framework', 'easybuild-easyblocks', 'easybuild-easyconfigs']:
 			if not k in altSources:
-				originalBranch = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
+				originalBranch = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])[:-1]
 				if hashTable['release'] != 'HEAD':
 					subprocess.check_call(['git', 'branch', k, hashTable['release']])
 					subprocess.check_call(['git', 'checkout', k])
