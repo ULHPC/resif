@@ -64,7 +64,10 @@ def easybuildFilesInstaller(hashTable):
 
 	# Import any alternative EasyBuild files from given sources
 	for k,v in altSources.iteritems():
-		subprocess.check_call(['git', 'clone', v[0], os.path.join(os.path.join(hashTable['rootinstall'], '.installRef'), k)])
+		if v[1] != None:
+			subprocess.check_call(['git', 'clone', v[0], '-b', v[1], '--single-branch', os.path.join(os.path.join(hashTable['rootinstall'], '.installRef'), k)])
+		else:
+			subprocess.check_call(['git', 'clone', v[0], os.path.join(os.path.join(hashTable['rootinstall'], '.installRef'), k)])
 
 	# Complete the EasyBuild files with the ones from the subtree if necessary
 	if any(True for x in ['easybuild-framework', 'easybuild-easyblocks', 'easybuild-easyconfigs'] if not x in altSources):
@@ -73,9 +76,18 @@ def easybuildFilesInstaller(hashTable):
 
 		for k in ['easybuild-framework', 'easybuild-easyblocks', 'easybuild-easyconfigs']:
 			if not k in altSources:
-				subprocess.check_call(['git', 'branch', k])
+				originalBranch = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])[:-1]
+				if hashTable['release'] != 'HEAD':
+					subprocess.check_call(['git', 'branch', k, hashTable['release']])
+					subprocess.check_call(['git', 'checkout', k])
+				elif 'branch' in hashTable:
+					subprocess.check_call(['git', 'branch', k, hashTable['branch']])
+					subprocess.check_call(['git', 'checkout', k])
+				else:
+					subprocess.check_call(['git', 'branch', k])
 				subprocess.check_call(['git', 'filter-branch', '-f', '--subdirectory-filter', 'easybuild/'+k, k])
 				subprocess.check_call(['git', 'clone', hashTable['srcpath'], '-b', k, '--single-branch', os.path.join(os.path.join(hashTable['rootinstall'], '.installRef'), k)])
+				subprocess.check_call(['git', 'checkout', originalBranch])
 				subprocess.check_call(['git', 'branch', '-D', k])
 
 		os.chdir(pwd)
