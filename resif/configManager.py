@@ -83,6 +83,9 @@ def generateBuildConfig(hashTable):
     if not 'swsets' in config:
         sys.exit('Please specify at least one software set you want to build.\n')
 
+    # Create the configuration file for EasyBuild.
+    easybuildConfigfileCreator(config)
+
     return config
 
 
