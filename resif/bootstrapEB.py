@@ -196,6 +196,8 @@ def sourcefileCreator(hashTable):
 	if not 'core' in hashTable['swsets']:
 		modulePath += os.path.join(os.path.join(os.path.join(hashTable['rootinstall'], 'core'), 'modules'), 'base') + ":"
 
+	modulePath = hashTable['prepend_modulepath'] + ":" + modulePath + hashTable['append_modulepath']
+
 	# We create the files to source to use the infrastructure.
 	# By default, we don't install in core but in ulhpc
 	sourcepathOnPlace = os.path.join(os.path.join(hashTable['rootinstall'], ".ebdirs"), 'sources') # "<rootinstall>/.ebdirs/sources"
