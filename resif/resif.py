@@ -258,7 +258,7 @@ def bootstrap(**kwargs):
         sys.stdout.write("An installation is already present at your rootinstall: " + config["rootinstall"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n")
         exit(50)
 
-# TODO: implement release and branch options for build (Do not let build vx.y.z in vx'.y' if x != x ou y != y')
+
 # Build a (or multiple) software set(s) (Adding new software to an existing EasyBuild install.)
 @resif.command(short_help='Deploy software sets on an existing installatation.')
 # Path to the source directory

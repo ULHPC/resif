@@ -75,10 +75,6 @@ def generateBuildConfig(hashTable):
     if 'rootinstall' in config:
         config['rootinstall'] = os.path.abspath(config['rootinstall'])
 
-    # If no file has been given to describe the swsets, we use the default one
-    #if not 'swsets_config' in config:
-    #    generateSwsetsConfig(config)
-
     # If no swset is given, the script stops
     if not 'swsets' in config:
         sys.exit('Please specify at least one software set you want to build.\n')
@@ -113,10 +109,6 @@ def generateCleaninstallConfig(hashTable):
 
     # Create the configuration file for EasyBuild.
     easybuildConfigfileCreator(config)
-
-    # If no file has been given to describe the swsets, we use the default one
-    #if not 'swsets_config' in config:
-    #    generateSwsetsConfig(config)
 
     # If no swset is given, the script stops
     if not 'swsets' in config:
@@ -301,12 +293,6 @@ def generateRootinstall(hashTable):
         hashTable['rootinstall'] = os.path.join(hashTable['apps_root'], hashTable['releasedir'] + '_alt.sources')
     else:
     	hashTable['rootinstall'] = os.path.join(hashTable['apps_root'], hashTable['releasedir'])
-
-
-# Generate a value for the swsets_config field of the dict.
-def generateSwsetsConfig(hashTable):
-    # TODO: use tree to be sure to use the same branch/commit than the rest of the repo
-	hashTable['swsets_config'] = os.path.join(os.path.join(hashTable['srcpath'], 'config'), 'swsets.yaml')
 
 
 # Get the version of EasyBuild installed in the <rootdirectory>/EasyBuild directory
