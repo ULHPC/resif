@@ -46,7 +46,7 @@ def resif(ctx, version):
 @resif.command(short_help='Initialize the git repository in the srcpath.')
 @click.option('--git-architecture', 'git_architecture', envvar='RESIF_GIT_ARCHITECTURE', help='Defines an alternative git repository URL or absolute path to get the architecture from.')
 @click.option('--srcpath', 'srcpath', envvar='RESIF_SRCPATH', help='Defines an alternative path to put the sources in.')
-@click.option('--overwrite', 'overwrite', flag_value=True, envvar='RESIF_OVERWRITE', help='Set this flag if you want to overwrite any existing previous installation at --apps-root.')
+@click.option('--overwrite', 'overwrite', flag_value=True, envvar='RESIF_OVERWRITE', help='Set this flag if you want to overwrite any existing directories in the srcpath.')
 def init(**kwargs):
     config = configManager.generateInitConfig(kwargs)
     if not os.path.isdir(config["srcpath"]) or config["overwrite"]:
@@ -258,7 +258,7 @@ def bootstrap(**kwargs):
         sys.stdout.write("An installation is already present at your rootinstall: " + config["rootinstall"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n")
         exit(50)
 
-
+# TODO: implement release and branch options for build (Do not let build vx.y.z in vx'.y' if x != x ou y != y')
 # Build a (or multiple) software set(s) (Adding new software to an existing EasyBuild install.)
 @resif.command(short_help='Deploy software sets on an existing installatation.')
 # Path to the source directory
@@ -267,6 +267,11 @@ def bootstrap(**kwargs):
 @click.option('--configfile', envvar='RESIF_CONFIGFILE', help='Specify path to a config file to load.')
 # Software building variables
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of an EasyBuild installation (contains the various software sets deployed and the EasyBuild files). Softwares will be installed in <rootinstall>/<swset>/modules')
+@click.option('--production', 'branch', flag_value='production', envvar='RESIF_BRANCH', help='Set this variable if you want to work with the production branch of the RESIF repository. (By default, work with the production branch). Do not use with --devel or --branch !')
+@click.option('--devel', 'branch', flag_value='devel', envvar='RESIF_BRANCH', help='Set this variable if you want to work with the devel branch of the RESIF repository. (By default, work with the production branch). Do not use with --production or --branch !')
+@click.option('--branch', 'branch', envvar='RESIF_BRANCH', help='Set this variable if you want to work with the devel branch of the RESIF repository. (By default, work with the production branch). Do not use with --production or --branch !')
+@click.option('--release', envvar='RESIF_RELEASE', help='Release tag or commit of the RESIF repository to use.')
+@click.option('--force', 'force', flag_value=True, envvar='RESIF_FORCE', help='Set this flag if you want to force build even if release or branch of the existing stack doesn\'t match given ones.')
 @click.option('--installdir', 'installdir', envvar='RESIF_INSTALLDIR', help="Use if you don't want to deploy the software inside the <rootinstall>. Softwares will then be deployed in <installdir>/<swset>/modules")
 @click.option('--eb-sourcepath', 'eb_sourcepath', envvar='EASYBUILD_SOURCEPATH', help='EasyBuild sourcepath.')
 @click.option('--eb-buildpath', 'eb_buildpath', envvar='EASYBUILD_BUILDPATH', help='EasyBuild buildpath.')

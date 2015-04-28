@@ -18,8 +18,12 @@ import glob
 def build(hashTable):
 	# Assume that the MODULEPATH is already set to a correct value
     easybuild = hashTable['easybuild_module']
-        
-    stream = file(hashTable['swsets_config'], 'r')
+    
+    if "swsets_config" in hashTable:
+        stream = file(hashTable['swsets_config'], 'r')
+    else:
+        stream = hashTable["git_tree"]['config/swsets.yaml'].data_stream.read()
+
     swsets = yaml.load(stream)
 
     # We define the options that are going to be passed to EasyBuild

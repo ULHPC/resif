@@ -76,12 +76,17 @@ def generateBuildConfig(hashTable):
         config['rootinstall'] = os.path.abspath(config['rootinstall'])
 
     # If no file has been given to describe the swsets, we use the default one
-    if not 'swsets_config' in config:
-        generateSwsetsConfig(config)
+    #if not 'swsets_config' in config:
+    #    generateSwsetsConfig(config)
 
     # If no swset is given, the script stops
     if not 'swsets' in config:
         sys.exit('Please specify at least one software set you want to build.\n')
+
+    # Check that the release or branch (if any) corresponds to the actual release or branch of the software stack
+    if not isValidRelease(config) and not config["force"]:
+        sys.stdout.write("The release or branch given doesn't match the release or branch of the existing build.\n")
+        exit(30)
 
     # Create the configuration file for EasyBuild.
     easybuildConfigfileCreator(config)
@@ -110,8 +115,8 @@ def generateCleaninstallConfig(hashTable):
     easybuildConfigfileCreator(config)
 
     # If no file has been given to describe the swsets, we use the default one
-    if not 'swsets_config' in config:
-        generateSwsetsConfig(config)
+    #if not 'swsets_config' in config:
+    #    generateSwsetsConfig(config)
 
     # If no swset is given, the script stops
     if not 'swsets' in config:
@@ -300,6 +305,7 @@ def generateRootinstall(hashTable):
 
 # Generate a value for the swsets_config field of the dict.
 def generateSwsetsConfig(hashTable):
+    # TODO: use tree to be sure to use the same branch/commit than the rest of the repo
 	hashTable['swsets_config'] = os.path.join(os.path.join(hashTable['srcpath'], 'config'), 'swsets.yaml')
 
 
@@ -408,5 +414,22 @@ def resolveEBbranches(hashTable):
             # We set the correct branch if any has been given (priority is given to the branch-eb* option)
             if not 'branch_eb'+repo in hashTable and gitUrl != gitBranch:
                 hashTable['branch_eb'+repo] = gitBranch
+
+def isValidRelease(hashTable):
+
+    if "release" in hashTable:
+        stackRelease = re.search("/[^/]*/?$", hashTable["rootinstall"]).group(0)[2:5]
+        if hashTable["release"] != "HEAD":
+            givenRelease = re.search("^v?[0-9].[0-9]", hashTable["release"]).group(0)
+            givenRelease = givenRelease[1:] if givenRelease[0] == "v" else givenRelease
+            if givenRelease != stackRelease:
+                return False
+    
+    if "branch" in hashTable:
+        stackBranch = re.search("^/[^/]*", re.search("/[^/]*/[^/]*/?$", hashTable["rootinstall"]).group(0)).group(0)[1:]
+        if hashTable["branch"] != stackBranch:
+            return False
+    
+    return True
 
 #######################################################################################################################
