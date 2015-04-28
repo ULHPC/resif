@@ -277,6 +277,7 @@ def bootstrap(**kwargs):
 @click.option('--eb-buildpath', 'eb_buildpath', envvar='EASYBUILD_BUILDPATH', help='EasyBuild buildpath.')
 @click.option('--eb-repository', 'eb_repository', envvar='EASYBUILD_REPOSITORY', help='EasyBuild repository type for successfully installed easyconfig files.')
 @click.option('--eb-repositorypath', 'eb_repositorypath', envvar='EASYBUILD_REPOSITORYPATH', help='EasyBuild path to the repository for successuflly installed easyconfig files.')
+@click.option('--eb-options', 'eb_options', envvar='RESIF_EB_OPTIONS', help='Any command line options to pass to EasyBuild for the build.')
 @click.option('--buildmode', envvar='RESIF_BUILDMODE', type=click.Choice(['local', 'job']), help='Mode to build the software: either building locally or in a job.')
 @click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
 @click.option('--out-place', 'out_place', flag_value=True, envvar='RESIF_ON_PLACE', help='Set this option if you want all the files (sources, build, repository) to be put outside the rootinstall (in an associated subdirectory in $HOME/.resif).')
@@ -336,6 +337,7 @@ def build(**kwargs):
 @click.option('--eb-buildpath', 'eb_buildpath', envvar='EASYBUILD_BUILDPATH', help='EasyBuild buildpath.')
 @click.option('--eb-repository', 'eb_repository', envvar='EASYBUILD_REPOSITORY', help='EasyBuild repository type for successfully installed easyconfig files.')
 @click.option('--eb-repositorypath', 'eb_repositorypath', envvar='EASYBUILD_REPOSITORYPATH', help='EasyBuild path to the repository for successuflly installed easyconfig files.')
+@click.option('--eb-options', 'eb_options', envvar='RESIF_EB_OPTIONS', help='Any command line options to pass to EasyBuild for the build.')
 # Module Naming Scheme choice
 @click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
 # Software building variables
