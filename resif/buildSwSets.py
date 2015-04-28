@@ -18,12 +18,22 @@ import glob
 def build(hashTable):
 	# Assume that the MODULEPATH is already set to a correct value
     easybuild = hashTable['easybuild_module']
-        
-    stream = file(hashTable['swsets_config'], 'r')
+    
+    if "swsets_config" in hashTable:
+        stream = file(hashTable['swsets_config'], 'r')
+    else:
+        stream = hashTable["git_tree"]['config/swsets.yaml'].data_stream.read()
+
     swsets = yaml.load(stream)
 
     # We define the options that are going to be passed to EasyBuild
     sharedOptions = defineSharedOptions(hashTable)
+
+    # We use the additional options if any
+    if 'eb_options' in hashTable:
+        additionalOptions = " " + hashTable["eb_options"]
+    else:
+        additionalOptions = ""
 
     for swset in hashTable['swsets']:
         # We set the installpath. If there is no installpath given, we stop the execution.
@@ -51,7 +61,7 @@ def build(hashTable):
             swsetStart= time.time()
     	    for software in swsets[swset]:
                 sys.stdout.write("Now starting to install " + software[:-3] + "\n")
-    	        process.stdin.write('eb ' + software + installpath + sharedOptions + ' --robot\n')
+    	        process.stdin.write('eb ' + software + installpath + sharedOptions + additionalOptions + ' --robot\n')
     	        # Command to have at the end of the output the execution code of the last command
     	        process.stdin.write('echo $?\n')
     	        out = ""
