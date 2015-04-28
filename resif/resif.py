@@ -239,6 +239,8 @@ def buildTimeSoftware(**kwargs):
 @click.option('--release', envvar='RESIF_RELEASE', help='Release tag or commit of the RESIF repository to deploy.')
 @click.option('--releasedir', envvar='RESIF_RELEASEDIR', help='Directory in which to install the release (Relative path from the <apps-root>). Default: <branch>/v<release>-<date>')
 @click.option('--rootinstall', envvar='RESIF_ROOTINSTALL', help='Path to the root of the EasyBuild installation (contains the various software sets deployed and the EasyBuild files). Default: <apps-root>/<releasedir>')
+@click.option('--append-modulepath', 'append_modulepath', envvar='RESIF_APPEND_MODULEPATH', help='Paths to append to the modulepath in the LOADME files.')
+@click.option('--prepend-modulepath', 'prepend_modulepath', envvar='RESIF_PREPEND_MODULEPATH', help='Paths to prepend to the modulepath in the LOADME files.')
 # Module Naming Scheme choice
 @click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
 @click.option('--overwrite', 'overwrite', flag_value=True, envvar='RESIF_OVERWRITE', help='Set this flag if you want to overwrite any existing previous installation at --apps-root.')
@@ -338,6 +340,8 @@ def build(**kwargs):
 @click.option('--eb-repository', 'eb_repository', envvar='EASYBUILD_REPOSITORY', help='EasyBuild repository type for successfully installed easyconfig files.')
 @click.option('--eb-repositorypath', 'eb_repositorypath', envvar='EASYBUILD_REPOSITORYPATH', help='EasyBuild path to the repository for successuflly installed easyconfig files.')
 @click.option('--eb-options', 'eb_options', envvar='RESIF_EB_OPTIONS', help='Any command line options to pass to EasyBuild for the build.')
+@click.option('--append-modulepath', 'append_modulepath', envvar='RESIF_APPEND_MODULEPATH', help='Paths to append to the modulepath in the LOADME files.')
+@click.option('--prepend-modulepath', 'prepend_modulepath', envvar='RESIF_PREPEND_MODULEPATH', help='Paths to prepend to the modulepath in the LOADME files.')
 # Module Naming Scheme choice
 @click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
 # Software building variables
