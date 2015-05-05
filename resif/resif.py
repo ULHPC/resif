@@ -308,6 +308,8 @@ def build(**kwargs):
     for swset in config['swsets']:
         if 'installdir' in config:
             modulepaths += os.path.join(os.path.join(os.path.join(config['installdir'], swset), 'modules'), 'all') + ':'
+        elif 'fullinstalldir' in config:
+            modulepaths = os.path.join(config['fullinstalldir'], 'modules', 'all')
         else:
             modulepaths += os.path.join(os.path.join(os.path.join(config['rootinstall'], swset), 'modules'), 'all') + ':'
     sys.stdout.write("To make the software sets available, add the following paths to your MODULEPATH environment variable:\n" + modulepaths + "\n")

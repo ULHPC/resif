@@ -137,7 +137,7 @@ def setInstallpath(hashTable, swset):
         installpath = ' --installpath=' + os.path.join(hashTable['installdir'], swset)
     else:
         try:
-            os.environ['EASYBUILD_INSTALLPATH']
+            hashTable['fullinstalldir'] = os.environ['EASYBUILD_INSTALLPATH']
         except KeyError:
             if 'rootinstall' in hashTable:
                 installpath = ' --installpath=' + os.path.join(hashTable['rootinstall'], swset)
