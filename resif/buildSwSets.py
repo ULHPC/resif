@@ -135,14 +135,10 @@ def setInstallpath(hashTable, swset):
     # An installpath has to be provided, if not explicitely specified we use the rootinstall.
     if 'installdir' in hashTable:
         installpath = ' --installpath=' + os.path.join(hashTable['installdir'], swset)
+    elif 'rootinstall' in hashTable:
+        installpath = ' --installpath=' + os.path.join(hashTable['rootinstall'], swset)
     else:
-        try:
-            hashTable['fullinstalldir'] = os.environ['EASYBUILD_INSTALLPATH']
-        except KeyError:
-            if 'rootinstall' in hashTable:
-                installpath = ' --installpath=' + os.path.join(hashTable['rootinstall'], swset)
-            else:
-                sys.stdout.write("\
+        sys.stdout.write("\
 No information on where to install the softwares has been found. Please provide this information.\n\
 To do so, either:\n\
 - use the --rootinstall option to define the root directory of the EasyBuild install.\n\
@@ -151,9 +147,8 @@ To do so, either:\n\
 - use the --installdir option to define an alternative place to install (modules will be installed in <eb-installpath>/<swset>/modules)\n\
 - set the RESIF_INSTALLDIR environement variable to define the same information.\n\
 - set the installdir field in your configuration file if you are providing one. (using the --configfile option)\n\
-- set the EASYBUILD_INSTALLPATH environment variable to give the exact installpath in the meaning of EasyBuild.\n\
 ")
-                exit(10)
+        exit(10)
 
     return installpath
 
