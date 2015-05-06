@@ -148,7 +148,7 @@ To do so, either:\n\
 - set the RESIF_INSTALLDIR environement variable to define the same information.\n\
 - set the installdir field in your configuration file if you are providing one. (using the --configfile option)\n\
 ")
-                exit(10)
+        exit(10)
 
     return installpath
 
