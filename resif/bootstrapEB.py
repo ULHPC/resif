@@ -207,11 +207,6 @@ def sourcefileCreator(hashTable):
 	installpathOnPlace = os.path.join(hashTable['rootinstall'], 'ulhpc') # <rootinstall>/ulhpc
 	repositorypathOnPlace = os.path.join(os.path.join(hashTable['rootinstall'], ".ebdirs"), 'eb_repo') # "<rootinstall>/.ebdirs/eb_repo"
 
-#	sourcepathOutPlace = os.path.join(os.path.join(os.path.join("$HOME", ".resif"), trueVersion), 'sources') # "$HOME/.resif/vx.y-YYYYMMDD/sources"
-#	buildpathOutPlace = os.path.join(os.path.join(os.path.join("$HOME", ".resif"), trueVersion), 'build') # "$HOME/.resif/vx.y-YYYYMMDD/build"
-#	installpathOutPlace = os.path.join(os.path.join("$HOME", ".resif"), trueVersion) # "$HOME/.resif/vx.y-YYYYMMDD"
-#	repositorypathOutPlace = os.path.join(os.path.join(os.path.join("$HOME", ".resif"), trueVersion), 'eb_repo') # "$HOME/.resif/vx.y-YYYYMMDD/eb_repo"
-
 	# The admin file is there to easily add software in the ulhpc swset without any manual changes to the config.
 	with open(os.path.join(hashTable['rootinstall'], "LOADME-" + trueVersion + ".sh"), "w") as f:
 		modulevar = "export EASYBUILD_MODULES_TOOL=Lmod" if hashTable["module_cmd"] == "lmod" else "#export EASYBUILD_MODULES_TOOL=Lmod"

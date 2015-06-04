@@ -255,7 +255,7 @@ def bootstrap(**kwargs):
         bootstrapEB.bootstrap(config)
         click.echo("Bootstrapping ended successfully.")
         sourcemePath = os.path.join(config['rootinstall'], 'LOADME-'+os.path.basename(config['rootinstall'])+'.sh')
-        click.echo("To start using this installation, source the following file:\n" + sourcemePath)
+        click.echo("\nTo start using this installation, source the following file:\n" + sourcemePath)
     else:
         sys.stdout.write("An installation is already present at your rootinstall: " + config["rootinstall"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n" + "\033[93m" + "WARNING: This will remove everything at " + config["rootinstall"] + "\033[0m\n")
         exit(50)
@@ -303,14 +303,16 @@ def build(**kwargs):
     h, m = divmod(m, 60)
     durationFormated = "%dh%dm%ds" % (h, m, s)
     click.echo("Software sets successfully built. The build duration was of " + durationFormated)
-    # We return a list of modulepaths to load to start using the new software sets
+    # We return a list of modulepaths and modules to load to start using the new software sets
     modulepaths = ""
+    swsetsModulesList = ""
     for swset in config['swsets']:
+        swsetsModulesList += "base/swsets/" + swset + " "
         if 'installdir' in config:
             modulepaths += os.path.join(os.path.join(os.path.join(config['installdir'], swset), 'modules'), 'all') + ':'
         else:
             modulepaths += os.path.join(os.path.join(os.path.join(config['rootinstall'], swset), 'modules'), 'all') + ':'
-    sys.stdout.write("To make the software sets available, add the following paths to your MODULEPATH environment variable:\n" + modulepaths + "\n")
+    sys.stdout.write("\nTo make the software sets available, add the following paths to your MODULEPATH environment variable:\n" + modulepaths + "\nOr load the following modules:\n" + swsetsModulesList + "\n")
 
 
 # Full install (Correspond to making a new release)
@@ -386,7 +388,7 @@ def cleaninstall(**kwargs):
     click.echo("Software sets successfully built. The build duration was of " + durationFormated)
     click.echo("Full installation ended successfully.")
     sourcemePath = os.path.join(config['rootinstall'], 'LOADME-'+os.path.basename(config['rootinstall'])+'.sh')
-    click.echo("To start using this installation, source the following file:\n" + sourcemePath)
+    click.echo("\nTo start using this installation, source the following file:\n" + sourcemePath)
 
 
 #######################################################################################################################
