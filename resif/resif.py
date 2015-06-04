@@ -307,12 +307,16 @@ def build(**kwargs):
     modulepaths = ""
     swsetsModulesList = ""
     for swset in config['swsets']:
-        swsetsModulesList += "base/swsets/" + swset + " "
+        if swset != 'core':
+            swsetsModulesList += "base/swsets/" + swset + " "
         if 'installdir' in config:
             modulepaths += os.path.join(os.path.join(os.path.join(config['installdir'], swset), 'modules'), 'all') + ':'
         else:
             modulepaths += os.path.join(os.path.join(os.path.join(config['rootinstall'], swset), 'modules'), 'all') + ':'
-    sys.stdout.write("\nTo make the software sets available, add the following paths to your MODULEPATH environment variable:\n" + modulepaths + "\nOr load the following modules:\n" + swsetsModulesList + "\n")
+    if swsetsModulesList != "":
+        sys.stdout.write("\nTo make the software sets available, add the following paths to your MODULEPATH environment variable:\n" + modulepaths + "\nOr load the following modules:\n" + swsetsModulesList + "\n")
+    else:
+        sys.stdout.write("\nTo make the software sets available, add the following paths to your MODULEPATH environment variable:\n" + modulepaths + "\n")
 
 
 # Full install (Correspond to making a new release)

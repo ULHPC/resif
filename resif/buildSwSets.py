@@ -86,7 +86,8 @@ def build(hashTable):
     	                    sys.stdout.write('Failed to install ' + software[:-3] + '\n' + 'Operation failed with return code ' + out + '\n')
     	                    exit(out)
     	                break
-            swsetModulefileCreator(hashTable, installpath[15:], swset)
+            if swset != 'core':
+                swsetModulefileCreator(hashTable, installpath[15:], swset)
             swsetEnd = time.time()
             swsetDuration = swsetEnd - swsetStart
             m, s = divmod(swsetDuration, 60)
