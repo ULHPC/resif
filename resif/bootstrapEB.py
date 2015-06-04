@@ -207,10 +207,11 @@ def sourcefileCreator(hashTable):
 	installpathOnPlace = os.path.join(hashTable['rootinstall'], 'ulhpc') # <rootinstall>/ulhpc
 	repositorypathOnPlace = os.path.join(os.path.join(hashTable['rootinstall'], ".ebdirs"), 'eb_repo') # "<rootinstall>/.ebdirs/eb_repo"
 
-	sourcepathOutPlace = os.path.join(os.path.join(os.path.join("$HOME", ".resif"), trueVersion), 'sources') # "$HOME/.resif/vx.y-YYYYMMDD/sources"
-	buildpathOutPlace = os.path.join(os.path.join(os.path.join("$HOME", ".resif"), trueVersion), 'build') # "$HOME/.resif/vx.y-YYYYMMDD/build"
-	installpathOutPlace = os.path.join(os.path.join("$HOME", ".resif"), trueVersion) # "$HOME/.resif/vx.y-YYYYMMDD"
-	repositorypathOutPlace = os.path.join(os.path.join(os.path.join("$HOME", ".resif"), trueVersion), 'eb_repo') # "$HOME/.resif/vx.y-YYYYMMDD/eb_repo"
+#	sourcepathOutPlace = os.path.join(os.path.join(os.path.join("$HOME", ".resif"), trueVersion), 'sources') # "$HOME/.resif/vx.y-YYYYMMDD/sources"
+#	buildpathOutPlace = os.path.join(os.path.join(os.path.join("$HOME", ".resif"), trueVersion), 'build') # "$HOME/.resif/vx.y-YYYYMMDD/build"
+#	installpathOutPlace = os.path.join(os.path.join("$HOME", ".resif"), trueVersion) # "$HOME/.resif/vx.y-YYYYMMDD"
+#	repositorypathOutPlace = os.path.join(os.path.join(os.path.join("$HOME", ".resif"), trueVersion), 'eb_repo') # "$HOME/.resif/vx.y-YYYYMMDD/eb_repo"
+
 	# The admin file is there to easily add software in the ulhpc swset without any manual changes to the config.
 	with open(os.path.join(hashTable['rootinstall'], "LOADME-" + trueVersion + ".sh"), "w") as f:
 		modulevar = "export EASYBUILD_MODULES_TOOL=Lmod" if hashTable["module_cmd"] == "lmod" else "#export EASYBUILD_MODULES_TOOL=Lmod"
@@ -225,21 +226,17 @@ export EASYBUILD_LOGFILE_FORMAT=(\"easybuild\", \"easybuild-%(name)s-%(version)s
 " + modulevar + "\n\
 export EASYBUILD_MODULE_NAMING_SCHEME=" + hashTable['mns'] + "\n\
 export RESIF_ROOTINSTALL=" + hashTable['rootinstall'] + "\n\
+export RESIF_OUT_PLACE=False\n\
 ")
 	# The user file is there to easily add software locally without any manual change to the config.
 	with open(os.path.join(hashTable['rootinstall'], "LOADME-" + trueVersion + "-out-place.sh"), "w") as f:
 		modulevar = "export EASYBUILD_MODULES_TOOL=Lmod" if hashTable["module_cmd"] == "lmod" else "#export EASYBUILD_MODULES_TOOL=Lmod"
 		f.write("\
-export EASYBUILD_SOURCEPATH=" + sourcepathOutPlace + "\n\
-export EASYBUILD_BUILDPATH=" + buildpathOutPlace + "\n\
-export EASYBUILD_INSTALLPATH=" + installpathOutPlace + "\n\
 export MODULEPATH=" + modulePath + "\n\
-export EASYBUILD_REPOSITORY=FileRepository\n\
-export EASYBUILD_REPOSITORYPATH=" + repositorypathOutPlace + "\n\
-export EASYBUILD_LOGFILE_FORMAT=(\"easybuild\", \"easybuild-%(name)s-%(version)s-%(date)s.%(time)s.log\")\n\
 " + modulevar + "\n\
 export EASYBUILD_MODULE_NAMING_SCHEME=" + hashTable['mns'] + "\n\
 export RESIF_ROOTINSTALL=" + hashTable['rootinstall'] + "\n\
+export RESIF_OUT_PLACE=True\n\
 ")
 	
 	return modulePath

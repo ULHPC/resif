@@ -333,10 +333,10 @@ def easybuildConfigfileCreator(hashTable):
     buildpathOnPlace = os.path.join(ebdirsOnPlace, 'build') # <rootinstall>/.ebdirs/build
     repositorypathOnPlace = os.path.join(ebdirsOnPlace, 'eb_repo') # <rootinstall>/.ebdirs/eb_repo
 
-    ebdirsOutPlace = os.path.join(os.path.join('$HOME' ,'.resif'), trueVersion) # $HOME/.resif/vx.y-YYYYMMDD/
-    sourcepathOutPlace = os.path.join(ebdirsOutPlace, 'sources') # $HOME/.resif/vx.y-YYYYMMDD/sources
-    buildpathOutPlace = os.path.join(ebdirsOutPlace, 'build') # $HOME/.resif/vx.y-YYYYMMDD/build
-    repositorypathOutPlace = os.path.join(ebdirsOutPlace, 'eb_repo') # $HOME/.resif/vx.y-YYYYMMDD/eb_repo
+#    ebdirsOutPlace = os.path.join(os.path.join('$HOME' ,'.resif'), trueVersion) # $HOME/.resif/vx.y-YYYYMMDD/
+#    sourcepathOutPlace = os.path.join(ebdirsOutPlace, 'sources') # $HOME/.resif/vx.y-YYYYMMDD/sources
+#    buildpathOutPlace = os.path.join(ebdirsOutPlace, 'build') # $HOME/.resif/vx.y-YYYYMMDD/build
+#    repositorypathOutPlace = os.path.join(ebdirsOutPlace, 'eb_repo') # $HOME/.resif/vx.y-YYYYMMDD/eb_repo
 
     with open(os.path.join(path, 'easybuild.cfg'), 'w') as f:
         f.write('[config]\n')
@@ -350,13 +350,7 @@ def easybuildConfigfileCreator(hashTable):
 
     with open(os.path.join(path, 'easybuild-out-place.cfg'), 'w') as f:
         f.write('[config]\n')
-        f.write('sourcepath = ' + sourcepathOutPlace + '\n')
-        f.write('buildpath = ' + buildpathOutPlace + '\n')
-        f.write('repository = ' + repository + '\n')
-        f.write('repositorypath = ' + repositorypathOutPlace + '\n')
         f.write('module-naming-scheme = ' + hashTable['mns'] +'\n')
-        # Currenctly, this option isn't working (EasyBuild 1.15.2) so we don't use it until it is fixed.
-        f.write('#logfile-format = ' + logfile_format[0] + ',' + logfile_format[1] + '\n')
 
 
 # Determine the name of the EasyBuild module that should be loaded depending on the MNS.
