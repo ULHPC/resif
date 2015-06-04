@@ -170,7 +170,10 @@ def getSoftwareBuildTimes(logfile):
 
 # Create a module file and the associated symlink (if not already existing) to load the software set and put them at the right places.
 def swsetModulefileCreator(hashTable, installpath, moduleName):
-    modulesDirPath = os.path.join(os.path.join(hashTable['rootinstall'], 'core'), 'modules')
+    if 'installdir' in hashTable:
+        modulesDirPath = os.path.join(os.path.join(hashTable['installdir'], 'core'), 'modules')
+    else:
+        modulesDirPath = os.path.join(os.path.join(hashTable['rootinstall'], 'core'), 'modules')
     # Adapt the location of the modulfile to the chosen MNS
     if hashTable['mns'] == "ThematicMNS":
         # We create the directories we need to install EasyBuild
