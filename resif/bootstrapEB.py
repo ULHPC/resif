@@ -189,12 +189,8 @@ def sourcefileCreator(hashTable):
 	modulePath = ""
 	moduleClasses = ['bio', 'cae', 'chem', 'compiler', 'data', 'debugger', 'devel', 'geo', 'lang', 'lib', 'math', \
 	'mpi', 'numlib', 'perf', 'phys', 'system', 'toolchain', 'tools', 'vis', 'base']
-	for swset in hashTable['swsets']:
-		for moduleclass in moduleClasses:
-			modulePath += os.path.join(os.path.join(os.path.join(hashTable['rootinstall'], swset), 'modules'), moduleclass) + ":"
-	# If the core software set is not in the software sets to be installed, we still have to add the EasyBuild module location
-	if not 'core' in hashTable['swsets']:
-		modulePath += os.path.join(os.path.join(os.path.join(hashTable['rootinstall'], 'core'), 'modules'), 'base') + ":"
+	for moduleclass in moduleClasses:
+		modulePath += os.path.join(os.path.join(os.path.join(hashTable['rootinstall'], 'core'), 'modules'), moduleclass) + ":"
 
 	prependModulepath = (hashTable['prepend_modulepath'] + ":") if 'prepend_modulepath' in hashTable else ""
 	appendModulepath = hashTable['append_modulepath'] if 'append_modulepath' in hashTable else ""
