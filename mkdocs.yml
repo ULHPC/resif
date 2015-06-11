@@ -1,8 +1,8 @@
 site_name: RESIF Documentation
 repo_url: https://github.com/sylmarien/RESIF-PyPi
 pages:
-- 'Introduction': 'index.md'
 - Documentation:
+  - 'Introduction': 'index.md'
   - 'Overview and Underlying tools': 'overview.md'
   - 'Layout and Versioning': 'layout-and-versioning.md'
   - 'Variables': 'variables.md'
