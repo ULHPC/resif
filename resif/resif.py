@@ -54,7 +54,7 @@ def init(**kwargs):
             shutil.rmtree(config["srcpath"], True)
         subprocess.check_call(['git', 'clone', config['git_architecture'], config['srcpath']])
     else:
-        sys.stdout.write("A repository already exist at your srcpath: " + config["srcpath"] +"\nPlease use the --overwrite flag if you want to overwrite this repository.\n")
+        sys.stdout.write("A repository already exist at your srcpath: " + config["srcpath"] +"\nPlease use the --overwrite flag if you want to overwrite this repository.\n" + "\033[93m" + "WARNING: This will remove everything at " + config["srcpath"] + "\033[0m\n")
         exit(50)
 
 @resif.command(short_help='Update the git repository in the srcpath.')
@@ -255,9 +255,9 @@ def bootstrap(**kwargs):
         bootstrapEB.bootstrap(config)
         click.echo("Bootstrapping ended successfully.")
         sourcemePath = os.path.join(config['rootinstall'], 'LOADME-'+os.path.basename(config['rootinstall'])+'.sh')
-        click.echo("To start using this installation, source the following file:\n" + sourcemePath)
+        click.echo("\nTo start using this installation, source the following file:\n" + sourcemePath)
     else:
-        sys.stdout.write("An installation is already present at your rootinstall: " + config["rootinstall"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n")
+        sys.stdout.write("An installation is already present at your rootinstall: " + config["rootinstall"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n" + "\033[93m" + "WARNING: This will remove everything at " + config["rootinstall"] + "\033[0m\n")
         exit(50)
 
 
@@ -282,7 +282,7 @@ def bootstrap(**kwargs):
 @click.option('--eb-options', 'eb_options', envvar='RESIF_EB_OPTIONS', help='Any command line options to pass to EasyBuild for the build.')
 @click.option('--buildmode', envvar='RESIF_BUILDMODE', type=click.Choice(['local', 'job']), help='Mode to build the software: either building locally or in a job.')
 @click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
-@click.option('--out-place', 'out_place', flag_value=True, envvar='RESIF_ON_PLACE', help='Set this option if you want all the files (sources, build, repository) to be put outside the rootinstall (in an associated subdirectory in $HOME/.resif).')
+@click.option('--out-place', 'out_place', flag_value=True, envvar='RESIF_OUT_PLACE', help='Set this option if you want all the files (sources, build, repository) to be put outside the rootinstall (in an associated subdirectory in $HOME/.resif).')
 @click.option('--swsets-config', 'swsets_config', envvar='RESIF_SWSETS_CONFIG', help='Path to a file defining the software sets.')
 @click.argument('swsets', nargs=-1)
 def build(**kwargs):
@@ -303,14 +303,20 @@ def build(**kwargs):
     h, m = divmod(m, 60)
     durationFormated = "%dh%dm%ds" % (h, m, s)
     click.echo("Software sets successfully built. The build duration was of " + durationFormated)
-    # We return a list of modulepaths to load to start using the new software sets
+    # We return a list of modulepaths and modules to load to start using the new software sets
     modulepaths = ""
+    swsetsModulesList = ""
     for swset in config['swsets']:
+        if swset != 'core':
+            swsetsModulesList += "base/swsets/" + swset + " "
         if 'installdir' in config:
             modulepaths += os.path.join(os.path.join(os.path.join(config['installdir'], swset), 'modules'), 'all') + ':'
         else:
             modulepaths += os.path.join(os.path.join(os.path.join(config['rootinstall'], swset), 'modules'), 'all') + ':'
-    sys.stdout.write("To make the software sets available, add the following paths to your MODULEPATH environment variable:\n" + modulepaths + "\n")
+    if swsetsModulesList != "":
+        sys.stdout.write("\nTo make the software sets available, add the following paths to your MODULEPATH environment variable:\n" + modulepaths + "\nOr load the following modules:\n" + swsetsModulesList + "\n")
+    else:
+        sys.stdout.write("\nTo make the software sets available, add the following paths to your MODULEPATH environment variable:\n" + modulepaths + "\n")
 
 
 # Full install (Correspond to making a new release)
@@ -357,13 +363,13 @@ def cleaninstall(**kwargs):
     config = configManager.generateCleaninstallConfig(kwargs)
     click.echo("Starting full installation.")
     # Bootstrap EasyBuild.
-    click.echo("Bootstrapping EasyBuild.")
     if not os.path.isdir(config["rootinstall"]) or config["overwrite"]:
         if config["overwrite"]:
             shutil.rmtree(config["rootinstall"], True)
+        click.echo("Bootstrapping EasyBuild.")
         modulePath = bootstrapEB.bootstrap(config)
     else:
-        sys.stdout.write("An installation is already present at your rootinstall: " + config["rootinstall"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n")
+        sys.stdout.write("An installation is already present at your rootinstall: " + config["rootinstall"] + "\nPlease use the --overwrite flag if you want to overwrite this installation.\n" + "\033[93m" + "WARNING: This will remove everything at " + config["rootinstall"] + "\033[0m\n")
         exit(50)
     click.echo("Bootstrapping ended successfully.")
     # Build the software sets.
@@ -386,7 +392,7 @@ def cleaninstall(**kwargs):
     click.echo("Software sets successfully built. The build duration was of " + durationFormated)
     click.echo("Full installation ended successfully.")
     sourcemePath = os.path.join(config['rootinstall'], 'LOADME-'+os.path.basename(config['rootinstall'])+'.sh')
-    click.echo("To start using this installation, source the following file:\n" + sourcemePath)
+    click.echo("\nTo start using this installation, source the following file:\n" + sourcemePath)
 
 
 #######################################################################################################################

@@ -86,6 +86,8 @@ def build(hashTable):
     	                    sys.stdout.write('Failed to install ' + software[:-3] + '\n' + 'Operation failed with return code ' + out + '\n')
     	                    exit(out)
     	                break
+            if swset != 'core':
+                swsetModulefileCreator(hashTable, installpath[15:], swset)
             swsetEnd = time.time()
             swsetDuration = swsetEnd - swsetStart
             m, s = divmod(swsetDuration, 60)
@@ -165,5 +167,54 @@ def getSoftwareBuildTimes(logfile):
         softwareDuration = etime - stime
         
     return (software, softwareDuration)
+
+# Create a module file and the associated symlink (if not already existing) to load the software set and put them at the right places.
+def swsetModulefileCreator(hashTable, installpath, moduleName):
+    if 'installdir' in hashTable:
+        modulesDirPath = os.path.join(os.path.join(hashTable['installdir'], 'core'), 'modules')
+    else:
+        modulesDirPath = os.path.join(os.path.join(hashTable['rootinstall'], 'core'), 'modules')
+    # Adapt the location of the modulfile to the chosen MNS
+    if hashTable['mns'] == "ThematicMNS":
+        # We create the directories we need to install EasyBuild
+        EBmoduleDir = os.path.join('base', 'swsets')
+        easybuildPath = os.path.join(os.path.join(modulesDirPath, 'all'), EBmoduleDir)
+        if not os.path.exists(easybuildPath):
+            os.makedirs(easybuildPath)
+        easybuildPath = os.path.join(os.path.join(modulesDirPath, 'base'), EBmoduleDir)
+        if not os.path.exists(easybuildPath):
+            os.makedirs(easybuildPath)
+
+    else:
+        # We create the directories we need to install EasyBuild
+        EBmoduleDir = 'swsets'
+        easybuildPath = os.path.join(os.path.join(modulesDirPath, 'all'), EBmoduleDir)
+        if not os.path.exists(easybuildPath):
+            os.makedirs(easybuildPath)
+        easybuildPath = os.path.join(os.path.join(modulesDirPath, 'base'), EBmoduleDir)
+        if not os.path.exists(easybuildPath):
+            os.makedirs(easybuildPath)
+
+    # Path to the actual module file
+    moduleFilePath = os.path.join(os.path.join(os.path.join(modulesDirPath, 'all'), EBmoduleDir), moduleName)
+
+    with open(moduleFilePath, "w") as f:
+        f.write("\
+#%Module\n\
+\n\
+proc ModulesHelp { } {\n\
+    puts stderr {   " + moduleName + " software set.\n\
+}\n\
+}\n\
+module-whatis {" + moduleName + " software set.\n\
+}\n\
+set root        " + installpath + "\n\
+prepend-path    MODULEPATH      \"$root/modules/all\"\n\
+")
+    
+    # Path to the symlink to the module file.
+    symlinkPath = os.path.join(os.path.join(os.path.join(modulesDirPath, 'base'), EBmoduleDir), moduleName)
+    if not os.path.exists(symlinkPath):
+        os.symlink(moduleFilePath, symlinkPath)
 
 #######################################################################################################################
