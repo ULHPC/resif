@@ -197,24 +197,12 @@ def sourcefileCreator(hashTable):
 	modulePath = prependModulepath + modulePath + appendModulepath
 
 	# We create the files to source to use the infrastructure.
-	# By default, we don't install in core but in ulhpc
-	sourcepathOnPlace = os.path.join(os.path.join('$RESIF_ROOTINSTALL', ".ebdirs"), 'sources') # "<rootinstall>/.ebdirs/sources"
-	buildpathOnPlace = os.path.join(os.path.join('$RESIF_ROOTINSTALL', ".ebdirs"), 'build') # "<rootinstall>/.ebdirs/build"
-	installpathOnPlace = os.path.join('$RESIF_ROOTINSTALL', 'ulhpc') # <rootinstall>/ulhpc
-	repositorypathOnPlace = os.path.join(os.path.join('$RESIF_ROOTINSTALL', ".ebdirs"), 'eb_repo') # "<rootinstall>/.ebdirs/eb_repo"
-
 	# The admin file is there to easily add software in the ulhpc swset without any manual changes to the config.
 	with open(os.path.join(hashTable['rootinstall'], "LOADME-" + trueVersion + ".sh"), "w") as f:
 		modulevar = "export EASYBUILD_MODULES_TOOL=Lmod" if hashTable["module_cmd"] == "lmod" else "#export EASYBUILD_MODULES_TOOL=Lmod"
 		f.write("\
 export RESIF_ROOTINSTALL=" + hashTable['rootinstall'] + "\n\
-export EASYBUILD_SOURCEPATH=" + sourcepathOnPlace + "\n\
-export EASYBUILD_BUILDPATH=" + buildpathOnPlace + "\n\
-export EASYBUILD_INSTALLPATH=" + installpathOnPlace + "\n\
 export MODULEPATH=" + modulePath + "\n\
-export EASYBUILD_REPOSITORY=FileRepository\n\
-export EASYBUILD_REPOSITORYPATH=" + repositorypathOnPlace + "\n\
-export EASYBUILD_LOGFILE_FORMAT=(\"easybuild\", \"easybuild-%(name)s-%(version)s-%(date)s.%(time)s.log\")\n\
 " + modulevar + "\n\
 export EASYBUILD_MODULE_NAMING_SCHEME=" + hashTable['mns'] + "\n\
 export RESIF_OUT_PLACE=False\n\
