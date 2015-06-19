@@ -45,10 +45,16 @@ Here are all the variables that can be set, followed by their descriptions.
       | `$eb_repository`        | Type of repository to store the .eb files          | FileRepository                     |
       |                         | of the successfuly installed softwares             |                                    |
       | `$eb_repositorypath`    | Path to this repository                            | $HOME/.resif/eb_repo               |
-      | `$out_place`            | Modify the building behavior so EasyBuild files    | False                              |
-      |                         |   are all put inside the $HOME/.resif directory    |                                    |
+      | `$eb_options`           | String of options to pass "as is" to EasyBuild.    | ""                                 |
+      | `$out_place`            | If set to True, EasyBuild will put the files at its| True                               |
+      |                         |   default location (~/.local/easybuild)            |                                    |
       | `$overwrite`            | Set this flag if you want to overwrite any file    | False                              |
       |                         |  that is already present at the install location   |                                    |
+      | `$append_modulepath`    | Specify a path to add at the beginning of the      |                                    |
+      |                         |  modulepath in the LOADME files.                   |                                    |
+      | `$prepend_modulepath`   | Specify a path to add at the end of the modulepath |                                    |
+      |                         |  in the LOADME files.                              |                                    |
+
  
 ## Specific Configuration variables
 
@@ -335,21 +341,27 @@ Default values:
       | $eb_repository     | FileRepository                |
       | $eb_repositorypath | <rootinstall>/.ebdirs/eb_repo |
 
+### Additional EasyBuild options `$eb_options`
+
+Use this variable to tweak the behavior of EasyBuild more in depth for options that are not supported directly by RESIF.
+
+As an example to run the command as a "dry run":
+
+      resif build --eb-options "--dry-run" core
+
 ### Admin mode `$out_place`
 
-If set to `True`,  this will change the behavior of the `build` subcommand so that the EasyBuild files (sources, builds, easyconfigs repository) are going to be put inside the rootinstall (in the `.ebdirs` subdirectory).  
+If set to `False`,  this will change the behavior of the `build` subcommand so that the EasyBuild files (sources, builds, easyconfigs repository) are going to be put inside the rootinstall (in the `.ebdirs` subdirectory).  
 **Note** that it doesn't concern the modules and software files. Where you put these ones depends on the `$rootinstall` and the `$installdir` variables.
-
-The new values are then:
-
-      | Variables          | values                                |
-      |--------------------+---------------------------------------|
-      | $eb_sourcepath     | $HOME/.resif/v<version>-<date>/sources |
-      | $eb_buildpath      | $HOME/.resif/v<version>-<date>/build   |
-      | $eb_repositorypath | $HOME/.resif/v<version>-<date>/eb_repo |
 
 Note that all of this is overriden by the other options managing these variables (the EASYBUILD environement variables in particular)
 
 ### Overwrite flag `$overwrite`
 
 If set to `True`, RESIF will remove any existing file at the location you want to make the install. If set to `False`, RESIF will stop its execution and throw an error message if it find existing files at the install location.
+
+### Prepend & append modulepath `$prepend_modulepath` `$append_modulepath`
+
+Use these variables to prepend (`$prepend_modulepath`) and/or append (`$append_modulepath`) paths to the MODULEPATH environment variable in the LOADME files when using the `resif bootstrap` and `resif cleaninstall` commands.
+
+Also, when using `resif cleaninstall`, any software already installed in any of these paths will not be installed once again inside the software stack.

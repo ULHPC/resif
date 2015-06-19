@@ -17,16 +17,17 @@ Environment modules are a standard and well-established technology across HPC si
 
 The tool in itself is used to manage environment variables such as `PATH`, `LD_LIBRARY_PATH` and `MANPATH`, enabling the easy loading and unloading of application/library profiles and their dependencies.
 
-    | Command                        | Description                                                  |
-    |--------------------------------+--------------------------------------------------------------|
-    | `module avail`                 | Lists all the modules which are available to be loaded       |
-    | `module load <mod1> [mod2...]` | Load a module                                                |
-    | `module unload <module>`       | Unload a module                                              |
-    | `module list`                  | List loaded modules                                          |
-    | `module display <module>`      | Display what a module does                                   |
-    | `module purge`                 | Unload all modules (purge)                                   |
-    | `module use <path>`            | Prepend the directory to the MODULEPATH environment variable |
-    |                                |                                                              |
+    | Command                        | Description                                                   |
+    |--------------------------------+-------------------------------------------------------------- |
+    | `module avail`                 | Lists all the modules which are available to be loaded        |
+    | `module load <mod1> [mod2...]` | Load a module                                                 |
+    | `module unload <module>`       | Unload a module                                               |
+    | `module list`                  | List loaded modules                                           |
+    | `module display <module>`      | Display what a module does                                    |
+    | `module purge`                 | Unload all modules (purge)                                    |
+    | `module use <path>`            | Prepend the directory to the MODULEPATH environment variable  |
+    | `module unuse <path>`          | Remove the directory from the MODULEPATH environment variable |
+    |                                |                                                               |
 
 *Note:* for more information, see the reference man pages for [modules](http://modules.sourceforge.net/man/module.html) and [modulefile](http://modules.sourceforge.net/man/modulefile.html), or the [official FAQ](http://sourceforge.net/p/modules/wiki/FAQ/).
 

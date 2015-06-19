@@ -346,8 +346,8 @@ def build(**kwargs):
 @click.option('--eb-repository', 'eb_repository', envvar='EASYBUILD_REPOSITORY', help='EasyBuild repository type for successfully installed easyconfig files.')
 @click.option('--eb-repositorypath', 'eb_repositorypath', envvar='EASYBUILD_REPOSITORYPATH', help='EasyBuild path to the repository for successuflly installed easyconfig files.')
 @click.option('--eb-options', 'eb_options', envvar='RESIF_EB_OPTIONS', help='Any command line options to pass to EasyBuild for the build.')
-@click.option('--append-modulepath', 'append_modulepath', envvar='RESIF_APPEND_MODULEPATH', help='Paths to append to the modulepath in the LOADME files.')
-@click.option('--prepend-modulepath', 'prepend_modulepath', envvar='RESIF_PREPEND_MODULEPATH', help='Paths to prepend to the modulepath in the LOADME files.')
+@click.option('--append-modulepath', 'append_modulepath', envvar='RESIF_APPEND_MODULEPATH', help='Paths to append to the modulepath in the LOADME files. Also won\'t reinstall software found at these paths.')
+@click.option('--prepend-modulepath', 'prepend_modulepath', envvar='RESIF_PREPEND_MODULEPATH', help='Paths to prepend to the modulepath in the LOADME files. Also won\'t reinstall software found at these paths.')
 # Module Naming Scheme choice
 @click.option('--mns', envvar='EASYBUILD_MODULE_NAMING_SCHEME', type=click.Choice(['EasyBuildMNS', 'E', 'HierarchicalMNS', 'H', 'ThematicMNS', 'T']), help='Module Naming Scheme to be used.')
 # Software building variables
