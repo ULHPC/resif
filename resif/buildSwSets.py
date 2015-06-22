@@ -43,8 +43,8 @@ def build(hashTable):
         # so that EasyBuild will not instantly forget that it has installed them after it is done (problematic for dependency resolution)
         # Part for environment-modules (come later for Lmod)
         # We also add the core software set to ensure that EasyBuild will be available
+        corePath = os.path.join(hashTable['rootinstall'], 'core', 'modules', 'all')
         if hashTable["module_cmd"] == "modulecmd":
-            corePath = os.path.join(hashTable['rootinstall'], 'core', 'modules', 'all')
             try:
                 os.environ['MODULEPATH'] = ':'.join([os.environ['MODULEPATH'], os.path.join(os.path.join(installpath[15:], 'modules'), 'all'), corePath])
             except KeyError:
@@ -58,6 +58,7 @@ def build(hashTable):
 
         # Lmod part for MODULEPATH management
         if hashTable["module_cmd"] == "lmod":
+            process.stdin.write("module use " + corePath + "\n")
             process.stdin.write("module use " + os.path.join(os.path.join(installpath[15:], 'modules'), 'all') + "\n")
     	
         alreadyInstalled = False
