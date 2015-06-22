@@ -87,7 +87,8 @@ def build(hashTable):
     	                    exit(out)
     	                break
             if swset != 'core':
-                swsetModulefileCreator(hashTable, installpath[15:], swset)
+                if not 'out_place' in hashTable or not hashTable['out_place']:
+                    swsetModulefileCreator(hashTable, installpath[15:], swset)
             swsetEnd = time.time()
             swsetDuration = swsetEnd - swsetStart
             m, s = divmod(swsetDuration, 60)
@@ -137,8 +138,10 @@ def setInstallpath(hashTable, swset):
     # An installpath has to be provided, if not explicitely specified we use the rootinstall.
     if 'installdir' in hashTable:
         installpath = ' --installpath=' + os.path.join(hashTable['installdir'], swset)
+    elif 'out_place' in hashTable and hashTable['out_place']:
+        return installpath
     elif 'rootinstall' in hashTable:
-        installpath = ' --installpath=' + os.path.join(hashTable['rootinstall'], swset)
+            installpath = ' --installpath=' + os.path.join(hashTable['rootinstall'], swset)
     else:
         sys.stdout.write("\
 No information on where to install the softwares has been found. Please provide this information.\n\
@@ -149,6 +152,8 @@ To do so, either:\n\
 - use the --installdir option to define an alternative place to install (modules will be installed in <eb-installpath>/<swset>/modules)\n\
 - set the RESIF_INSTALLDIR environement variable to define the same information.\n\
 - set the installdir field in your configuration file if you are providing one. (using the --configfile option)\n\
+- set --out-place to True to install use the EasyBuild default installpath\n\
+- set RESIF_OUT_PLACE to True to define the same information\n\
 ")
         exit(10)
 
