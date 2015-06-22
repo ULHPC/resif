@@ -389,6 +389,8 @@ def cleaninstall(**kwargs):
     os.environ['MODULEPATH'] = modulePath
     configManager.setEasyBuildVariables(config)
     config['easybuild_module'] = configManager.getEasyBuildModule(config)
+    # To avoid environment variable interference, we will unset EASYBUILD_INSTALLPATH when building knowing we're doing a cleaninstall
+    config['iscleaninstall'] = True
     start = time.time()
     buildSwSets.build(config)
     end = time.time()
