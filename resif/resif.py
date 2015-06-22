@@ -311,10 +311,17 @@ def build(**kwargs):
             swsetsModulesList += "base/swsets/" + swset + " "
         if 'installdir' in config:
             modulepaths += os.path.join(os.path.join(os.path.join(config['installdir'], swset), 'modules'), 'all') + ':'
+        elif config['out_place']:
+            try:
+                modulepaths += os.path.join(os.environ['EASYBUILD_INSTALLPATH'], 'modules', 'all') + ':'
+            except Exception:
+                modulepaths += os.path.join(os.path.expandvars('$HOME'), '.local', 'easybuild', 'modules', 'all') + ':'
         else:
             modulepaths += os.path.join(os.path.join(os.path.join(config['rootinstall'], swset), 'modules'), 'all') + ':'
-    if swsetsModulesList != "":
+    if swsetsModulesList != "" and not config['out_place']:
         sys.stdout.write("\nTo make the software sets available, add the following paths to your MODULEPATH environment variable:\n" + modulepaths + "\nOr load the following modules:\n" + swsetsModulesList + "\n")
+    elif not 'installdir' in config and config['out_place']:
+        sys.stdout.write('\nTo make the software sets available, add the following paths to your MODULEPATH environment variable:\n' + modulepaths + '\n')
     else:
         sys.stdout.write("\nTo make the software sets available, add the following paths to your MODULEPATH environment variable:\n" + modulepaths + "\n")
 
