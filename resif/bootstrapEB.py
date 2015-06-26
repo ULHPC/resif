@@ -218,6 +218,6 @@ export EASYBUILD_MODULE_NAMING_SCHEME=" + hashTable['mns'] + "\n\
 export RESIF_OUT_PLACE=True\n\
 ")
 	
-	return os.path.expandvars(modulePath)
+	return modulePath.replace('$RESIF_ROOTINSTALL', hashTable['rootinstall'])
 
 #######################################################################################################################
