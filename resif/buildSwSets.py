@@ -54,12 +54,13 @@ def build(hashTable):
         # If we're doing a cleaninstall, we don't want the EASYBUILD_INSTALLPATH environment variable to interfere.
         if 'iscleaninstall' in hashTable and hashTable['iscleaninstall']:
             process.stdin.write('unset EASYBUILD_INSTALLPATH\n')
-    	process.stdin.write('module load ' + easybuild + '\n')
 
         # Lmod part for MODULEPATH management
         if hashTable["module_cmd"] == "lmod":
             process.stdin.write("module use " + corePath + "\n")
             process.stdin.write("module use " + os.path.join(os.path.join(installpath[15:], 'modules'), 'all') + "\n")
+
+    	process.stdin.write('module load ' + easybuild + '\n')
     	
         alreadyInstalled = False
     	# If it actually exist in the yaml file, we install the listed software.
