@@ -289,9 +289,6 @@ def generateReleasedir(hashTable):
 
 # Generate a value for the rootinstall field of the dict.
 def generateRootinstall(hashTable):
-    if any(True for x in ['gh_ebuser', 'git_ebframework', 'git_ebblocks', 'git_ebconfigs'] if x in hashTable):
-        hashTable['rootinstall'] = os.path.join(hashTable['apps_root'], hashTable['releasedir'] + '_alt.sources')
-    else:
     	hashTable['rootinstall'] = os.path.join(hashTable['apps_root'], hashTable['releasedir'])
 
 

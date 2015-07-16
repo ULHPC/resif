@@ -42,56 +42,65 @@ def easybuildFilesInstaller(hashTable):
 	if not os.path.exists(easyBuildDir):
 		os.makedirs(easyBuildDir)
 
-	altSources = {}
+	ebSources = {}
 	# If we were provided alternative sources for the EasyBuild files, we create the useful variables
 	if any(True for x in ['gh_ebuser', 'git_ebframework', 'git_ebblocks', 'git_ebconfigs'] if x in hashTable):
 		if 'gh_ebuser' in hashTable:
-			altSources['easybuild-framework'] = ('https://github.com/' + hashTable['gh_ebuser'] + '/easybuild-framework.git', \
+			ebSources['easybuild-framework'] = ('https://github.com/' + hashTable['gh_ebuser'] + '/easybuild-framework.git', \
 				hashTable['branch_ebframework'] if 'branch_ebframework' in hashTable else None)
 
-			altSources['easybuild-easyblocks'] = ('https://github.com/' + hashTable['gh_ebuser'] + '/easybuild-easyblocks.git', \
+			ebSources['easybuild-easyblocks'] = ('https://github.com/' + hashTable['gh_ebuser'] + '/easybuild-easyblocks.git', \
 				hashTable['branch_ebblocks'] if 'branch_ebblocks' in hashTable else None)
 
-			altSources['easybuild-easyconfigs'] = ('https://github.com/' + hashTable['gh_ebuser'] + '/easybuild-easyconfigs.git', \
+			ebSources['easybuild-easyconfigs'] = ('https://github.com/' + hashTable['gh_ebuser'] + '/easybuild-easyconfigs.git', \
 				hashTable['branch_ebconfigs'] if 'branch_ebconfigs' in hashTable else None)
 
 		if 'git_ebframework' in hashTable:
-			altSources['easybuild-framework'] = (hashTable['git_ebframework'], hashTable['branch_ebframework'] if 'branch_ebframework' in hashTable else None)
+			ebSources['easybuild-framework'] = (hashTable['git_ebframework'], hashTable['branch_ebframework'] if 'branch_ebframework' in hashTable else None)
 	
 		for v in ['blocks', 'configs']:
 			if 'git_eb'+v in hashTable:
-				altSources['easybuild-easy'+v] = (hashTable['git_eb'+v], hashTable['branch_eb'+v] if 'branch_eb'+v in hashTable else None)
+				ebSources['easybuild-easy'+v] = (hashTable['git_eb'+v], hashTable['branch_eb'+v] if 'branch_eb'+v in hashTable else None)
 
 	# Import any alternative EasyBuild files from given sources
-	for k,v in altSources.iteritems():
+	for k,v in ebSources.iteritems():
 		if v[1] != None:
-			subprocess.check_call(['git', 'clone', v[0], '-b', v[1], '--single-branch', os.path.join(os.path.join(hashTable['rootinstall'], '.installRef'), k)])
+			subprocess.check_call(['git', 'clone', v[0], '-b', v[1], os.path.join(os.path.join(hashTable['rootinstall'], '.installRef'), k)])
 		else:
 			subprocess.check_call(['git', 'clone', v[0], os.path.join(os.path.join(hashTable['rootinstall'], '.installRef'), k)])
 
-	# Complete the EasyBuild files with the ones from the subtree if necessary
-	if any(True for x in ['easybuild-framework', 'easybuild-easyblocks', 'easybuild-easyconfigs'] if not x in altSources):
-		pwd = os.getcwd()
-		os.chdir(hashTable['srcpath'])
-
-		for k in ['easybuild-framework', 'easybuild-easyblocks', 'easybuild-easyconfigs']:
-			if not k in altSources:
-				originalBranch = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])[:-1]
-				if hashTable['release'] != 'HEAD':
-					subprocess.check_call(['git', 'branch', k, hashTable['release']])
-					subprocess.check_call(['git', 'checkout', k])
-				elif 'branch' in hashTable:
-					subprocess.check_call(['git', 'branch', k, hashTable['branch']])
-					subprocess.check_call(['git', 'checkout', k])
-				else:
-					subprocess.check_call(['git', 'branch', k])
-				subprocess.check_call(['git', 'filter-branch', '-f', '--subdirectory-filter', 'easybuild/'+k, k])
-				subprocess.check_call(['git', 'clone', hashTable['srcpath'], '-b', k, '--single-branch', os.path.join(os.path.join(hashTable['rootinstall'], '.installRef'), k)])
-				subprocess.check_call(['git', 'checkout', originalBranch])
-				subprocess.check_call(['git', 'branch', '-D', k])
-
-		os.chdir(pwd)
-
+	# If the backward compability is activated, we complete the sources with the ones from the subtrees.
+	if 'subtrees' in hashTable and hashTable['subtrees']:
+		# Complete the EasyBuild files with the ones from the subtree if necessary
+		if any(True for x in ['easybuild-framework', 'easybuild-easyblocks', 'easybuild-easyconfigs'] if not x in ebSources):
+			pwd = os.getcwd()
+			os.chdir(hashTable['srcpath'])
+	
+			for k in ['easybuild-framework', 'easybuild-easyblocks', 'easybuild-easyconfigs']:
+				if not k in ebSources:
+					originalBranch = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])[:-1]
+					if hashTable['release'] != 'HEAD':
+						subprocess.check_call(['git', 'branch', k, hashTable['release']])
+						subprocess.check_call(['git', 'checkout', k])
+					elif 'branch' in hashTable:
+						subprocess.check_call(['git', 'branch', k, hashTable['branch']])
+						subprocess.check_call(['git', 'checkout', k])
+					else:
+						subprocess.check_call(['git', 'branch', k])
+					subprocess.check_call(['git', 'filter-branch', '-f', '--subdirectory-filter', 'easybuild/'+k, k])
+					subprocess.check_call(['git', 'clone', hashTable['srcpath'], '-b', k, os.path.join(os.path.join(hashTable['rootinstall'], '.installRef'), k)])
+					subprocess.check_call(['git', 'checkout', originalBranch])
+					subprocess.check_call(['git', 'branch', '-D', k])
+			
+			os.chdir(pwd)
+	# If not, we output the missing components and exit.
+	else:
+		if any(True for x in ['easybuild-framework', 'easybuild-easyblocks', 'easybuild-easyconfigs'] if not x in ebSources):
+			for k in ['easybuild-framework', 'easybuild-easyblocks', 'easybuild-easyconfigs']:
+				if not k in ebSources:
+					sys.stdout.write('Missing sources for ' + k + '\n')
+			sys.stdout.write('Please provide complete EasyBuild sources to allow complete installation.\n')
+			exit(60)
 	# Adding vsc-base from the hpcugent git repository
 	subprocess.check_call(['git', 'clone', 'https://github.com/hpcugent/vsc-base.git', os.path.join(os.path.join(hashTable['rootinstall'], '.installRef'), 'vsc-base')])
 
