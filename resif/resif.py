@@ -231,6 +231,7 @@ def buildTimeSoftware(**kwargs):
 @click.option('--branch-ebframework', 'branch_ebframework', envvar='RESIF_BRANCH_EBFRAMEWORK', help='Git branch for EasyBuild framework.')
 @click.option('--branch-ebblocks', 'branch_ebblocks', envvar='RESIF_BRANCH_EBBLOCKS', help='Git branch for EasyBuild easyblocks.')
 @click.option('--branch-ebconfigs', 'branch_ebconfigs', envvar='RESIF_BRANCH_EBCONFIGS', help='Git branch for EasyBuild easyconfigs.')
+@click.option('--subtrees', flag_value=True, envvar='RESIF_SUBTREES', help='Set this flag if you want to allow usage of subtrees from modules repository as sources for the EasyBuild components. (Backward compability option)')
 # Bootstrap application variables
 @click.option('--apps-root', 'apps_root', envvar='RESIF_APPS_ROOT', help='Path to the root directory for apps (contains all the architecture correspondig to RESIF).')
 @click.option('--production', 'branch', flag_value='production', envvar='RESIF_BRANCH', help='Set this variable if you want to work with the production branch of the RESIF repository. (By default, work with the production branch). Do not use with --devel or --branch !')
@@ -340,6 +341,7 @@ def build(**kwargs):
 @click.option('--branch-ebframework', 'branch_ebframework', envvar='RESIF_BRANCH_EBFRAMEWORK', help='Git branch for EasyBuild framework.')
 @click.option('--branch-ebblocks', 'branch_ebblocks', envvar='RESIF_BRANCH_EBBLOCKS', help='Git branch for EasyBuild easyblocks.')
 @click.option('--branch-ebconfigs', 'branch_ebconfigs', envvar='RESIF_BRANCH_EBCONFIGS', help='Git branch for EasyBuild easyconfigs.')
+@click.option('--subtrees', flag_value=True, envvar='RESIF_SUBTREES', help='Set this flag if you want to allow usage of subtrees from modules repository as sources for the EasyBuild components. (Backward compability option)')
 # Bootstrap application variables
 @click.option('--apps-root', 'apps_root', envvar='RESIF_APPS_ROOT', help='Path to the root directory for apps (contains all the architecture correspondig to RESIF).')
 @click.option('--production', 'branch', flag_value='production', envvar='RESIF_BRANCH', help='Set this variable if you want to work with the production branch of the RESIF repository. (By default, work with the production branch). Do not use with --devel or --branch !')
