@@ -18,7 +18,7 @@ The layout of the source repository reflects the topology detailed in the [Varia
 		├── VERSION          # current release of the repository
 		├── bin/             # hold some script files (Custom Module Naming scheme and bash completion script)
 		├── config/          # hold configurations
-		├── easybuild/       # Git subtrees for EB
+		├── easybuild/       # Git subtrees for EB (Obsolete)
 	    ├── ... 
 
 __See also__ Top Source path `$srcpath` in [Variables](variables.md)

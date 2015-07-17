@@ -308,6 +308,10 @@ Options:
   --branch-ebframework TEXT       Git branch for EasyBuild framework.
   --branch-ebblocks TEXT          Git branch for EasyBuild easyblocks.
   --branch-ebconfigs TEXT         Git branch for EasyBuild easyconfigs.
+  --subtrees                      Set this flag if you want to allow usage of
+                                  subtrees from modules repository as sources
+                                  for the EasyBuild components. (Backward
+                                  compability option)
   --apps-root TEXT                Path to the root directory for apps
                                   (contains all the architecture correspondig
                                   to RESIF).
@@ -409,7 +413,6 @@ Options:
                                   subdirectory in $HOME/.resif).
   --swsets-config TEXT            Path to a file defining the software sets.
   --help                          Show this message and exit.
-
 ```
 
 Default behavior:  
@@ -441,6 +444,10 @@ Options:
   --branch-ebframework TEXT       Git branch for EasyBuild framework.
   --branch-ebblocks TEXT          Git branch for EasyBuild easyblocks.
   --branch-ebconfigs TEXT         Git branch for EasyBuild easyconfigs.
+  --subtrees                      Set this flag if you want to allow usage of
+                                  subtrees from modules repository as sources
+                                  for the EasyBuild components. (Backward
+                                  compability option)
   --apps-root TEXT                Path to the root directory for apps
                                   (contains all the architecture correspondig
                                   to RESIF).
