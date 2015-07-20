@@ -1,5 +1,5 @@
 site_name: RESIF Documentation
-repo_url: https://github.com/sylmarien/RESIF-PyPi
+repo_url: https://github.com/ULHPC/resif
 pages:
 - Home: 'index.md'
 - Documentation:
