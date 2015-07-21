@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='resif',
-    version='2.0.1',
+    version='2.0.2',
     author='ULHPC',
     author_email='hpc-sysadmins@uni.lu',
     maintainer='ULHPC',
