@@ -9,3 +9,4 @@ pages:
   - 'Command-line Interface': 'Command-line-interface.md'
 - Appendix:
   - 'Lmod Installation': 'appendix/Lmod-install.md'
+  - 'ULHPC EasyBuild Repositories management': 'easybuild-repos-development.md'
