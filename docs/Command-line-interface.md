@@ -58,7 +58,7 @@ Note that in this last path, the part `python2.7` may change depending on the py
 
 Clone the git repository:
 
-    git clone https://github.com/sylmarien/RESIF-PyPi.git
+    git clone https://github.com/ULHPC/resif.git
 
 Then go to in this directory and type the following command to install the script:
 
@@ -68,7 +68,7 @@ Then go to in this directory and type the following command to install the scrip
 
 Clone the git repository:
 
-    git clone https://github.com/sylmarien/RESIF-PyPi.git
+    git clone https://github.com/ULHPC/resif.git
 
 Then go to in this directory directory and type the following command to install the script:
 
