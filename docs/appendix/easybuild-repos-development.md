@@ -3,7 +3,7 @@
 
 Copyright (c) 2015 [Sebastien Varrette](mailto:<Sebastien.Varrette@uni.lu>) [www]()
 
-        Time-stamp: <Mar 2015-07-21 14:30 mschmitt>
+        Time-stamp: <Tue 2015-12-08 21:16 svarrette>
 
 -------------------
 
@@ -16,11 +16,12 @@ This document describes the way modifications should be added to the various Eas
 ## Overview of the repository
 
 The repository contain multiple branches and more will be added as development of EasyBuild goes on. Here is a short description to understand their roles:
-- _master_: Branch in sync with the upstream _master_ branch of the corresponding ugent repository.
-- _develop_: Branch in sync with the upstream _develop_ branch of the corresponding ugent repository.
-- _uni.lu-master_: Branch in sync with _master_ in term of EasyBuild development but with the ULHPC-specific modifications.
-- _uni.lu-develop_: Branch in sync with _develop_ in term of EasyBuild development but with the ULHPC-specific modifications.
-- _uni.lu-vx.y.z_: Branch containing the version x.y.z of the EasyBuild repository (corresponds to the _easybuild-easyconfigs-vx.y.z_ tag) with the ULHPC-specific modifications.
+
+* _master_: Branch in sync with the upstream _master_ branch of the corresponding ugent repository.
+* _develop_: Branch in sync with the upstream _develop_ branch of the corresponding ugent repository.
+* _uni.lu-master_: Branch in sync with _master_ in term of EasyBuild development but with the ULHPC-specific modifications.
+* _uni.lu-develop_: Branch in sync with _develop_ in term of EasyBuild development but with the ULHPC-specific modifications.
+* _uni.lu-vx.y.z_: Branch containing the version x.y.z of the EasyBuild repository (corresponds to the _easybuild-easyconfigs-vx.y.z_ tag) with the ULHPC-specific modifications.
 
 At all time, the ULHPC-specific modifications should be the same in _uni.lu-master_, _uni.lu-develop_ and _uni.lu-vx.y.z_ should be the same. The next part aims at explaining how to achieve that result.
 
