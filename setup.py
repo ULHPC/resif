@@ -1,4 +1,4 @@
-# Time-stamp: <Wed 2015-12-09 17:47 svarrette>
+# Time-stamp: <Thu 2015-12-10 00:00 svarrette>
 
 """Resif -- Revolutionary EasyBuild-based Software Installation Framework (RESIF).
 
@@ -45,8 +45,28 @@ def find_version(*file_paths):
         return version_match.group(1)
     raise RuntimeError("Unable to find version string.")
 
+LONG_DESCRIPTION = None
+README_MARKDOWN  = None
 
-long_description = read('README.md')
+with open('README.md') as markdown_source:
+    README_MARKDOWN = markdown_source.read()
+
+if 'upload' in sys.argv:
+    # Converts the README.md file to ReST, since PyPI uses ReST for formatting,
+    # This allows to have one canonical README file, being the README.md
+    # The conversion only needs to be done on upload.
+    # Otherwise, the pandoc import and errors that are thrown when
+    # pandoc are both overhead and a source of confusion for general
+    # usage/installation.
+    import pandoc
+    pandoc.core.PANDOC_PATH = 'pandoc'
+    doc = pandoc.Document()
+    doc.markdown = README_MARKDOWN
+    LONG_DESCRIPTION = doc.rst
+else:
+    # If pandoc isn't installed, e.g. when downloading from pip,
+    # just use the regular README.
+    LONG_DESCRIPTION = README_MARKDOWN
 
 
 setup(
@@ -61,7 +81,7 @@ setup(
     url='http://github.com/ULHPC/resif',
 
     description='Command line interface to deploy an EasyBuild-based software infrastructure and manage it.',
-    long_description=long_description,
+    long_description=LONG_DESCRIPTION,
     keywords='software build easybuild environment modules development',
 
     # Author details
