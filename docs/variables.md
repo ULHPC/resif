@@ -3,7 +3,7 @@
 
 Copyright (c) 2014 [Sebastien Varrette](mailto:<Sebastien.Varrette@uni.lu>) [www]()
 
-        Time-stamp: <Mar 2014-12-02 11:22 mschmitt>
+        Time-stamp: <Wed 2015-12-09 00:13 svarrette>
 
 -------------------
 
@@ -14,150 +14,139 @@ Although it is interesting to take a look at them to personalize an installation
 
 Here are all the variables that can be set, followed by their descriptions.
 
-      | Variable                | Description                                        | Default (if any)                   |
-      |-------------------------+----------------------------------------------------+------------------------------------|
-      | `$git_architecture`     | Git URL/path for your architecture repository      | 'https://github.com/ULHPC/modules' |
-      | `$ebuser`               | User operating the process                         | `whoami`                           |
-      | `$ebgroup`              | Group                                              |                                    |
-      | `$gh_ebuser`            | (opt.) Github user ['hpcugent','ULHPC']            |                                    |
-      | `$git_ebframework`      | (opt.) Git URL/path for EB framework repo          |                                    |
-      | `$git_ebblocks`         | (opt.) Git URL/path for EB easyblocks repo         |                                    |
-      | `$git_ebconfigs`        | (opt.) Git URL/path for EB easyconfigs repo        |                                    |
-      | `$branch_ebframework`   | (opt.) Git branch for EB framework                 |                                    |
-      | `$branch_ebblocks       | (opt.) Git branch for EB easyblocks                |                                    |
-      | `$branch_ebconfigs      | (opt.) Git branch for EB easyconfigs               |                                    |
-      | `$srcpath`              | Source path for the conf. repository               | $HOME/.resif/src                   |
-      | `$configfile`           | Path to custom configuration file                  |                                    |
-      | `$swsets_config`        | Path to file defining the software sets            | <srcpath>/config/swsets.yaml       |
-      | `$swsets`               | Software set to deploy  ['core','ulhpc']           | core                               |
-      | `$mns`                  | Module Naming Scheme     ['EasyBuildMNS',          | ThematicMNS                        |
-      |                         |           'HierarchicalMNS', 'ThematicMNS']        |                                    |
-      | `$buildmode`            | Local build ('local') vs. job  ('job')             | local                              |
-      | `$apps_root`            | Root directory for apps (modules & sw)             | $HOME/.local/resif                 |
-      | `$branch`               | Branch of the RESIF repository to work with        |                                    |
-      | `$release`              | Release tag or commit to deploy                    | HEAD                               |
-      | `$releasedir`           | Subdirectory in which to deploy the release        | <branch>/<release>-<date>          |
-      | `$rootinstall`          | Root Installation directory                        | <apps_root>/<releasedir>           |
-      | `$installdir`           | Path to an alternative directory in which to build |                                    |
-      | `$eb_sourcepath`        | Directory to store software sources                | $HOME/.resif/sources               |
-      |                         | and install files                                  |                                    |
-      | `$eb_buildpath`         | (temporary) directories to host builds             | $HOME./resif/build                 |
-      | `$eb_repository`        | Type of repository to store the .eb files          | FileRepository                     |
-      |                         | of the successfuly installed softwares             |                                    |
-      | `$eb_repositorypath`    | Path to this repository                            | $HOME/.resif/eb_repo               |
-      | `$eb_options`           | String of options to pass "as is" to EasyBuild.    | ""                                 |
-      | `$out_place`            | If set to True, EasyBuild will put the files at its| True                               |
-      |                         |   default location (~/.local/easybuild)            |                                    |
-      | `$overwrite`            | Set this flag if you want to overwrite any file    | False                              |
-      |                         |  that is already present at the install location   |                                    |
-      | `$append_modulepath`    | Specify a path to add at the beginning of the      |                                    |
-      |                         |  modulepath in the LOADME files.                   |                                    |
-      | `$prepend_modulepath`   | Specify a path to add at the end of the modulepath |                                    |
-      |                         |  in the LOADME files.                              |                                    |
+| Variable             | Description                                            | Default (if any)                                       |
+|----------------------|--------------------------------------------------------|--------------------------------------------------------|
+| `git_control`        | Git URL/path for your resif/modules control repository | <https://github.com/ULHPC/modules>                     |
+| `user`               | User operating the process                             | `<whoami>`                                             |
+| `group`              | Group                                                  |                                                        |
+| `ebaccount`          | Github account hosting EB repos ['hpcugent','ULHPC']   | `hpcugent`                                             |
+| `ebframework`        | Git URL/path for EB framework repo                     | `https://github.com/<ebaccount>/easybuild-framework`   |
+| `ebblocks`           | Git URL/path for EB easyblocks repo                    | `https://github.com/<ebaccount>/easybuild-easyblocks`  |
+| `ebconfigs`          | Git URL/path for EB easyconfigs repo                   | `https://github.com/<ebaccount>/easybuild-easyconfigs` |
+| `srcpath`            | Source path for the conf. repository                   | $HOME/.resif/src                                       |
+| `configfile`         | Path to custom configuration file                      |                                                        |
+| `swsets_config`      | Path to file defining the software sets                | <srcpath>/config/swsets.yaml                           |
+| `swsets`             | Software set to deploy  ['core','ulhpc']               | core                                                   |
+| `mns`                | Module Naming Scheme     ['EasyBuildMNS',              | ThematicMNS                                            |
+|                      | 'HierarchicalMNS', 'ThematicMNS']                      |                                                        |
+| `buildmode`          | Local build ('local') vs. job  ('job')                 | local                                                  |
+| `apps_root`          | Root directory for apps (modules & sw)                 | $HOME/.local/resif                                     |
+| `branch`             | Branch of the RESIF repository to work with            |                                                        |
+| `release`            | Release tag or commit to deploy                        | HEAD                                                   |
+| `releasedir`         | Subdirectory in which to deploy the release            | <branch>/<release>-<date>                              |
+| `rootinstall`        | Root Installation directory                            | <apps_root>/<releasedir>                               |
+| `installdir`         | Path to an alternative directory in which to build     |                                                        |
+| `eb_sourcepath`      | Directory to store software sources                    | $HOME/.resif/sources                                   |
+|                      | and install files                                      |                                                        |
+| `eb_buildpath`       | (temporary) directories to host builds                 | $HOME./resif/build                                     |
+| `eb_repository`      | Type of repository to store the .eb files              | FileRepository                                         |
+|                      | of the successfuly installed softwares                 |                                                        |
+| `eb_repositorypath`  | Path to this repository                                | $HOME/.resif/eb_repo                                   |
+| `eb_options`         | String of options to pass "as is" to EasyBuild.        | ""                                                     |
+| `out_place`          | If set to True, EasyBuild will put the files at its    | True                                                   |
+|                      | default location (~/.local/easybuild)                  |                                                        |
+| `overwrite`          | Set this flag if you want to overwrite any file        | False                                                  |
+|                      | that is already present at the install location        |                                                        |
+| `append_modulepath`  | Specify a path to add at the beginning of the          |                                                        |
+|                      | modulepath in the LOADME files.                        |                                                        |
+| `prepend_modulepath` | Specify a path to add at the end of the modulepath     |                                                        |
+|                      | in the LOADME files.                                   |                                                        |
 
- 
 ## Specific Configuration variables
 
-### Git architecture repository `$git_architecture`
+### Git control / infrastructure repository `$git_control`
 
-Set this variable to a Git URL or path to use another infractructure repository than the default one.
 
-        | Variable          | value                              |
-        |-------------------+------------------------------------|
-        | $git_architecture | 'https://github.com/ULHPC/modules' |
+_Default_: <https://github.com/ULHPC/modules>
 
-To learn more about this architecture repository (and learn how to create your own, fitting your needs), go to the [layout and versioning page](https://gitlab.uni.lu/modules/infrastructure/wikis/layout-and-versioning).
+Set this variable to a Git URL or path to your **Resif / Modules control repository**.
+A Resif control repository stores a Resif configuration together with your software sets.
+
+It also defines the semantic versioning applied on your HPC platform to allow your user to rebuild the software available at a given period of time. This comes in the context of the [Reproducible research](http://mescal.imag.fr/membres/arnaud.legrand/blog/2015/12/03/talk_15_12_03_Orleans.pdf) initiative we try to promote on our [ULHPC](http://www.uni.lu) platform.
+
+To learn more about this control repository (and learn how to create your own, fitting your needs), go to the [layout and versioning page](layout-and-versioning.md).
 
 ### Local user/group deploying the infrastructure `$ebuser` `$ebgroup`
 
 * all processes / jobs are run as this user
 * all [sub]directory are assuming having read/write access for that user and/or group
 
-Default value:
+_Defaults_ values:
 
-      | Variables | value    |
-      |-----------+----------|
-      | $ebuser   | `whoami` |
-      | $ebgroup  |          |
+| Variables | Default  |
+|-----------|----------|
+| `$user`   | `whoami` |
+| `$group`  |          |
 
-### (optional) Alternatives to the use of the Easybuild subtrees of the [`infrastructure`](https://gitlab.uni.lu/modules/infrastructure) repository
+### Github account hosting the Easybuild repositories `$ebaccount`
 
-If you do not wish to use the Easybuild subtrees present in the [`modules-infrastructure`](https://gitlab.uni.lu/modules/infrastructure) repository, you might use the following alternative approaches:
+_Default_: `hpcugent` (Alternative: `ULHPC`).
 
-* precising the [Github user](https://github.com/) that fork __all three__ Easybuild repositories _i.e_ `easybuild-{framework,easyblocks,easyconfigs}` -- see `$gh_ebuser`
-    - in this case, you might wish also to customize the Git branch to consider -- see `$branch_eb{framework,blocks,configs}}`
-* __[TODO]__ customizing the Git URLs for the Easybuild repositories -- see `$git_eb{framework,blocks,configs}}`
-    - as above, you might wish also to customize the Git branch to consider -- see `$branch_eb{framework,blocks,configs}}`
+RESIF will require access to the classical [Easybuild](https://hpcugent.github.io/easybuild) repositories (typically the [forks](https://help.github.com/articles/fork-a-repo/) made under a given Github account `<ebaccount>`), _i.e._:
 
-#### Github user hosting the Easybuild git repository forks `$gh_ebuser`
+* [Easybuild framework](https://github.com/hpcugent/easybuild-framework): the core of the `eb` tool, providing functionality commonly needed when installing scientific software on HPC systems.
+    - _Default_: `https://github.com/<ebaccount>/easybuild-framework`
+    - customize the default url and branch with `$ebframework`
+* [Easybuild Easyblocks](https://github.com/hpcugent/easybuild-easyblocks/):  implementation of a particular software build and install procedure.
+    - _Default_: `https://github.com/<ebaccount>/easybuild-easyblocks/`
+    - customize the default url and branch with `$ebblocks`
+* [Easybuild Easyconfigs](https://github.com/hpcugent/easybuild-easyconfigs/): probably the **most important** repository since it holds the specification files that are supplied to EasyBuild to build a given software. 
+    - _Default_: `https://github.com/<ebaccount>/easybuild-easyconfigs/`
+    - customize the default url with `$git_ebblocks`
+	- customize the default branch (`master`) with `$branch_ebconfigs`
+* [VCS base](https://github.com/hpcugent/vsc-base): some basic Python libraries used by UGent's HPC group
+    - _Default_: `https://github.com/hpcugent/vsc-base`
+	- customize the default url with `$git_vscbase`
 
-If you do not wish to use the Easybuild subtrees present in the [`modules-infrastructure`](https://gitlab.uni.lu/modules/infrastructure) repository but rather your own [fork] of easybuild sources (_i.e._), you might precise here the GitHub user.
+_Defaults_ values:
 
-Default value:
+| Variable                              | Default value                                                         |
+|---------------------------------------|-----------------------------------------------------------------------|
+| `ebaccount`                           | `hpcugent`                                                            |
+| `eb{framework,blocks,configs}`        | `https://github.com/<ebaccount>/easybuild-{framework,blocks,configs}` |
 
-      | Variable     | value |
-      |--------------+-------+
-      | `$gh_ebuser` |       |
-
-In particular in this case, we expect to find the following repository available:
-
-* Easybuild Framework repository: `https://github.com/<gh_ebuser>/easybuild-framework`
-* Easyblocks repository:          `https://github.com/<gh_ebuser>/easybuild-easyblocks`
-* Easyconfigs repository:         `https://github.com/<gh_ebuser>/easybuild-easyconfigs`
-
-For each of the above repository, you might wish to specialize the Git branch to consider (`master` by default) using the variables `$branch_eb{framework,blocks,configs}`.
-
-#### Github repositories forks for EasyBuild `$git_framework`, `$git_easyblocks`, `$git_easyconfigs`
-
-If you want to use forks coming from several sources, you can provide directly the URL or path to the git you want to use for a given EasyBuild part.
-
-Note that you can combine this method with the previous one, taking into consideration that the git repository that will be given with this method will be prefered over the first one. E.g if you provide hpcugent as the gh-ebuser and the URL to the ULHPC fork of the easyconfig repository, you will in the end use the framework and the easyblocks from the hpcugent GitHub repositories and the easyconfigs from the ULHPC fork of this repository.
-
-You can specify the branch from the given repository either by using the variables described below (`$branch_ebframework`) and so on) or by using the following syntax for in the current variables:
+Note that you can specify the branch from the given repository either by using the following syntax for in the corresponding variables:
 
     'url|branch'
+
 which in an example would look like that:
 
     'https://github.com/hpcugent/easybuild-framework|master'
-for the framework part.  
-Note that if you use this syntax you have to use the single quotes `''` or the double quotes `""` or else it won't work.
 
-#### Specifying branch to use for alternative sources `$branch_ebframework`, `$branch_ebblocks`, `$branch_ebconfigs`
+Note that if you use this syntax, you have to use the single quotes `''` or the double quotes `""` or else it won't work.
 
-You can specify a branch to use. If this options is unused for a given source, then, for this source, the branch used will be the one of the HEAD.
-
-#### Final notes on the alternative sources provisioning
-
-It is important to keep in mind that if you give a gh_ebuser, then this user MUST have all the three repositories of EasyBuild, even if you don't use all of them (by providing a specific repositroy with the second method), although this requirement isn't true with the second method, because any missing repository will be taken from the gh_ebuser if you provide one, or from the subtree if you don't.
+`/!\ IMPORTANT` _If_ you specify `<ebaccount>`, this Github user **MUST** have all the three repositories of EasyBuild (and the VSC-base library), even if you don't use all of them.
 
 ### Top Source path `$srcpath`
 
-The parent path of the directory in which the [`modules-infrastructure`](https://gitlab.uni.lu/modules/infrastructure) repository shall / has been cloned.
+The parent path of the directory in which the [`Resif control`](https://github.com/ULHPC/modules) repository should / has been cloned.
 In particular, all operations (testing / building / installing) are operated from this directory.
 
 The layout of this directory shall typically reflect the following topology:
 
 <pre>
 $srcpath
-├── Gemfile[.lock]   # bundler stuff
-├── README.md
-├── Rakefile         # main rakefile 
-├── VERSION          # current release of the repository
-├── bin/             # hold the scripts piloting all operations
-├── config/          # hold configurations
-│   └── swsets.yaml  # YAML definitions for the software sets
-├── easybuild/
-│   ├── easyblocks/  # git subtree for Easyblocks
-│   ├── easyconfigs/ # git subtree for Easyconfigs
-│   ├── framework/   # git subtree for EasyBuild framework
-└─  └── wiki/        # git subtree for the wiki
+ ├── Gemfile[.lock]   # bundler stuff
+ ├── README.md
+ ├── Rakefile         # main rakefile 
+ ├── VERSION          # current release of the repository
+ ├── contribs/        # hold the contributed scripts (bash / zsh completion etc.)
+ ├── config/          # hold configurations
+ │   └── default.yaml # Default Resif configuration
+ │   └── ulhpc.yaml   # configuration for the ULHPC platform deployment
+ └── swsets/          # YAML definitions for the software sets
+ ├── easybuild/
+ │   ├── easyblocks/  # Easyblocks clone
+ │   ├── easyconfigs/ # Easyconfigs
+ │   ├── framework/   # EasyBuild framework
+ └─  └── vsc-base/    # VSC base library
 </pre>
 
 Default value:
 
-      | Variable   | value            |
-      |------------+------------------+
-      | `$srcpath` | $HOME/.resif/src |
+| Variable   | value            |
+|------------|------------------|
+| `$srcpath` | $HOME/.resif/src |
 
 __See also__: [Layout and Versioning](layout-and-versioning.md)
 
@@ -199,23 +188,23 @@ We can imagine to extend the notion of software sets to match the expectations o
 
 Default value:
 
-      | Variable | value |
-      |----------+-------+
-      | $swsets  | core  |
+| Variable  | value |
+|-----------|-------|
+| `$swsets` | core  |
 
 ### Module Naming Scheme `$mns`
 
 The module naming scheme affect the way the modules (resp. the software packages) are organized behind the `<modulesroot>` (resp. the `<packageroot>`) directory.
 In particular, they are installed in  their own subdirectory following the active module naming scheme, which can be one of the following:
 
-      | Naming Scheme   | Software package/Modulefiles subdirectory layout            | Example                                 |
-      |-----------------+-------------------------------------------------------------+-----------------------------------------|
-      | EasyBuildMNS    | `<name>/<version>-<toolchain><versionsuffix>`               | OpenFOAM-2.1.1-goolf-1.4.10             |
-      |                 |                                                             | ABySS-1.3.4-ictce-5.3.0-Python-2.7.3    |
-      | HierarchicalMNS | `<moduleclass>/<toolchain>/<name>/<version>`                | CAE/goolf-2.1.1/OpenFOAM/2.1.1          |
-      |                 |                                                             | Bio/ictce-5.3.0/ABySS/1.3.4             |
-      | ThematicMNS     | `<moduleclass>/<name>/<version>-<toolchain><versionsuffix>` | Bio/ABySS/1.3.4-ictce-5.3.0-Python-2.7.3|
-      |                 |                                                             | compiler/GCC/4.8.2                      |
+| Naming Scheme   | Software package/Modulefiles subdirectory layout            | Example                                  |
+|-----------------|-------------------------------------------------------------|------------------------------------------|
+| EasyBuildMNS    | `<name>/<version>-<toolchain><versionsuffix>`               | OpenFOAM-2.1.1-goolf-1.4.10              |
+|                 |                                                             | ABySS-1.3.4-ictce-5.3.0-Python-2.7.3     |
+| HierarchicalMNS | `<moduleclass>/<toolchain>/<name>/<version>`                | CAE/goolf-2.1.1/OpenFOAM/2.1.1           |
+|                 |                                                             | Bio/ictce-5.3.0/ABySS/1.3.4              |
+| ThematicMNS     | `<moduleclass>/<name>/<version>-<toolchain><versionsuffix>` | Bio/ABySS/1.3.4-ictce-5.3.0-Python-2.7.3 |
+|                 |                                                             | compiler/GCC/4.8.2                       |
 
 Typical toolchains supported on the UL HPC platform includes (see also `eb --list-toolchains`):
 
@@ -226,9 +215,9 @@ Typical toolchains supported on the UL HPC platform includes (see also `eb --lis
 
 Default value:
 
-      | Variable | value       |
-      |----------+-------------+
-      | $mns     | ThematicMNS |
+| Variable | value       |
+|----------|-------------|
+| `$mns`   | ThematicMNS |
 
 ### Build mode `$buildmode`
 
@@ -236,17 +225,17 @@ Default value:
 
 The way the software package are built, _i.e._ either locally (`local`) or via job submission on the platform (`job`). Default value:
 
-      | Variable   | value |
-      |------------+-------+
-      | $buildmode | local |
+| Variable     | value |
+|--------------|-------|
+| `$buildmode` | local |
 
 ### Application Root directory `$apps_root`
 
 The root directory hosting both the software package and the corresponding modules. Default value:
 
-      | Variable   | value              |
-      |------------+--------------------|
-      | $apps_root | $HOME/.local/resif |
+| Variable     | value              |
+|--------------|--------------------|
+| `$apps_root` | $HOME/.local/resif |
 
 ### RESIF branch `$branch`
 
@@ -262,10 +251,10 @@ For all deploying situations, we wish to force the specification of a specific _
 
 Default value:
 
-      | Variable    | value                            |
-      |-------------+----------------------------------|
-      | $release    | HEAD                             |
-      | $releasedir | <branch>/v<major>.<minor>-date> |
+| Variable      | value                           |
+|---------------|---------------------------------|
+| `$release`    | HEAD                            |
+| `$releasedir` | <branch>/v<major>.<minor>-date> |
 
 _Ex_: `production/v0.6` 
 
@@ -274,9 +263,9 @@ _Ex_: `production/v0.6`
 
 Place holder for all installation. Default value:
 
-      | Variable     | value                    |
-      |--------------+--------------------------|
-      | $rootinstall | <apps_root>/<releasedir> |
+| Variable       | value                    |
+|----------------|--------------------------|
+| `$rootinstall` | <apps_root>/<releasedir> |
 
 _Ex_: `/opt/apps/production/v0.6-20141117`
 
@@ -291,9 +280,9 @@ The directory in which EasyBuild looks for software source and install files.
 
 Default value:
 
-      | Variable        | value                         |
-      |-----------------+-------------------------------+
-      | $eb_sourcepath  | <rootinstall>/.ebdirs/sources |
+| Variable         | value                         |
+|------------------|-------------------------------|
+| `$eb_sourcepath` | <rootinstall>/.ebdirs/sources |
 
 ### Build path `$eb_buildpath`
 
@@ -303,9 +292,9 @@ Using `/dev/shm` as build path can significantly speed up builds, if it is avail
 
 Default value:
 
-      | Variable      | value                       |
-      |---------------+-----------------------------+
-      | $eb_buildpath | <rootinstall>/.ebdirs/build |
+| Variable        | value                       |
+|-----------------|-----------------------------|
+| `$eb_buildpath` | <rootinstall>/.ebdirs/build |
 
 ### Repository and repository path `$eb_repository` `$eb_repositorypath`
 
@@ -336,10 +325,10 @@ Note that to work properly, the SvnRepository and the GitRepository require some
 
 Default values:
 
-      | Variables          | values                        |
-      |--------------------+-------------------------------+
-      | $eb_repository     | FileRepository                |
-      | $eb_repositorypath | <rootinstall>/.ebdirs/eb_repo |
+| Variables            | values                        |
+|----------------------|-------------------------------|
+| `$eb_repository`     | FileRepository                |
+| `$eb_repositorypath` | <rootinstall>/.ebdirs/eb_repo |
 
 ### Additional EasyBuild options `$eb_options`
 
