@@ -5,20 +5,29 @@
 > Copyright (c) 2015 [UL HPC Team, M. Schmitt](https://hpc.uni.lu/about/team.html#system-administrators) (see [AUTHORS](AUTHORS))
 
 -------------
+| [Project Page](https://github.com/ULHPC/resif) |  [Documentation](https://resif.readthedocs.org/en/latest/) | [Issues](https://github.com/ULHPC/resif/issues) |
 
 # RESIF
 
 **Revolutionary EasyBuild-based Software Installation Framework**
 
-| [Project Page](https://github.com/ULHPC/resif) |  [Documentation](https://resif.readthedocs.org/en/latest/) | [Issues](https://github.com/ULHPC/resif/issues) |
 
-# RESIF command line interface
+RESIF is designed to easily setup, build a set of software (defined through software sets) and deploy them either locally or within a High Performance Computing (HPC) facility.
 
-## Overview
+Developed by the Sysadmins Team managing the HPC facility of the University of
+Luxembourg, RESIF is based on [Easybuild](https://hpcugent.github.io/easybuild) and
+[LMod](https://www.tacc.utexas.edu/research-development/tacc-projects/lmod).
+RESIF also permits to rebuild a previously deployed software configuration in
+the attempt to facilitate Reproducible Research.
+
+
+## RESIF command line interface
+
+### Overview
 
 This page explains in a first part how to [install the resif script](#installation-of-the-command-line-interface-cli), in a second part [how to use this script](#usage-of-the-cli) and in a third part exposes [some alternative methods to change the configuration](#alternative-configuration-methods).
 
-## Installation of the Command Line Interface (CLI)
+### Installation of the Command Line Interface (CLI)
 
 **Prerequisites:**
 
@@ -31,9 +40,9 @@ To install this script, you need to have some required packages installed on you
 That is enough to install and launch the script itself, but you still need to have the prerequisites for EasyBuild itself, in particular you will need a module tool (either environment-modules or Lmod).  
 See the other pages of this documentation for [more details about these tools](https://gitlab.uni.lu/modules/infrastructure/wikis/overview) and the [installation instructions for Lmod](appendix/Lmod-install.md).
 
-### Install from PyPi (recommended)
+#### Install from PyPi (recommended)
 
-#### With root permissions
+##### With root permissions
 
 Simply use the following command:  
 
@@ -41,7 +50,7 @@ Simply use the following command:
 
 You can now start using the command, see below for more information.
 
-#### Without root permissions
+##### Without root permissions
 
 Use the following command to install the command:    
 
@@ -57,9 +66,9 @@ and `$HOME/.local/lib/python2.7/site-packages` to your pythonpath so that the co
     export PYTHONPATH=$PYTHONPATH:$HOME/.local/lib/python2.7/site-packages
 Note that in this last path, the part `python2.7` may change depending on the python version you use on your computer. Just modify the previous path accordingly to what is actually present in your tree at this point.
 
-### Installation from git
+#### Installation from git
 
-#### With root permissions
+##### With root permissions
 
 Clone the git repository:
 
@@ -69,7 +78,7 @@ Then go to in this directory and type the following command to install the scrip
 
     python setup.py sdist && pip install dist/*
 
-#### Without root permissions
+##### Without root permissions
 
 Clone the git repository:
 
@@ -88,7 +97,7 @@ and `$HOME/.local/lib/python2.7/site-packages` to your pythonpath:
     export PYTHONPATH=$PYTHONPATH:$HOME/.local/lib/python2.7/site-packages
 Note that in this last path, the part `python2.7` may change depending on the python version you use on your computer. Just modify the previous path accordingly to what is actually present in your tree at this point.
 
-### Bash completion
+#### Bash completion
 
 Then, for more comfort, activate the bash auto-completion for the module:
 
@@ -102,7 +111,7 @@ Then you'll just source this file to activate the bash completion (still each ti
     source resif-complete.sh
 If you want to always have the bash completion, put this file in your `/etc/bash_completion.d` directory (requires root access).
 
-### Check the installation
+#### Check the installation
 
 Let's just check that the installation has been done properly, try this command:
 
