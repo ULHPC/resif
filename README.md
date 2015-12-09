@@ -2,14 +2,15 @@
 
 [![By ULHPC](https://img.shields.io/badge/by-ULHPC-orange.svg)](http://hpc.uni.lu) [![License](https://img.shields.io/pypi/l/resif.svg)](LICENSE)                                              [![Version     ](https://img.shields.io/pypi/v/resif.svg)](https://pypi.python.org/pypi/resif/)           [![Documentation Status](http://readthedocs.org/projects/resif/badge/?version=develop)](http://resif.readthedocs.org/en/develop/?badge=stable)  ![PyPI](https://img.shields.io/pypi/pyversions/resif.svg)
 
-->Copyright (c) 2015 [UL HPC Team, M. Schmitt](https://hpc.uni.lu/about/team.html#system-administrators) (see [AUTHORS](AUTHORS))<-
+> Copyright (c) 2015 [UL HPC Team, M. Schmitt](https://hpc.uni.lu/about/team.html#system-administrators) (see [AUTHORS](AUTHORS))
 
 -------------
 
-# RESIF: Revolutionary EasyBuild-based Software Installation Framework
+# RESIF
 
-->| [Project Page](https://github.com/ULHPC/resif) |  [Documentation](https://resif.readthedocs.org/en/latest/) | [Issues](https://github.com/ULHPC/resif/issues) |<-
+**Revolutionary EasyBuild-based Software Installation Framework**
 
+| [Project Page](https://github.com/ULHPC/resif) |  [Documentation](https://resif.readthedocs.org/en/latest/) | [Issues](https://github.com/ULHPC/resif/issues) |
 
 # RESIF command line interface
 
