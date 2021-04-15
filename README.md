@@ -1,9 +1,7 @@
 -*- mode: markdown; mode: visual-line; fill-column: 80 -*-
 `command-line-interface.md`
 
-**DEPRECATED and kept for archiving purposes ONLY**.
-
-Latest developments for under [ULHPC/sw](https://github.com/ULHPC/sw) repository.
+**DEPRECATED and kept for archiving purposes ONLY**: Latest developments (RESIF 3.0) under [ULHPC/sw](https://github.com/ULHPC/sw) repository.
 
 Copyright (c) 2014 [Sebastien Varrette](mailto:<Sebastien.Varrette@uni.lu>) [www]()
 
